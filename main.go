@@ -3,6 +3,9 @@ package main
 import (
 	"elie-api/config"
 	"elie-api/modules/auth"
+	"elie-api/modules/game"
+	"elie-api/modules/gamification"
+	"elie-api/modules/user"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
@@ -24,5 +27,8 @@ func initRouter() *gin.Engine {
 	version := api.Group("/v1")
 
 	auth.AuthRoutes(version)
+	user.UserRoutes(version)
+	gamification.GamificationRoutes(version)
+	game.GameRoutes(version)
 	return router
 }
