@@ -14,6 +14,8 @@ Download the project in the folder of your choice and run the following command:
 go run main.go
 ```
 
+You will have indication on the port the API is running on. It should be http://localhost:8080 by default (you can modify this in the main.go file if you want).
+
 ## Docker
 
 You can also run the project using docker.
@@ -33,8 +35,6 @@ func ConnectDB() {
     ...
     dsn := "host=db user=postgres password=postgres dbname=postgres port=5432 sslmode=disable TimeZone=Europe/Paris"
 ```
-
-You will have indication on the port the API is running on. It should be http://localhost:8080 by default (you can modify this in the main.go file if you want).
 
 ## Build
 If you ever want to build the project you can run the following command:
