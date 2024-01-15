@@ -26,7 +26,7 @@ services:
   api:
     container_name: api
     image: golang:1.20-alpine
-    working_dir: /app
+    working_dir: /app/cmd/api
     command: /bin/sh /app/start.sh
     volumes:
       - .:/app
