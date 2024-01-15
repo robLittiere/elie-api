@@ -1,4 +1,4 @@
-module github.com/elie-prbl/elie-api/api
+module elie-api/cmd/api
 
 go 1.21
 
