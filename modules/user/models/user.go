@@ -1,10 +1,10 @@
 package models
 
 type User struct {
-	Id             int    `json:"id" gorm:"primary_key"`
+	ID             int    `json:"id" gorm:"primary_key"`
 	Uid            string `json:"uid"`
-	Lid            int    `json:"level_id"`
-	Level          Level
+	Lid            int    `json:"lid"`
+	Level          Level  `json:"level" gorm:"foreignKey:Lid"`
 	Email          string `json:"email" gorm:"unique;not_null"`
 	Password       string `json:"password"`
 	Username       string `json:"username" gorm:"unique;not_null"`

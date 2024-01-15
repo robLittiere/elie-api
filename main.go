@@ -1,8 +1,8 @@
 package main
 
 import (
-	"elie-api/cmd/api/config"
-	"elie-api/cmd/api/modules/auth"
+	"elie-api/config"
+	"elie-api/modules/auth"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )

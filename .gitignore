@@ -30,4 +30,4 @@ go.work
 .initialized
 
 # env
-cmd/api/.env
+.env

@@ -16,6 +16,22 @@ go run main.go
 
 You will have indication on the port the API is running on. It should be http://localhost:8080 by default (you can modify this in the main.go file if you want).
 
+## Migrations
+
+We are using a simple tool called [Goose](https://github.com/pressly/goose#go-migrations) to run migrations.
+Simply do a `go install github.com/pressly/goose/v3/cmd/goose@latest` to install it.
+
+Then you can run the following command to run the migrations:
+```bash
+goose -dir migrations postgres "host=localhost user=postgres password=postgres dbname=postgres port=5432 sslmode=disable TimeZone=Europe/Paris" up
+```
+
+If you wish to create a migration, you can do so with the following command : 
+```bash
+goose -dir migrations postgres "host=localhost user=postgres password=postgres dbname=postgres port=5432 sslmode=disable TimeZone=Europe/Paris" create <migration_name> sql
+```
+Then simply add the SQL  code you want in the script
+
 ## Docker
 
 You can also run the project using docker.

@@ -1,13 +1,11 @@
 package config
 
-import (
-	models2 "elie-api/cmd/api/modules/user/models"
-)
+import "elie-api/modules/user/models"
 
 func Migrate() {
 	err := DB.AutoMigrate(
-		&models2.User{},
-		&models2.Level{},
+		&models.User{},
+		&models.Level{},
 	)
 	if err != nil {
 		return
