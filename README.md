@@ -21,17 +21,17 @@ You can also run the project using docker.
 > To do this, go to the config folder and modify the db.go file.  Modify the following line:
 
 ```go
+func ConnectDB() {
+    ...
     dsn := "host=localhost user=postgres password=postgres dbname=postgres port=5432 sslmode=disable TimeZone=Europe/Paris"
-    ```bash
-    docker-compose up
 ```
 
 Modify the hostname to be the one of the docker container (for now "db" in our docker-compose file).
 
 ```go
+func ConnectDB() {
+    ...
     dsn := "host=db user=postgres password=postgres dbname=postgres port=5432 sslmode=disable TimeZone=Europe/Paris"
-    ```bash
-    docker-compose up
 ```
 
 You will have indication on the port the API is running on. It should be http://localhost:8080 by default (you can modify this in the main.go file if you want).
