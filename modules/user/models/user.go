@@ -19,3 +19,25 @@ type User struct {
 	CreatedAt      time.Time      `json:"createdAt"`
 	UpdatedAt      time.Time      `json:"updatedAt"`
 }
+
+type PublicUser struct {
+	Uid            string `json:"uid"`
+	Lid            int    `json:"lid"`
+	Level          models.Level
+	Email          string `json:"email"`
+	Username       string `json:"username"`
+	Xp             int    `json:"xp"`
+	CurrencyAmount int    `json:"currency_amount"`
+}
+
+func (user *User) Serialize() PublicUser {
+	return PublicUser{
+		Uid:            user.Uid,
+		Lid:            user.Lid,
+		Level:          user.Level,
+		Email:          user.Email,
+		Username:       user.Username,
+		Xp:             user.Xp,
+		CurrencyAmount: user.CurrencyAmount,
+	}
+}

@@ -26,7 +26,8 @@ func Migrate() {
 		return
 	}
 
-	// Add other migrations here if necessary
+	// Add other migrations here if you want them played automatically
+	// Otherwise, use goose to make migrations in the migrations folder
 }
 
 // DropTables Drop tables if they exist

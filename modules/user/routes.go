@@ -1,7 +1,7 @@
 package user
 
 import (
-	"elie-api/modules/user/controllers"
+	"elie-api/modules/user/application/controllers"
 	"github.com/gin-gonic/gin"
 )
 

@@ -1,0 +1,90 @@
+{
+  "themes": [
+    {
+      "id": 1,
+      "topic" : "Biodiversite",
+      "title": "Je suis la biodiversite",
+      "description": "Je suis une description de la biodiversite",
+      "quizzes" : [
+        {
+          "id": 1,
+          "title": "Quizz Aléatoire sur l'Énergie Solaire",
+          "questions": [
+            {
+              "question": "Quel est le processus par lequel l'énergie solaire est convertie en électricité ?",
+              "good_answer": "La conversion photovoltaïque",
+              "wrong_answers": [
+                "La photosynthèse",
+                "La combustion solaire",
+                "La conversion thermique"
+              ]
+            },
+            {
+              "question": "Quel élément est principalement utilisé dans les panneaux solaires pour capter la lumière du soleil ?",
+              "good_answer": "Le silicium",
+              "wrong_answers": [
+                "L'hydrogène",
+                "Le carbone",
+                "L'oxygène"
+              ]
+            },
+            {
+              "question": "Quel est l'appareil qui permet de suivre la trajectoire du soleil pour maximiser la capture d'énergie solaire ?",
+              "good_answer": "Le suiveur solaire",
+              "wrong_answers": [
+                "Le réflecteur solaire",
+                "L'accumulateur solaire",
+                "Le concentrateur solaire"
+              ]
+            },
+            {
+              "question": "Quelle est l'unité de mesure de la puissance des panneaux solaires ?",
+              "good_answer": "Watt-crête (Wc)",
+              "wrong_answers": [
+                "Lumen (lm)",
+                "Kilowatt-heure (kWh)",
+                "Watt (W)"
+              ]
+            },
+            {
+              "question": "Quel pays est le plus grand producteur d'énergie solaire au monde ?",
+              "good_answer": "La Chine",
+              "wrong_answers": [
+                "Les États-Unis",
+                "L'Inde",
+                "L'Allemagne"
+              ]
+            },
+            {
+              "question": "Quel avantage majeur de l'énergie solaire en fait une source d'énergie renouvelable attrayante ?",
+              "good_answer": "Elle ne produit pas de pollution atmosphérique",
+              "wrong_answers": [
+                "Elle est bon marché",
+                "Elle est facile à stocker",
+                "Elle est facile à transporter"
+              ]
+            },
+            {
+              "question": "Quel dispositif permet de stocker l'énergie solaire pour une utilisation ultérieure ?",
+              "good_answer": "Les batteries solaires",
+              "wrong_answers": [
+                "Les panneaux solaires",
+                "Les onduleurs solaires",
+                "Les régulateurs solaires"
+              ]
+            },
+            {
+              "question": "Quelle est l'efficacité typique des panneaux solaires commerciaux ?",
+              "good_answer": "Entre 15% et 20%",
+              "wrong_answers": [
+                "Plus de 50%",
+                "Moins de 5%",
+                "Entre 5% et 10%"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
