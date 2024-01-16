@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"elie-api/config"
-	"elie-api/modules/user/application/filters"
 	"elie-api/modules/user/infrastructure"
 	"elie-api/modules/user/models"
 	"fmt"
@@ -11,50 +10,38 @@ import (
 )
 
 func GetUsers(c *gin.Context) {
-
-	userRepo := infrastructure.UserRepo{DB: config.DB}
-
-	// get query params
+	userRepo := infrastructure.NewUserRepo(config.DB)
 	queryParams := c.Request.URL.Query()
-	fmt.Println(queryParams)
 
-	// For each queryParams, apply the criteria to our repo
-	if len(queryParams) != 0 {
-		for key, param := range queryParams {
-			for _, value := range param {
-				criteria, err := filters.GetUserFilter(key)
-				fmt.Println(key, value)
-				if err != nil {
-					c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-					return
-				}
-				userRepo.ApplyCriteria(criteria, value)
-			}
-		}
-	}
-
-	// criteria, err := filters.GetUserFilter("username")
-
-	// Now return users
-
-	users, err := userRepo.Find()
+	users, err := userRepo.BuildQueryAndFind(queryParams)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	fmt.Printf("users found : %v", users)
-
-	// Serialiaze users
-	var publicUsers []models.PublicUser
-	for i := 0; i < len(users); i++ {
-		publicUsers = append(publicUsers, users[i].Serialize())
+	// Serialize users
+	publicUsers := make([]models.PublicUser, 0)
+	for _, user := range users {
+		publicUsers = append(publicUsers, user.Serialize())
 	}
 
 	c.JSON(http.StatusOK, &publicUsers)
 }
 
 func CreateUser(c *gin.Context) {
+	userRepo := infrastructure.NewUserRepo(config.DB)
+	var user models.User
+	if err := c.ShouldBindJSON(&user); err != nil {
+		fmt.Printf("Missing request informations : %v\n", err.Error())
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.Abort()
+		return
+	}
+
+	err := userRepo.CreateUser(&user)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	}
 	c.Status(http.StatusCreated)
 	return
 }

@@ -1,4 +1,4 @@
-package common
+package criteria
 
 import "gorm.io/gorm"
 

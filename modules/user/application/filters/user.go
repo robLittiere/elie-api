@@ -1,7 +1,7 @@
 package filters
 
 import (
-	"elie-api/modules/common"
+	"elie-api/modules/common/criteria"
 	"elie-api/modules/user/application/query"
 	"fmt"
 )
@@ -12,7 +12,7 @@ type Filters []Filter
 // Filter is a struct that contains the queryParam name, the criteria associated to it and a documentation for what is the param
 type Filter struct {
 	Name          string
-	Criteria      common.Criteria
+	Criteria      criteria.Criteria
 	Documentation string
 }
 
@@ -29,10 +29,15 @@ func GetUserFilters() Filters {
 			Criteria:      &query.EmailCriteria{Field: "email"},
 			Documentation: "Filter by email",
 		},
+		{
+			Name:          "uid",
+			Criteria:      &query.UuidCriteria{Field: "uid"},
+			Documentation: "Filter by uid",
+		},
 	}
 }
 
-func GetUserFilter(s string) (common.Criteria, error) {
+func GetUserFilter(s string) (criteria.Criteria, error) {
 	filters := GetUserFilters()
 
 	// get the filter according to its name

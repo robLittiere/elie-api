@@ -2,26 +2,27 @@ package models
 
 import (
 	"elie-api/modules/gamification/models"
+	"golang.org/x/crypto/bcrypt"
 	"time"
 )
 
 type User struct {
 	Id             int            `json:"id" gorm:"primary_key"`
-	Uid            string         `json:"uid"`
+	Uuid           string         `json:"uuid"`
 	Lid            int            `json:"lid"`
 	Level          models.Level   `json:"level" gorm:"foreignKey:Lid"`
 	Email          string         `json:"email" gorm:"unique;not_null"`
 	Password       string         `json:"password"`
 	Username       string         `json:"username" gorm:"unique;not_null"`
-	Xp             int            `json:"xp"`
-	CurrencyAmount int            `json:"currency_amount"`
+	Xp             int            `json:"xp" gore:"default:0"`
+	CurrencyAmount int            `json:"currency_amount" gorm:"default:0"`
 	Quests         []models.Quest `json:"quests" gorm:"many2many:user_quests;"`
 	CreatedAt      time.Time      `json:"createdAt"`
 	UpdatedAt      time.Time      `json:"updatedAt"`
 }
 
 type PublicUser struct {
-	Uid            string `json:"uid"`
+	Uuid           string `json:"uuid" `
 	Lid            int    `json:"lid"`
 	Level          models.Level
 	Email          string `json:"email"`
@@ -32,7 +33,7 @@ type PublicUser struct {
 
 func (user *User) Serialize() PublicUser {
 	return PublicUser{
-		Uid:            user.Uid,
+		Uuid:           user.Uuid,
 		Lid:            user.Lid,
 		Level:          user.Level,
 		Email:          user.Email,
@@ -40,4 +41,28 @@ func (user *User) Serialize() PublicUser {
 		Xp:             user.Xp,
 		CurrencyAmount: user.CurrencyAmount,
 	}
+}
+
+func (user *User) HashPassword(password string, cost int) error {
+	bytes, err := bcrypt.GenerateFromPassword([]byte(password), cost)
+	if err != nil {
+		return err
+	}
+	user.Password = string(bytes)
+	return nil
+}
+
+func (user *User) CheckPassword(providedPassword string) error {
+	err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(providedPassword))
+	if err != nil {
+		return err
+	}
+	return nil
+}
+func GenerateHash(password string, cost int) (string, error) {
+	bytes, err := bcrypt.GenerateFromPassword([]byte(password), cost)
+	if err != nil {
+		return "", err
+	}
+	return string(bytes), nil
 }
