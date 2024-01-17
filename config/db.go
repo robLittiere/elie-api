@@ -34,7 +34,8 @@ func ConnectDb() {
 }
 
 func ConnectTestDb() {
-	db, err := gorm.Open(postgres.Open("postgres://postgres:postgres@localhost:5433/postgres"))
+	dsn := "host=localhost user=postgres password=postgres dbname=postgres port=5433 sslmode=disable TimeZone=Europe/Paris"
+	db, err := gorm.Open(postgres.Open(dsn))
 	if err != nil {
 		panic(err)
 	}

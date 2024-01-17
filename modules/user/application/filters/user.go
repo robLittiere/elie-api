@@ -2,7 +2,7 @@ package filters
 
 import (
 	"elie-api/modules/common/criteria"
-	"elie-api/modules/user/application/query"
+	"elie-api/modules/user/domain/query"
 	"fmt"
 )
 
