@@ -8,14 +8,8 @@ type Game struct {
 	Description      string    `json:"description"`
 	CatchPhrase      string    `json:"catch_phrase"`
 	CanBeMultiplayer bool      `json:"can_be_multiplayer"`
-	Theme            string    `json:"theme" gorm:"default:'any'"`
+	GameVersion      string    `json:"game_version"`
 	CreatedAt        time.Time `json:"createdAt"`
+	ReleasedAt       time.Time `json:"releasedAt"`
 	UpdatedAt        time.Time `json:"updatedAt"`
-}
-
-type GameData struct {
-	Id   int                    `json:"id" gorm:"primary_key"`
-	Gid  int                    `json:"game_id"`
-	Game Game                   `json:"game" gorm:"foreignKey:Gid"`
-	Data map[string]interface{} `json:"data" gorm:"type:jsonb"`
 }

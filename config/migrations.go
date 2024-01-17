@@ -10,7 +10,7 @@ func Migrate() {
 	err := DB.AutoMigrate(
 		&models.User{},
 		&gameModels.Game{},
-		&gameModels.GameData{},
+		&gameModels.QuizGame{},
 		&gameModels.UserQuiz{},
 		&gamificationModels.Level{},
 		&gamificationModels.Quest{},
