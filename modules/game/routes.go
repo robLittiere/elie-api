@@ -1,7 +1,7 @@
 package game
 
 import (
-	"elie-api/modules/game/controllers"
+	"elie-api/modules/game/application/controllers"
 	"github.com/gin-gonic/gin"
 )
 

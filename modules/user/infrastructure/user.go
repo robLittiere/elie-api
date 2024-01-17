@@ -2,6 +2,7 @@ package infrastructure
 
 import (
 	"elie-api/modules/common/repository"
+	"elie-api/modules/user/application/filters"
 	"elie-api/modules/user/models"
 	"fmt"
 	"github.com/google/uuid"
@@ -13,7 +14,8 @@ type UserRepo struct {
 }
 
 func NewUserRepo(db *gorm.DB) *UserRepo {
-	return &UserRepo{BaseRepo: repository.BaseRepo{DB: db}}
+	// Get the available filters for this repo
+	return &UserRepo{BaseRepo: repository.BaseRepo{DB: db, FilterRegistry: filters.GetUserFilters()}}
 }
 
 func (r *UserRepo) Find() ([]models.User, error) {

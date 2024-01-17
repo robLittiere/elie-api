@@ -2,13 +2,14 @@ package repository
 
 import (
 	"elie-api/modules/common/criteria"
-	"elie-api/modules/user/application/filters"
+	"elie-api/modules/common/filter"
 	"fmt"
 	"gorm.io/gorm"
 )
 
 type BaseRepo struct {
-	DB *gorm.DB
+	DB             *gorm.DB
+	FilterRegistry filter.Filters
 }
 
 // CriteriaApplicator Interface that base repos will implement
@@ -34,9 +35,15 @@ Output: error if the queryparam is not found in the available filters
 func (r *BaseRepo) BuildQuery(queryParams map[string][]string) error {
 
 	if len(queryParams) != 0 {
+		// parse query parameters
 		for key, param := range queryParams {
 			for _, value := range param {
-				criteria, err := filters.GetUserFilter(key)
+				// If there are no available filters for this ressource, return an error
+				if len(r.FilterRegistry) == 0 {
+					return fmt.Errorf("there are no criterias available for this resource")
+				}
+				// get the criteria for this specific query parameter
+				criteria, err := GetCriteria(key, r.FilterRegistry)
 				fmt.Println(key, value)
 				if err != nil {
 					return err
@@ -46,4 +53,15 @@ func (r *BaseRepo) BuildQuery(queryParams map[string][]string) error {
 		}
 	}
 	return nil
+}
+
+func GetCriteria(s string, filterRegistry filter.Filters) (criteria.Criteria, error) {
+
+	// get the filter according to its name
+	for _, filter := range filterRegistry {
+		if filter.Name == s {
+			return filter.Criteria, nil
+		}
+	}
+	return nil, fmt.Errorf("query parameter %v is not a valid filter", s)
 }
