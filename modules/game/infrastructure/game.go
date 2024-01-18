@@ -37,3 +37,20 @@ func (repo *GameRepo) BuildQueryAndFind(queryParams map[string][]string) ([]mode
 
 	return games, nil
 }
+
+func (repo *GameRepo) FindQuizGames() ([]models.QuizGame, error) {
+	var quizGame []models.QuizGame
+
+	// TODO Specify the game name and version in the query OR use env variables
+	result := repo.DB.
+		Joins("JOIN games ON gid = games.id").
+		Preload("Game").
+		Where("LOWER(games.name) = 'quiz'").
+		Where("games.game_version = '1.0'").
+		First(&quizGame)
+
+	if result.Error != nil {
+		return quizGame, result.Error
+	}
+	return quizGame, nil
+}

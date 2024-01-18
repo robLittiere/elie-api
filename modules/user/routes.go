@@ -10,7 +10,7 @@ func UserRoutes(router *gin.RouterGroup) {
 	{
 		user.GET("/", controllers.GetUsers)
 		user.POST("/", controllers.CreateUser)
-		user.POST("/signup")
+		user.POST("/signup", controllers.CreateUser)
 		user.POST("/login")
 	}
 }

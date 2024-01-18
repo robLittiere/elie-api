@@ -3,6 +3,7 @@ package controllers
 import (
 	"elie-api/config"
 	"elie-api/modules/game/infrastructure"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -18,6 +19,18 @@ func GetGames(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, &games)
+}
+
+func GetQuizGames(c *gin.Context) {
+
+	gameRepo := infrastructure.NewGameRepo(config.DB)
+
+	quizzes, err := gameRepo.FindQuizGames()
+	if err != nil {
+		return
+	}
+	fmt.Println(quizzes)
+	c.JSON(200, &quizzes)
 }
 
 func CreateGame(c *gin.Context) {

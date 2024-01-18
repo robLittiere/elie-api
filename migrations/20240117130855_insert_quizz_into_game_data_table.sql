@@ -1282,5 +1282,5 @@
 
 -- +goose Down
 -- +goose StatementBegin
-    DELETE FROM quiz_games WHERE 'gid' = '2';
+    DELETE FROM quiz_games WHERE 'gid' = 2;
 -- +goose StatementEnd

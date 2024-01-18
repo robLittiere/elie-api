@@ -3,17 +3,18 @@ package controllers
 import (
 	"elie-api/config"
 	"elie-api/modules/game/infrastructure"
-	"fmt"
 	"github.com/gin-gonic/gin"
+	"net/http"
 )
 
 func GetQuizzes(c *gin.Context) {
 	quizRepo := infrastructure.NewQuizRepo(config.DB)
+	queryParams := c.Request.URL.Query()
 
-	data, err := quizRepo.Find()
+	data, err := quizRepo.BuildQueryAndFind(queryParams)
 	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	fmt.Println(data)
 	c.JSON(200, &data)
 }

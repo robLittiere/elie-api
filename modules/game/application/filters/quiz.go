@@ -8,9 +8,14 @@ import (
 func GetQuizFilterRegistry() filter.Filters {
 	return filter.Filters{
 		{
-			Name:          "topic",
-			Criteria:      &query.QuizTopicCriteria{Field: "topic"},
+			Name:          "topicName",
+			Criteria:      &query.QuizTopicNameCriteria{Field: "topic"},
 			Documentation: "Filter by quiz topic",
+		},
+		{
+			Name:          "topicId",
+			Criteria:      &query.QuizTopicIdCriteria{Field: "topic"},
+			Documentation: "Filter by quiz topic id",
 		},
 	}
 }

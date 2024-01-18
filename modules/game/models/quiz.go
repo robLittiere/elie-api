@@ -16,40 +16,40 @@ type Question struct {
 
 // Quiz represents a quiz with a title and a list of questions.
 type Quiz struct {
+	Id        int        `json:"id"`
 	Title     string     `json:"title"`
+	Topic     string     `json:"topic"`
 	Questions []Question `json:"questions"`
-}
-
-// QuizData represents the overall structure of the provided quiz
-type QuizData struct {
-	Id    int    `json:"id"`
-	Quiz  Quiz   `json:"quiz"`
-	Topic string `json:"topic"`
 }
 
 // Topic represents a topic with a name and a list of quiz data
 type Topic struct {
-	Id       int        `json:"id"`
-	Name     string     `json:"name"`
-	QuizData []QuizData `json:"quiz_data"`
+	Id       int    `json:"id"`
+	Name     string `json:"name"`
+	QuizData []Quiz `json:"quiz_data"`
 }
 
-type QuizJSONMap map[string]interface{}
+type QuizGameJSONMap map[string]interface{}
 
 type QuizGame struct {
-	Id        int         `json:"id"`
-	Gid       int         `json:"game_id"`
-	Data      QuizJSONMap `json:"data"`
-	CreatedAt time.Time   `json:"createdAt"`
-	UpdatedAt time.Time   `json:"updatedAt"`
+	Id        int             `json:"id"`
+	Gid       int             `json:"game_id"`
+	Game      Game            `json:"game" gorm:"foreignkey:Gid"`
+	Data      QuizGameJSONMap `json:"data" gorm:"type:jsonb"`
+	CreatedAt time.Time       `json:"createdAt"`
+	UpdatedAt time.Time       `json:"updatedAt"`
 }
 
-func (q *QuizJSONMap) Value() (driver.Value, error) {
+type Quizzes struct {
+	Quizzes QuizGameJSONMap `json:"quizzes" gorm:"type:jsonb"`
+}
+
+func (q *QuizGameJSONMap) Value() (driver.Value, error) {
 	return json.Marshal(q)
 }
 
 // Scan scan value into Jsonb, implements sql.Scanner interface
-func (q *QuizJSONMap) Scan(val interface{}) error {
+func (q *QuizGameJSONMap) Scan(val interface{}) error {
 	switch v := val.(type) {
 	case []byte:
 		return json.Unmarshal(v, &q)
