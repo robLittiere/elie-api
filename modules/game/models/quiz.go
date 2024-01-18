@@ -8,17 +8,30 @@ import (
 	"time"
 )
 
+// Topic represents a topic with a name and a list of quiz data
+type Topic struct {
+	Id       int    `json:"id"`
+	Name     string `json:"name"`
+	QuizData []Quiz `json:"quiz_data"`
+}
+
 type Question struct {
 	Question     string   `json:"question"`
 	GoodAnswer   string   `json:"good_answer"`
 	WrongAnswers []string `json:"wrong_answers"`
 }
 
-// Topic represents a topic with a name and a list of quiz data
-type Topic struct {
-	Id       int    `json:"id"`
-	Name     string `json:"name"`
-	QuizData []Quiz `json:"quiz_data"`
+type Quiz struct {
+	Id        int        `json:"id"`
+	Topic     string     `json:"topic"`
+	Questions []Question `json:"questions"`
+	Title     string     `json:"title"`
+}
+
+type Quizzes struct {
+	Id      int    `json:"id"`
+	Quizzes []Quiz `json:"quizzes"`
+	Name    string `json:"name"`
 }
 
 type QuizGameJSONMap map[string]interface{}
