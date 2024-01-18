@@ -3,6 +3,7 @@ package query
 import (
 	"fmt"
 	"gorm.io/gorm"
+	"strings"
 )
 
 type QuizTopicIdArrayCriteria struct {
@@ -10,11 +11,6 @@ type QuizTopicIdArrayCriteria struct {
 }
 
 func (criteria *QuizTopicIdArrayCriteria) ApplyQuery(db *gorm.DB, value string) *gorm.DB {
-	// Convert string '1,2,3' to gorm usable []string{'1','2','3'}
-	list := []string{}
-	for _, v := range value {
-		list = append(list, string(v))
-	}
-
+	list := strings.Split(value, ",")
 	return db.Where(fmt.Sprintf("%s->>'id' IN (?)", criteria.Field), list)
 }
