@@ -1,0 +1,148 @@
+{
+  "id": 1,
+  "name": "Energie Solaire",
+  "quizzes": [
+    {
+      "id": 1,
+      "title": "Quiz Aléatoire sur l'Énergie Solaire",
+      "topic": "Energie Solaire",
+      "questions": [
+        {
+          "question": "Quel est le processus par lequel l'énergie solaire est convertie en électricité ?",
+          "good_answer": "La conversion photovoltaïque",
+          "wrong_answers": [
+            "La photosynthèse",
+            "La combustion solaire"
+          ]
+        },
+        {
+          "question": "Quel élément est principalement utilisé dans les panneaux solaires pour capter la lumière du soleil ?",
+          "good_answer": "Le silicium",
+          "wrong_answers": [
+            "L'hydrogène",
+            "Le carbone"
+          ]
+        },
+        {
+          "question": "Quel est l'appareil qui permet de suivre la trajectoire du soleil pour maximiser la capture d'énergie solaire ?",
+          "good_answer": "Le suiveur solaire",
+          "wrong_answers": [
+            "Le réflecteur solaire",
+            "L'accumulateur solaire"
+          ]
+        },
+        {
+          "question": "Quelle est l'unité de mesure de la puissance des panneaux solaires ?",
+          "good_answer": "Watt-crête (Wc)",
+          "wrong_answers": [
+            "Lumen (lm)",
+            "Kilowatt-heure (kWh)"
+          ]
+        },
+        {
+          "question": "Quel pays est le plus grand producteur d'énergie solaire au monde ?",
+          "good_answer": "La Chine",
+          "wrong_answers": [
+            "Les États-Unis",
+            "L'Inde"
+          ]
+        },
+        {
+          "question": "Quel avantage majeur de l'énergie solaire en fait une source d'énergie renouvelable attrayante ?",
+          "good_answer": "Elle ne produit pas de pollution atmosphérique",
+          "wrong_answers": [
+            "Elle est bon marché",
+            "Elle est facile à stocker"
+          ]
+        },
+        {
+          "question": "Quel dispositif permet de stocker l'énergie solaire pour une utilisation ultérieure ?",
+          "good_answer": "Les batteries solaires",
+          "wrong_answers": [
+            "Les panneaux solaires",
+            "Les onduleurs solaires"
+          ]
+        },
+        {
+          "question": "Quelle est l'efficacité typique des panneaux solaires commerciaux ?",
+          "good_answer": "Entre 15% et 20%",
+          "wrong_answers": [
+            "Plus de 50%",
+            "Moins de 5%"
+          ]
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Le Quiz Solaire Incroyable",
+      "topic": "Energie Solaire",
+      "questions": [
+        {
+          "question": "Quelle est la source d'énergie principale du solaire photovoltaïque ?",
+          "good_answer": "Lumière du soleil",
+          "wrong_answers": [
+            "Vent",
+            "Pétrole"
+          ]
+        },
+        {
+          "question": "Quel composant clé est utilisé pour convertir la lumière en électricité dans les panneaux solaires ?",
+          "good_answer": "Cellules photovoltaïques",
+          "wrong_answers": [
+            "Batteries",
+            "Aimants"
+          ]
+        },
+        {
+          "question": "Quel pays est le plus grand producteur d'énergie solaire au monde ?",
+          "good_answer": "Chine",
+          "wrong_answers": [
+            "États-Unis",
+            "Inde"
+          ]
+        },
+        {
+          "question": "Comment est stockée l'énergie solaire pour une utilisation ultérieure ?",
+          "good_answer": "Batteries",
+          "wrong_answers": [
+            "Réservoirs d'eau",
+            "Sacs de sable"
+          ]
+        },
+        {
+          "question": "Quel est l'angle optimal pour l'installation de panneaux solaires afin de maximiser l'exposition au soleil ?",
+          "good_answer": "Entre 30 et 45 degrés",
+          "wrong_answers": [
+            "90 degrés",
+            "0 degrés"
+          ]
+        },
+        {
+          "question": "Quel type de rayonnement solaire est converti en énergie électrique par les panneaux solaires ?",
+          "good_answer": "Rayonnement solaire photovoltaïque",
+          "wrong_answers": [
+            "Rayonnement infrarouge",
+            "Rayonnement ultraviolet"
+          ]
+        },
+        {
+          "question": "Quelle est la durée de vie typique des panneaux solaires ?",
+          "good_answer": "Environ 25 ans",
+          "wrong_answers": [
+            "5 ans",
+            "50 ans"
+          ]
+        },
+        {
+          "question": "Quelle est la principale source d'énergie utilisée pour chauffer l'eau à l'aide de l'énergie solaire ?",
+          "good_answer": "Énergie solaire thermique",
+          "wrong_answers": [
+            "Gaz naturel",
+            "Électricité"
+          ]
+        }
+      ]
+    }
+  ]
+}

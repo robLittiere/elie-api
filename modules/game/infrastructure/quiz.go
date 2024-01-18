@@ -15,9 +15,9 @@ func NewQuizRepo(db *gorm.DB) *QuizRepo {
 	return &QuizRepo{BaseRepo: repository.BaseRepo{DB: db, FilterRegistry: filters.GetQuizFilterRegistry()}}
 }
 
-func (r *QuizRepo) Find() ([]models.Quizzes, error) {
+func (r *QuizRepo) Find() ([]models.Quiz, error) {
 	// var quizGame models.QuizGame
-	var quizzes []models.Quizzes
+	var quizzes []models.Quiz
 
 	r.DB = r.DB.Table("quiz_games").
 		Select("quizzes").
@@ -36,14 +36,14 @@ func (r *QuizRepo) Find() ([]models.Quizzes, error) {
 	return quizzes, nil
 }
 
-func (r *QuizRepo) BuildQueryAndFind(queryParams map[string][]string) ([]models.Quizzes, error) {
+func (r *QuizRepo) BuildQueryAndFind(queryParams map[string][]string) ([]models.QuizGameJSONMap, error) {
 	// var quizGame models.QuizGame
-	var quizzes []models.Quizzes
+	quizzes := make([]models.QuizGameJSONMap, 0)
 
 	r.DB = r.DB.Table("quiz_games").
-		Select("quizzes").
+		Select("quiz").
 		Joins("JOIN jsonb_array_elements(data->'topic') as topic ON TRUE").
-		Joins("JOIN jsonb_array_elements(topic->'quizzes') as quizzes ON TRUE").
+		Joins("JOIN jsonb_array_elements(topic->'quizzes') as quiz ON TRUE").
 		Where("gid = ?", 2)
 
 	err := r.BuildQuery(queryParams)

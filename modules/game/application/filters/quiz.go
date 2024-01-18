@@ -17,5 +17,10 @@ func GetQuizFilterRegistry() filter.Filters {
 			Criteria:      &query.QuizTopicIdCriteria{Field: "topic"},
 			Documentation: "Filter by quiz topic id",
 		},
+		{
+			Name:          "topicId[]",
+			Criteria:      &query.QuizTopicIdArrayCriteria{Field: "topic"},
+			Documentation: "Filter by quiz topic id array",
+		},
 	}
 }

@@ -14,14 +14,6 @@ type Question struct {
 	WrongAnswers []string `json:"wrong_answers"`
 }
 
-// Quiz represents a quiz with a title and a list of questions.
-type Quiz struct {
-	Id        int        `json:"id"`
-	Title     string     `json:"title"`
-	Topic     string     `json:"topic"`
-	Questions []Question `json:"questions"`
-}
-
 // Topic represents a topic with a name and a list of quiz data
 type Topic struct {
 	Id       int    `json:"id"`
@@ -38,10 +30,6 @@ type QuizGame struct {
 	Data      QuizGameJSONMap `json:"data" gorm:"type:jsonb"`
 	CreatedAt time.Time       `json:"createdAt"`
 	UpdatedAt time.Time       `json:"updatedAt"`
-}
-
-type Quizzes struct {
-	Quizzes QuizGameJSONMap `json:"quizzes" gorm:"type:jsonb"`
 }
 
 func (q *QuizGameJSONMap) Value() (driver.Value, error) {
