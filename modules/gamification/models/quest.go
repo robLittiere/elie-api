@@ -8,7 +8,8 @@ type Quest struct {
 	QuestType     QuestType `json:"quest_type" gorm:"foreignKey:Qtid"`
 	Name          string    `json:"name"`
 	Xp            int       `json:"xp"`
-	Difficulty    string    `json:"difficulty"`
+	Difficulty    int       `json:"difficulty"`
+	CurrencyWon   int       `json:"currency_won" gorm:"default:0"`
 	DoneCondition string    `json:"done_condition"`
 	CreatedAt     time.Time `json:"createdAt"`
 	UpdatedAt     time.Time `json:"updatedAt"`
