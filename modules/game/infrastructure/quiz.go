@@ -44,7 +44,7 @@ func (r *QuizRepo) BuildQueryAndFind(queryParams map[string][]string) ([]models.
 		Select("quiz").
 		Joins("JOIN jsonb_array_elements(data->'topic') as topic ON TRUE").
 		Joins("JOIN jsonb_array_elements(topic->'quizzes') as quiz ON TRUE").
-		Where("SELECT id FROM games WHERE name = ? AND game_version = ?", "Quiz", "1.0")
+		Where("gid = ?", 4)
 
 	err := r.BuildQuery(queryParams)
 	if err != nil {
