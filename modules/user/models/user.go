@@ -9,8 +9,8 @@ import (
 type User struct {
 	Id             int            `json:"id" gorm:"primary_key"`
 	Uuid           string         `json:"uuid"`
-	Lid            int            `json:"lid"`
-	Level          models.Level   `json:"level" gorm:"foreignKey:Lid"`
+	LevelId        int            `json:"level_id"`
+	Level          models.Level   `json:"level" gorm:"foreignKey:LevelId"`
 	Email          string         `json:"email" gorm:"unique;not_null"`
 	Password       string         `json:"password"`
 	Username       string         `json:"username" gorm:"unique;not_null"`
@@ -34,7 +34,7 @@ type PublicUser struct {
 func (user *User) Serialize() PublicUser {
 	return PublicUser{
 		Uuid:           user.Uuid,
-		Lid:            user.Lid,
+		Lid:            user.LevelId,
 		Level:          user.Level,
 		Email:          user.Email,
 		Username:       user.Username,

@@ -53,7 +53,7 @@ func (r *UserRepo) CreateUser(user *models.User) error {
 	if result.Error != nil {
 		return result.Error
 	}
-	user.Lid = lid
+	user.LevelId = lid
 
 	if err := user.HashPassword(user.Password, 2); err != nil {
 		return err

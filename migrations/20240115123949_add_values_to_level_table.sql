@@ -1,8 +1,8 @@
 -- +goose Up
 -- +goose StatementBegin
-INSERT INTO levels (name, next_level_xp_requirement, currency_won) VALUES ('beginner', 200, 100);
-INSERT INTO levels (name, next_level_xp_requirement, currency_won) VALUES ('intermediate', 400, 200);
-INSERT INTO levels (name, next_level_xp_requirement, currency_won) VALUES ('advanced', 800, 400);
+INSERT INTO levels (name, next_level_xp_requirement, level_number, currency_won) VALUES ('beginner', 200, 1, 100);
+INSERT INTO levels (name, next_level_xp_requirement, level_number,  currency_won) VALUES ('intermediate', 400, 2, 200);
+INSERT INTO levels (name, next_level_xp_requirement, level_number, currency_won) VALUES ('advanced', 800, 3, 400);
 -- +goose StatementEnd
 
 -- +goose Down

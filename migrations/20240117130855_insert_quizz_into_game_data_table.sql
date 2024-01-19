@@ -1,7 +1,7 @@
 -- +goose Up
 -- +goose StatementBegin
     INSERT INTO quiz_games (gid, data, created_at, updated_at)
-    values (2,
+    values ((SELECT id FROM games WHERE name = 'Quiz' AND game_version = '1.0'),
     '{
     "topic": [
         {
@@ -1282,5 +1282,5 @@
 
 -- +goose Down
 -- +goose StatementBegin
-    DELETE FROM quiz_games WHERE 'gid' = 2;
+    DELETE FROM quiz_games WHERE gid = 2;
 -- +goose StatementEnd

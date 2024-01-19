@@ -13,6 +13,7 @@ func Migrate() {
 		&gameModels.QuizGame{},
 		&gameModels.UserQuiz{},
 		&gamificationModels.Level{},
+		&gamificationModels.UserQuest{},
 		&gamificationModels.Quest{},
 		&gamificationModels.Success{},
 	)

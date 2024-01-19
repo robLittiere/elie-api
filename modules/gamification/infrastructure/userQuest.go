@@ -30,9 +30,9 @@ func (repo *UserQuestRepo) BuildQueryAndFind(queryParams map[string][]string) ([
 	if err != nil {
 		return nil, err
 	}
-	userQuests, err = repo.Find()
-	if err != nil {
-		return nil, err
+	result := repo.DB.Preload("Quest").Find(&userQuests)
+	if result.Error != nil {
+		return nil, result.Error
 	}
 
 	return userQuests, nil

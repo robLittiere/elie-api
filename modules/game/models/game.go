@@ -8,7 +8,7 @@ type Game struct {
 	Description      string    `json:"description"`
 	CatchPhrase      string    `json:"catch_phrase"`
 	CanBeMultiplayer bool      `json:"can_be_multiplayer"`
-	GameVersion      string    `json:"game_version"`
+	GameVersion      string    `json:"game_version" gorm:"default:1.0"`
 	CreatedAt        time.Time `json:"createdAt"`
 	ReleasedAt       time.Time `json:"releasedAt"`
 	UpdatedAt        time.Time `json:"updatedAt"`
