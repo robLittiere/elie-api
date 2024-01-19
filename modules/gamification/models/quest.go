@@ -3,16 +3,16 @@ package models
 import "time"
 
 type Quest struct {
-	Id            int       `json:"id" gorm:"primary_key"`
-	Qtid          int       `json:"qtid"`
-	QuestType     QuestType `json:"quest_type" gorm:"foreignKey:Qtid"`
-	Name          string    `json:"name"`
-	Xp            int       `json:"xp"`
-	Difficulty    int       `json:"difficulty"`
-	CurrencyWon   int       `json:"currency_won" gorm:"default:0"`
-	DoneCondition string    `json:"done_condition"`
-	CreatedAt     time.Time `json:"createdAt"`
-	UpdatedAt     time.Time `json:"updatedAt"`
+	Id             int       `json:"id" gorm:"primary_key"`
+	QuestTypeId    int       `json:"quest_type_id"`
+	QuestType      QuestType `json:"quest_type" gorm:"foreignKey:QuestTypeId"`
+	Name           string    `json:"name"`
+	Xp             int       `json:"xp"`
+	Difficulty     string    `json:"difficulty"`
+	CurrencyReward int       `json:"currency_reward" gorm:"default:0"`
+	DoneCondition  int       `json:"done_condition"`
+	CreatedAt      time.Time `json:"createdAt"`
+	UpdatedAt      time.Time `json:"updatedAt"`
 }
 
 type QuestType struct {
