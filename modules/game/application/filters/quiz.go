@@ -8,24 +8,34 @@ import (
 func GetQuizFilterRegistry() filter.Filters {
 	return filter.Filters{
 		{
-			Name:          "topicName",
+			Name:          "topic_name",
 			Criteria:      &query.QuizTopicNameCriteria{Field: "topic"},
 			Documentation: "Filter by quiz topic",
 		},
 		{
-			Name:          "topicId",
+			Name:          "topic_id",
 			Criteria:      &query.QuizTopicIdCriteria{Field: "topic"},
 			Documentation: "Filter by quiz topic id",
 		},
 		{
-			Name:          "topicId[]",
+			Name:          "topic_id[]",
 			Criteria:      &query.QuizTopicIdArrayCriteria{Field: "topic"},
 			Documentation: "Filter by quiz topic id array",
 		},
 		{
-			Name:          "topicName[]",
+			Name:          "topic_name[]",
 			Criteria:      &query.QuizTopicNameArrayCriteria{Field: "topic"},
 			Documentation: "Filter by quiz topic name array",
+		},
+		{
+			Name:          "quiz_id",
+			Criteria:      &query.QuizIdCriteria{Field: "quiz"},
+			Documentation: "Filter by quiz id",
+		},
+		{
+			Name:          "title",
+			Criteria:      &query.QuizTitleCriteria{Field: "quiz"},
+			Documentation: "Filter by quiz title",
 		},
 	}
 }

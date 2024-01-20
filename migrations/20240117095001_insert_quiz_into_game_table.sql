@@ -5,5 +5,6 @@
 
 -- +goose Down
 -- +goose StatementBegin
+    DELETE FROM quiz_games where gid = (SELECT id FROM games WHERE name = 'Quiz');
     DELETE FROM games WHERE name = 'Quiz';
 -- +goose StatementEnd

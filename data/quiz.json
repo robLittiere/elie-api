@@ -12,65 +12,73 @@
                         {
                             "question": "Quel est le processus par lequel l'énergie solaire est convertie en électricité ?",
                             "good_answer": "La conversion photovoltaïque",
-                            "wrong_answers": [
+                            "answers": [
                                 "La photosynthèse",
-                                "La combustion solaire"
+                                "La combustion solaire",
+                                "La conversion photovoltaïque"
                             ]
                         },
                         {
                             "question": "Quel élément est principalement utilisé dans les panneaux solaires pour capter la lumière du soleil ?",
                             "good_answer": "Le silicium",
-                            "wrong_answers": [
+                            "answers": [
                                 "L'hydrogène",
-                                "Le carbone"
+                                "Le carbone",
+                                "Le silicium"
                             ]
                         },
                         {
                             "question": "Quel est l'appareil qui permet de suivre la trajectoire du soleil pour maximiser la capture d'énergie solaire ?",
                             "good_answer": "Le suiveur solaire",
-                            "wrong_answers": [
+                            "answers": [
                                 "Le réflecteur solaire",
-                                "L'accumulateur solaire"
+                                "L'accumulateur solaire",
+                                "Le suiveur solaire"
                             ]
                         },
                         {
                             "question": "Quelle est l'unité de mesure de la puissance des panneaux solaires ?",
                             "good_answer": "Watt-crête (Wc)",
-                            "wrong_answers": [
+                            "answers": [
                                 "Lumen (lm)",
-                                "Kilowatt-heure (kWh)"
+                                "Kilowatt-heure (kWh)",
+                                "Watt-crête (Wc)"
                             ]
                         },
                         {
                             "question": "Quel pays est le plus grand producteur d'énergie solaire au monde ?",
                             "good_answer": "La Chine",
-                            "wrong_answers": [
+                            "answers": [
                                 "Les États-Unis",
-                                "L'Inde"
+                                "L'Inde",
+                                "La Chine"
                             ]
                         },
                         {
                             "question": "Quel avantage majeur de l'énergie solaire en fait une source d'énergie renouvelable attrayante ?",
                             "good_answer": "Elle ne produit pas de pollution atmosphérique",
-                            "wrong_answers": [
+                            "answers": [
                                 "Elle est bon marché",
-                                "Elle est facile à stocker"
+                                "Elle est facile à stocker",
+                                "Elle ne produit pas de pollution atmosphérique"
                             ]
                         },
                         {
                             "question": "Quel dispositif permet de stocker l'énergie solaire pour une utilisation ultérieure ?",
                             "good_answer": "Les batteries solaires",
-                            "wrong_answers": [
+                            "answers": [
                                 "Les panneaux solaires",
-                                "Les onduleurs solaires"
+                                "Les onduleurs solaires",
+                                "Les batteries solaires"
                             ]
                         },
                         {
                             "question": "Quelle est l'efficacité typique des panneaux solaires commerciaux ?",
                             "good_answer": "Entre 15% et 20%",
-                            "wrong_answers": [
+                            "answers": [
                                 "Plus de 50%",
-                                "Moins de 5%"
+                                "Moins de 5%",
+                                "Entre 15% et 20%"
                             ]
                         }
                     ]
@@ -83,65 +91,73 @@
                         {
                             "question": "Quelle est la source d'énergie principale du solaire photovoltaïque ?",
                             "good_answer": "Lumière du soleil",
-                            "wrong_answers": [
+                            "answers": [
                                 "Vent",
-                                "Pétrole"
+                                "Pétrole",
+                                "Lumière du soleil"
                             ]
                         },
                         {
                             "question": "Quel composant clé est utilisé pour convertir la lumière en électricité dans les panneaux solaires ?",
                             "good_answer": "Cellules photovoltaïques",
-                            "wrong_answers": [
+                            "answers": [
                                 "Batteries",
-                                "Aimants"
+                                "Aimants",
+                                "Cellules photovoltaïques"
                             ]
                         },
                         {
                             "question": "Quel pays est le plus grand producteur d'énergie solaire au monde ?",
                             "good_answer": "Chine",
-                            "wrong_answers": [
+                            "answers": [
                                 "États-Unis",
-                                "Inde"
+                                "Inde",
+                                "Chine"
                             ]
                         },
                         {
                             "question": "Comment est stockée l'énergie solaire pour une utilisation ultérieure ?",
                             "good_answer": "Batteries",
-                            "wrong_answers": [
+                            "answers": [
                                 "Réservoirs d'eau",
-                                "Sacs de sable"
+                                "Sacs de sable",
+                                "Batteries"
                             ]
                         },
                         {
                             "question": "Quel est l'angle optimal pour l'installation de panneaux solaires afin de maximiser l'exposition au soleil ?",
                             "good_answer": "Entre 30 et 45 degrés",
-                            "wrong_answers": [
+                            "answers": [
                                 "90 degrés",
-                                "0 degrés"
+                                "0 degrés",
+                                "Entre 30 et 45 degrés"
                             ]
                         },
                         {
                             "question": "Quel type de rayonnement solaire est converti en énergie électrique par les panneaux solaires ?",
                             "good_answer": "Rayonnement solaire photovoltaïque",
-                            "wrong_answers": [
+                            "answers": [
                                 "Rayonnement infrarouge",
-                                "Rayonnement ultraviolet"
+                                "Rayonnement ultraviolet",
+                                "Rayonnement solaire photovoltaïque"
                             ]
                         },
                         {
                             "question": "Quelle est la durée de vie typique des panneaux solaires ?",
                             "good_answer": "Environ 25 ans",
-                            "wrong_answers": [
+                            "answers": [
                                 "5 ans",
-                                "50 ans"
+                                "50 ans",
+                                "Environ 25 ans"
                             ]
                         },
                         {
                             "question": "Quelle est la principale source d'énergie utilisée pour chauffer l'eau à l'aide de l'énergie solaire ?",
                             "good_answer": "Énergie solaire thermique",
-                            "wrong_answers": [
+                            "answers": [
                                 "Gaz naturel",
-                                "Électricité"
+                                "Électricité",
+                                "Énergie solaire thermique"
                             ]
                         }
                     ]
@@ -160,65 +176,73 @@
                         {
                             "question": "Combien d'espèces animales et végétales sont estimées vivre dans la forêt amazonienne ?",
                             "good_answer": "Des millions",
-                            "wrong_answers": [
+                            "answers": [
                                 "Des milliers",
-                                "Des centaines"
+                                "Des centaines",
+                                "Des millions"
                             ]
                         },
                         {
                             "question": "Quelle est la plus grande menace pour la biodiversité marine ?",
                             "good_answer": "La pollution plastique",
-                            "wrong_answers": [
+                            "answers": [
                                 "La surpêche",
-                                "Le changement climatique"
+                                "Le changement climatique",
+                                "La pollution plastique"
                             ]
                         },
                         {
                             "question": "Quel est le plus grand animal terrestre de la planète ?",
                             "good_answer": "L'éléphant d'Afrique",
-                            "wrong_answers": [
+                            "answers": [
                                 "Le rhinocéros",
-                                "Le lion"
+                                "Le lion",
+                                "L'éléphant d'Afrique"
                             ]
                         },
                         {
                             "question": "Quelle est la principale cause de la perte de biodiversité dans le monde ?",
                             "good_answer": "La destruction de l'habitat",
-                            "wrong_answers": [
+                            "answers": [
                                 "La chasse excessive",
-                                "Les espèces envahissantes"
+                                "Les espèces envahissantes",
+                                "La destruction de l'habitat"
                             ]
                         },
                         {
                             "question": "Quel oiseau est capable de voler à des altitudes extrêmement élevées et est connu pour ses migrations spectaculaires ?",
                             "good_answer": "L'albatros",
-                            "wrong_answers": [
+                            "answers": [
                                 "Le colibri",
-                                "Le moineau"
+                                "Le moineau",
+                                "L'albatros"
                             ]
                         },
                         {
                             "question": "Quelle espèce est souvent considérée comme un symbole de la lutte pour la préservation de la biodiversité ?",
                             "good_answer": "Le panda géant",
-                            "wrong_answers": [
+                            "answers": [
                                 "Le tigre",
-                                "Le dauphin"
+                                "Le dauphin",
+                                "Le panda géant"
                             ]
                         },
                         {
                             "question": "Quelle est la plus grande réserve naturelle du monde, située en Antarctique ?",
                             "good_answer": "La réserve naturelle de l'Antarctique",
-                            "wrong_answers": [
+                            "answers": [
                                 "Le parc national de Yellowstone",
-                                "Le parc national des Galápagos"
+                                "Le parc national des Galápagos",
+                                "La réserve naturelle de l'Antarctique"
                             ]
                         },
                         {
                             "question": "Quel est le processus par lequel les espèces évoluent pour s'adapter à leur environnement ?",
                             "good_answer": "La sélection naturelle",
-                            "wrong_answers": [
+                            "answers": [
                                 "La mutation génétique",
-                                "La reproduction asexuée"
+                                "La reproduction asexuée",
+                                "La sélection naturelle"
                             ]
                         }
                     ]
@@ -231,65 +255,73 @@
                         {
                             "question": "Combien d'espèces animales sont répertoriées dans le monde ?",
                             "good_answer": "Environ 8,7 millions",
-                            "wrong_answers": [
+                            "answers": [
                                 "Environ 1 million",
-                                "Environ 15 millions"
+                                "Environ 15 millions",
+                                "Environ 8,7 millions"
                             ]
                         },
                         {
                             "question": "Quel pourcentage de la biodiversité marine est constitué de poissons ?",
                             "good_answer": "Environ 33%",
-                            "wrong_answers": [
+                            "answers": [
                                 "Environ 10%",
-                                "Environ 50%"
+                                "Environ 50%",
+                                "Environ 33%"
                             ]
                         },
                         {
                             "question": "Quelle est la plus grande menace pour la biodiversité actuellement ?",
                             "good_answer": "La perte d'habitat",
-                            "wrong_answers": [
+                            "answers": [
                                 "La chasse excessive",
-                                "La pollution de l'air"
+                                "La pollution de l'air",
+                                "La perte d'habitat"
                             ]
                         },
                         {
                             "question": "Quel est l'objectif principal de la Convention sur la diversité biologique (CDB) ?",
                             "good_answer": "La conservation de la diversité biologique",
-                            "wrong_answers": [
+                            "answers": [
                                 "La promotion de la biotechnologie",
-                                "La gestion des déchets"
+                                "La gestion des déchets",
+                                "La conservation de la diversité biologique"
                             ]
                         },
                         {
                             "question": "Quel groupe d'animaux est le plus diversifié en termes d'espèces connues ?",
                             "good_answer": "Les insectes",
-                            "wrong_answers": [
+                            "answers": [
                                 "Les mammifères",
-                                "Les reptiles"
+                                "Les reptiles",
+                                "Les insectes"
                             ]
                         },
                         {
                             "question": "Quelle est la plus grande zone de biodiversité terrestre au monde ?",
                             "good_answer": "La forêt amazonienne",
-                            "wrong_answers": [
+                            "answers": [
                                 "Le désert du Sahara",
-                                "La toundra arctique"
+                                "La toundra arctique",
+                                "La forêt amazonienne"
                             ]
                         },
                         {
                             "question": "Quel est le principal mécanisme de l'évolution de la biodiversité ?",
                             "good_answer": "La sélection naturelle",
-                            "wrong_answers": [
+                            "answers": [
                                 "La migration des espèces",
-                                "Les mutations aléatoires"
+                                "Les mutations aléatoires",
+                                "La sélection naturelle"
                             ]
                         },
                         {
                             "question": "Quel pays abrite la plus grande diversité d'espèces d'oiseaux ?",
                             "good_answer": "La Colombie",
-                            "wrong_answers": [
+                            "answers": [
                                 "Les États-Unis",
-                                "L'Australie"
+                                "L'Australie",
+                                "La Colombie"
                             ]
                         }
                     ]
@@ -302,65 +334,73 @@
                         {
                             "question": "Quelle est la définition de la biodiversité ?",
                             "good_answer": "La variété des formes de vie sur Terre",
-                            "wrong_answers": [
+                            "answers": [
                                 "La quantité d'eau présente dans les océans",
-                                "Le nombre total de pays sur Terre"
+                                "Le nombre total de pays sur Terre",
+                                "La variété des formes de vie sur Terre"
                             ]
                         },
                         {
                             "question": "Qu'est-ce qu'un écosystème ?",
                             "good_answer": "Un ensemble d'organismes vivants et de leur environnement physique",
-                            "wrong_answers": [
+                            "answers": [
                                 "Un type de microscope",
-                                "Une substance chimique toxique"
+                                "Une substance chimique toxique",
+                                "Un ensemble d'organismes vivants et de leur environnement physique"
                             ]
                         },
                         {
                             "question": "Quel est l'objectif de la conservation de la biodiversité ?",
                             "good_answer": "Préserver les espèces et les écosystèmes pour les générations futures",
-                            "wrong_answers": [
+                            "answers": [
                                 "Détruire les habitats naturels",
-                                "Promouvoir l'extinction des espèces"
+                                "Promouvoir l'extinction des espèces",
+                                "Préserver les espèces et les écosystèmes pour les générations futures"
                             ]
                         },
                         {
                             "question": "Quelle est la principale cause de la perte de biodiversité ?",
                             "good_answer": "La destruction des habitats naturels",
-                            "wrong_answers": [
+                            "answers": [
                                 "Le réchauffement climatique",
-                                "La migration des espèces"
+                                "La migration des espèces",
+                                "La destruction des habitats naturels"
                             ]
                         },
                         {
                             "question": "Qu'est-ce qu'une espèce endémique ?",
                             "good_answer": "Une espèce présente uniquement dans une région spécifique",
-                            "wrong_answers": [
+                            "answers": [
                                 "Une espèce en voie de disparition",
-                                "Une espèce invasive"
+                                "Une espèce invasive",
+                                "Une espèce présente uniquement dans une région spécifique"
                             ]
                         },
                         {
                             "question": "Quels sont les avantages de la biodiversité ?",
                             "good_answer": "La fourniture de ressources alimentaires et médicinales",
-                            "wrong_answers": [
+                            "answers": [
                                 "La pollution de l'environnement",
-                                "La destruction des écosystèmes"
+                                "La destruction des écosystèmes",
+                                "La fourniture de ressources alimentaires et médicinales"
                             ]
                         },
                         {
                             "question": "Qu'est-ce qu'un corridor biologique ?",
                             "good_answer": "Une zone qui relie les habitats naturels et permet aux espèces de se déplacer",
-                            "wrong_answers": [
+                            "answers": [
                                 "Un outil utilisé pour mesurer la température",
-                                "Un terme désignant un groupe d'oies"
+                                "Un terme désignant un groupe d'oies",
+                                "Une zone qui relie les habitats naturels et permet aux espèces de se déplacer"
                             ]
                         },
                         {
                             "question": "Qu'est-ce que la surexploitation des ressources ?",
                             "good_answer": "L'utilisation excessive des ressources naturelles au point de mettre en danger leur survie",
-                            "wrong_answers": [
+                            "answers": [
                                 "La multiplication des ressources naturelles",
-                                "La limitation de l'accès aux ressources"
+                                "La limitation de l'accès aux ressources",
+                                "L'utilisation excessive des ressources naturelles au point de mettre en danger leur survie"
                             ]
                         }
                     ]
@@ -379,65 +419,73 @@
                         {
                             "question": "Quelle est la principale cause du changement climatique actuel ?",
                             "good_answer": "Les émissions de gaz à effet de serre",
-                            "wrong_answers": [
+                            "answers": [
                                 "L'activité volcanique",
-                                "Les éruptions solaires"
+                                "Les éruptions solaires",
+                                "Les émissions de gaz à effet de serre"
                             ]
                         },
                         {
                             "question": "Quel gaz à effet de serre est le plus préoccupant pour le climat ?",
                             "good_answer": "Le dioxyde de carbone (CO2)",
-                            "wrong_answers": [
+                            "answers": [
                                 "Le méthane (CH4)",
-                                "Le protoxyde d'azote (N2O)"
+                                "Le protoxyde d'azote (N2O)",
+                                "Le dioxyde de carbone (CO2)"
                             ]
                         },
                         {
                             "question": "Quel accord international vise à lutter contre le changement climatique en réduisant les émissions de gaz à effet de serre ?",
                             "good_answer": "L'Accord de Paris",
-                            "wrong_answers": [
+                            "answers": [
                                 "Le Traité de Kyoto",
-                                "Le Protocole de Montréal"
+                                "Le Protocole de Montréal",
+                                "L'Accord de Paris"
                             ]
                         },
                         {
                             "question": "Quel phénomène climatique extrême est amplifié par le changement climatique ?",
                             "good_answer": "Les vagues de chaleur",
-                            "wrong_answers": [
+                            "answers": [
                                 "Les blizzards",
-                                "Les tornades"
+                                "Les tornades",
+                                "Les vagues de chaleur"
                             ]
                         },
                         {
                             "question": "Quelle est la principale conséquence du réchauffement climatique sur les océans ?",
                             "good_answer": "L'acidification des océans",
-                            "wrong_answers": [
+                            "answers": [
                                 "L'augmentation du niveau de la mer",
-                                "La diminution des tempêtes"
+                                "La diminution des tempêtes",
+                                "L'acidification des océans"
                             ]
                         },
                         {
                             "question": "Quelle région du monde est la plus vulnérable au changement climatique en raison de sa dépendance à l'agriculture ?",
                             "good_answer": "L'Afrique subsaharienne",
-                            "wrong_answers": [
+                            "answers": [
                                 "L'Europe occidentale",
-                                "L'Amérique du Nord"
+                                "L'Amérique du Nord",
+                                "L'Afrique subsaharienne"
                             ]
                         },
                         {
                             "question": "Quel est l'effet du changement climatique sur les glaciers et les calottes glaciaires ?",
                             "good_answer": "La fonte rapide",
-                            "wrong_answers": [
+                            "answers": [
                                 "L'augmentation de la glace",
-                                "La stabilisation"
+                                "La stabilisation",
+                                "La fonte rapide"
                             ]
                         },
                         {
                             "question": "Quel est le rôle des forêts dans la lutte contre le changement climatique ?",
                             "good_answer": "Elles absorbent le dioxyde de carbone (CO2)",
-                            "wrong_answers": [
+                            "answers": [
                                 "Elles émettent du méthane (CH4)",
-                                "Elles n'ont aucun effet sur le climat"
+                                "Elles n'ont aucun effet sur le climat",
+                                "Elles absorbent le dioxyde de carbone (CO2)"
                             ]
                         }
                     ]
@@ -450,65 +498,73 @@
                         {
                             "question": "Quelle est la principale cause du changement climatique?",
                             "good_answer": "Les émissions de gaz à effet de serre",
-                            "wrong_answers": [
+                            "answers": [
                                 "Les éruptions volcaniques",
-                                "Les rayons cosmiques"
+                                "Les rayons cosmiques",
+                                "Les émissions de gaz à effet de serre"
                             ]
                         },
                         {
                             "question": "Quel gaz est le plus responsable de l'effet de serre?",
                             "good_answer": "Le dioxyde de carbone (CO2)",
-                            "wrong_answers": [
+                            "answers": [
                                 "L'oxygène (O2)",
-                                "L'azote (N2)"
+                                "L'azote (N2)",
+                                "Le dioxyde de carbone (CO2)"
                             ]
                         },
                         {
                             "question": "Qu'est-ce que l'effet de serre?",
                             "good_answer": "Le phénomène par lequel certaines substances emprisonnent la chaleur dans l'atmosphère terrestre.",
-                            "wrong_answers": [
+                            "answers": [
                                 "Un vent fort",
-                                "Un courant océanique"
+                                "Un courant océanique",
+                                "Le phénomène par lequel certaines substances emprisonnent la chaleur dans l'atmosphère terrestre."
                             ]
                         },
                         {
                             "question": "Quelle est la conséquence du réchauffement climatique sur les glaciers?",
                             "good_answer": "La fonte des glaciers",
-                            "wrong_answers": [
+                            "answers": [
                                 "La croissance des glaciers",
-                                "La couleur des glaciers devient rouge"
+                                "La couleur des glaciers devient rouge",
+                                "La fonte des glaciers"
                             ]
                         },
                         {
                             "question": "Quel est le principal secteur émetteur de gaz à effet de serre?",
                             "good_answer": "Le secteur de l'énergie",
-                            "wrong_answers": [
+                            "answers": [
                                 "L'agriculture",
-                                "Le secteur de la santé"
+                                "Le secteur de la santé",
+                                "Le secteur de l'énergie"
                             ]
                         },
                         {
                             "question": "Quel accord international vise à lutter contre le changement climatique?",
                             "good_answer": "L'Accord de Paris",
-                            "wrong_answers": [
+                            "answers": [
                                 "L'Accord de Rome",
-                                "L'Accord de Londres"
+                                "L'Accord de Londres",
+                                "L'Accord de Paris"
                             ]
                         },
                         {
                             "question": "Quelle est la conséquence du changement climatique sur les océans?",
                             "good_answer": "L'acidification des océans",
-                            "wrong_answers": [
+                            "answers": [
                                 "Augmentation de la salinité des océans",
-                                "Diminution du niveau de la mer"
+                                "Diminution du niveau de la mer",
+                                "L'acidification des océans"
                             ]
                         },
                         {
                             "question": "Quel est le rôle de la forêt dans la lutte contre le changement climatique?",
                             "good_answer": "Absorber le dioxyde de carbone de l'atmosphère",
-                            "wrong_answers": [
+                            "answers": [
                                 "Libérer du dioxyde de carbone dans l'atmosphère",
-                                "Détruire la couche d'ozone"
+                                "Détruire la couche d'ozone",
+                                "Absorber le dioxyde de carbone de l'atmosphère"
                             ]
                         }
                     ]
@@ -521,65 +577,73 @@
                         {
                             "question": "Quel est l'impact du réchauffement climatique sur la fréquence des phénomènes météorologiques extrêmes ?",
                             "good_answer": "Ils deviennent plus fréquents",
-                            "wrong_answers": [
+                            "answers": [
                                 "Ils deviennent moins fréquents",
-                                "Ils restent inchangés"
+                                "Ils restent inchangés",
+                                "Ils deviennent plus fréquents"
                             ]
                         },
                         {
                             "question": "Quelle est la principale source d'émission de gaz à effet de serre liée aux activités humaines ?",
                             "good_answer": "La combustion des énergies fossiles",
-                            "wrong_answers": [
+                            "answers": [
                                 "L'agriculture",
-                                "La déforestation"
+                                "La déforestation",
+                                "La combustion des énergies fossiles"
                             ]
                         },
                         {
                             "question": "Quel phénomène climatique est associé au réchauffement des océans ?",
                             "good_answer": "L'élévation du niveau de la mer",
-                            "wrong_answers": [
+                            "answers": [
                                 "La diminution des tempêtes",
-                                "La formation d'icebergs"
+                                "La formation d'icebergs",
+                                "L'élévation du niveau de la mer"
                             ]
                         },
                         {
                             "question": "Quel est le principal contributeur au trou dans la couche d'ozone, un problème lié au changement climatique ?",
                             "good_answer": "Les gaz réfrigérants",
-                            "wrong_answers": [
+                            "answers": [
                                 "Les émissions de CO2",
-                                "Les poussières atmosphériques"
+                                "Les poussières atmosphériques",
+                                "Les gaz réfrigérants"
                             ]
                         },
                         {
                             "question": "Quel est l'effet du réchauffement climatique sur la biodiversité ?",
                             "good_answer": "La perte de diversité biologique",
-                            "wrong_answers": [
+                            "answers": [
                                 "L'augmentation des espèces",
-                                "La migration des espèces"
+                                "La migration des espèces",
+                                "La perte de diversité biologique"
                             ]
                         },
                         {
                             "question": "Quelle est la principale conséquence du réchauffement climatique sur les régions polaires ?",
                             "good_answer": "La fonte accélérée des glaciers",
-                            "wrong_answers": [
+                            "answers": [
                                 "L'augmentation de la banquise",
-                                "La stabilisation des températures"
+                                "La stabilisation des températures",
+                                "La fonte accélérée des glaciers"
                             ]
                         },
                         {
                             "question": "Quel est le rôle des océans dans l'absorption du surplus de chaleur dû au réchauffement climatique ?",
                             "good_answer": "Ils agissent comme un réservoir thermique",
-                            "wrong_answers": [
+                            "answers": [
                                 "Ils amplifient le réchauffement",
-                                "Ils sont insensibles à la chaleur"
+                                "Ils sont insensibles à la chaleur",
+                                "Ils agissent comme un réservoir thermique"
                             ]
                         },
                         {
                             "question": "Quel gaz est libéré par la fonte du permafrost, contribuant au réchauffement climatique ?",
                             "good_answer": "Le méthane",
-                            "wrong_answers": [
+                            "answers": [
                                 "Le dioxyde de carbone",
-                                "L'oxygène"
+                                "L'oxygène",
+                                "Le méthane"
                             ]
                         }
                     ]
@@ -598,65 +662,73 @@
                         {
                             "question": "Quelle est la principale menace pour les récifs coralliens ?",
                             "good_answer": "Le réchauffement climatique",
-                            "wrong_answers": [
+                            "answers": [
                                 "La pollution plastique",
-                                "La surpêche"
+                                "La surpêche",
+                                "Le réchauffement climatique"
                             ]
                         },
                         {
                             "question": "Quel est le plus grand animal de tous les temps ?",
                             "good_answer": "La baleine bleue",
-                            "wrong_answers": [
+                            "answers": [
                                 "Le requin blanc",
-                                "L'orque"
+                                "L'orque",
+                                "La baleine bleue"
                             ]
                         },
                         {
                             "question": "Comment s'appelle la zone en pleine mer où la vie est très abondante ?",
                             "good_answer": "La zone pélagique",
-                            "wrong_answers": [
+                            "answers": [
                                 "La zone benthique",
-                                "La zone abyssale"
+                                "La zone abyssale",
+                                "La zone pélagique"
                             ]
                         },
                         {
                             "question": "Qu'est-ce qu'un herbier marin ?",
                             "good_answer": "Une prairie sous-marine d'herbes marines",
-                            "wrong_answers": [
+                            "answers": [
                                 "Un corail géant",
-                                "Un poisson de grande taille"
+                                "Un poisson de grande taille",
+                                "Une prairie sous-marine d'herbes marines"
                             ]
                         },
                         {
                             "question": "Qu'est-ce qu'un écosystème côtier ?",
                             "good_answer": "Un ensemble de communautés vivantes entre la terre et la mer",
-                            "wrong_answers": [
+                            "answers": [
                                 "Un écosystème situé au fond de l'océan",
-                                "Un espace sans vie marine"
+                                "Un espace sans vie marine",
+                                "Un ensemble de communautés vivantes entre la terre et la mer"
                             ]
                         },
                         {
                             "question": "Qu'est-ce qu'un tsunami ?",
                             "good_answer": "Une série de vagues provoquée par un séisme sous-marin",
-                            "wrong_answers": [
+                            "answers": [
                                 "Un mouvement régulier des marées",
-                                "Un tourbillon marin"
+                                "Un tourbillon marin",
+                                "Une série de vagues provoquée par un séisme sous-marin"
                             ]
                         },
                         {
                             "question": "Que sont les espèces invasives marines ?",
                             "good_answer": "Des espèces non indigènes qui envahissent un écosystème marin",
-                            "wrong_answers": [
+                            "answers": [
                                 "Des espèces endémiques protégées",
-                                "Des espèces rares et menacées"
+                                "Des espèces rares et menacées",
+                                "Des espèces non indigènes qui envahissent un écosystème marin"
                             ]
                         },
                         {
                             "question": "Qu'est-ce qu'un récif artificiel ?",
                             "good_answer": "Une structure créée par l'homme pour favoriser la biodiversité marine",
-                            "wrong_answers": [
+                            "answers": [
                                 "Un récif naturel formé par des coraux",
-                                "Un récif sans vie marine"
+                                "Un récif sans vie marine",
+                                "Une structure créée par l'homme pour favoriser la biodiversité marine"
                             ]
                         }
                     ]
@@ -669,65 +741,73 @@
                         {
                             "question": "Quel est le plus grand contributeur à la pollution plastique des océans ?",
                             "good_answer": "Les déchets plastiques à usage unique",
-                            "wrong_answers": [
+                            "answers": [
                                 "Les emballages alimentaires en carton",
-                                "Les déchets métalliques"
+                                "Les déchets métalliques",
+                                "Les déchets plastiques à usage unique"
                             ]
                         },
                         {
                             "question": "Quel est le principal danger pour les récifs coralliens dans le contexte de l'écologie marine ?",
                             "good_answer": "Le blanchissement corallien",
-                            "wrong_answers": [
+                            "answers": [
                                 "L'acidification des océans",
-                                "La surpêche"
+                                "La surpêche",
+                                "Le blanchissement corallien"
                             ]
                         },
                         {
                             "question": "Quelle est la principale menace pour les tortues marines en matière d'écologie marine ?",
                             "good_answer": "Les filets de pêche abandonnés",
-                            "wrong_answers": [
+                            "answers": [
                                 "Le changement climatique",
-                                "La destruction de l'habitat"
+                                "La destruction de l'habitat",
+                                "Les filets de pêche abandonnés"
                             ]
                         },
                         {
                             "question": "Quel est l'effet de la marée noire sur l'écosystème marin ?",
                             "good_answer": "La contamination des espèces marines",
-                            "wrong_answers": [
+                            "answers": [
                                 "La stimulation de la croissance des algues",
-                                "L'amélioration de la biodiversité"
+                                "L'amélioration de la biodiversité",
+                                "La contamination des espèces marines"
                             ]
                         },
                         {
                             "question": "Quel est le rôle des mangroves dans l'équilibre de l'écosystème marin ?",
                             "good_answer": "Elles servent de nurserie pour de nombreuses espèces marines",
-                            "wrong_answers": [
+                            "answers": [
                                 "Elles sont des lieux de reproduction pour les méduses",
-                                "Elles n'ont aucun impact sur l'écologie marine"
+                                "Elles n'ont aucun impact sur l'écologie marine",
+                                "Elles servent de nurserie pour de nombreuses espèces marines"
                             ]
                         },
                         {
                             "question": "Quelle est la principale source de surpêche dans le monde, menaçant l'écologie marine ?",
                             "good_answer": "La pêche illégale, non déclarée et non réglementée (INN)",
-                            "wrong_answers": [
+                            "answers": [
                                 "La pêche artisanale",
-                                "La pêche industrielle responsable"
+                                "La pêche industrielle responsable",
+                                "La pêche illégale, non déclarée et non réglementée (INN)"
                             ]
                         },
                         {
                             "question": "Quel est l'impact de l'acidification des océans sur les coquillages et les mollusques ?",
                             "good_answer": "Elle affaiblit leurs coquilles",
-                            "wrong_answers": [
+                            "answers": [
                                 "Elle renforce leurs coquilles",
-                                "Elle n'affecte pas les coquillages"
+                                "Elle n'affecte pas les coquillages",
+                                "Elle affaiblit leurs coquilles"
                             ]
                         },
                         {
                             "question": "Quelle est la conséquence de la destruction des herbiers marins sur l'écologie marine ?",
                             "good_answer": "La perte d'habitats essentiels pour de nombreuses espèces",
-                            "wrong_answers": [
+                            "answers": [
                                 "L'amélioration de la qualité de l'eau",
-                                "L'augmentation de la productivité marine"
+                                "L'augmentation de la productivité marine",
+                                "La perte d'habitats essentiels pour de nombreuses espèces"
                             ]
                         }
                     ]
@@ -741,65 +821,73 @@
                         {
                             "question": "Quel est le rôle des herbiers marins dans l'écosystème marin ?",
                             "good_answer": "Ils servent de nurserie et d'habitat pour de nombreuses espèces",
-                            "wrong_answers": [
+                            "answers": [
                                 "Ils produisent de l'oxygène pour les poissons",
-                                "Ils n'ont aucun impact sur l'écosystème marin"
+                                "Ils n'ont aucun impact sur l'écosystème marin",
+                                "Ils servent de nurserie et d'habitat pour de nombreuses espèces"
                             ]
                         },
                         {
                             "question": "Quelle est la principale menace pour les requins dans le contexte de l'écologie marine ?",
                             "good_answer": "La surpêche et le commerce des ailerons de requin",
-                            "wrong_answers": [
+                            "answers": [
                                 "La perte d'habitats",
-                                "Les changements climatiques"
+                                "Les changements climatiques",
+                                "La surpêche et le commerce des ailerons de requin"
                             ]
                         },
                         {
                             "question": "Quel est l'effet des marées rouges sur la faune marine ?",
                             "good_answer": "Elles peuvent causer des mortalités massives de poissons et de coquillages",
-                            "wrong_answers": [
+                            "answers": [
                                 "Elles favorisent la croissance des algues",
-                                "Elles n'ont aucun impact sur la faune marine"
+                                "Elles n'ont aucun impact sur la faune marine",
+                                "Elles peuvent causer des mortalités massives de poissons et de coquillages"
                             ]
                         },
                         {
                             "question": "Quel est l'impact de la pollution sonore sur les cétacés, tels que les baleines ?",
                             "good_answer": "Elle perturbe leur communication et leur orientation",
-                            "wrong_answers": [
+                            "answers": [
                                 "Elle renforce leur capacité d'écholocation",
-                                "Elle n'affecte pas les cétacés"
+                                "Elle n'affecte pas les cétacés",
+                                "Elle perturbe leur communication et leur orientation"
                             ]
                         },
                         {
                             "question": "Quelle est la conséquence de la pollution par les hydrocarbures sur les oiseaux marins ?",
                             "good_answer": "Elle peut causer des dommages aux plumes et à la structure des plumes",
-                            "wrong_answers": [
+                            "answers": [
                                 "Elle améliore la flottabilité des oiseaux",
-                                "Elle n'a aucun effet sur les oiseaux marins"
+                                "Elle n'a aucun effet sur les oiseaux marins",
+                                "Elle peut causer des dommages aux plumes et à la structure des plumes"
                             ]
                         },
                         {
                             "question": "Quel est le rôle des récifs coralliens dans la protection des côtes contre les tempêtes ?",
                             "good_answer": "Ils agissent comme des barrières naturelles",
-                            "wrong_answers": [
+                            "answers": [
                                 "Ils amplifient l'impact des tempêtes",
-                                "Ils n'ont aucun effet sur les tempêtes"
+                                "Ils n'ont aucun effet sur les tempêtes",
+                                "Ils agissent comme des barrières naturelles"
                             ]
                         },
                         {
                             "question": "Quel est l'effet de la montée du niveau de la mer sur les écosystèmes côtiers ?",
                             "good_answer": "Elle entraîne la perte d'habitats côtiers",
-                            "wrong_answers": [
+                            "answers": [
                                 "Elle favorise la biodiversité côtière",
-                                "Elle n'a aucun impact sur les écosystèmes côtiers"
+                                "Elle n'a aucun impact sur les écosystèmes côtiers",
+                                "Elle entraîne la perte d'habitats côtiers"
                             ]
                         },
                         {
                             "question": "Quel est le principal problème lié à la pêche fantôme dans l'écologie marine ?",
                             "good_answer": "Les engins de pêche abandonnés qui continuent de capturer des animaux marins",
-                            "wrong_answers": [
+                            "answers": [
                                 "La pêche excessive",
-                                "La destruction des habitats marins"
+                                "La destruction des habitats marins",
+                                "Les engins de pêche abandonnés qui continuent de capturer des animaux marins"
                             ]
                         }
                     ]
@@ -819,65 +907,73 @@
                             {
                                 "question": "Quelle est la principale menace pour les zones humides ?",
                                 "good_answer": "Le drainage excessif",
-                                "wrong_answers": [
+                                "answers": [
                                     "Les castors",
-                                    "Les chauves-souris"
+                                    "Les chauves-souris",
+                                    "Le drainage excessif"
                                 ]
                             },
                             {
                                 "question": "Quel est le rôle des zones humides dans l'écosystème ?",
                                 "good_answer": "Elles filtrent les eaux et purifient l'air",
-                                "wrong_answers": [
+                                "answers": [
                                     "Elles sont des habitats pour les dromadaires",
-                                    "Elles sont des plateformes de lancement de fusées"
+                                    "Elles sont des plateformes de lancement de fusées",
+                                    "Elles filtrent les eaux et purifient l'air"
                                 ]
                             },
                             {
                                 "question": "Comment peut-on protéger les zones humides ?",
                                 "good_answer": "En limitant les activités humaines impactantes",
-                                "wrong_answers": [
+                                "answers": [
                                     "En construisant des gratte-ciels en leur centre",
-                                    "En organisant des courses de bateaux à moteur"
+                                    "En organisant des courses de bateaux à moteur",
+                                    "En limitant les activités humaines impactantes"
                                 ]
                             },
                             {
                                 "question": "Quel oiseau est emblématique des zones humides ?",
                                 "good_answer": "Le héron cendré",
-                                "wrong_answers": [
+                                "answers": [
                                     "Le manchot empereur",
-                                    "Le pigeon voyageur"
+                                    "Le pigeon voyageur",
+                                    "Le héron cendré"
                                 ]
                             },
                             {
                                 "question": "Quel est l'effet des zones humides sur les inondations ?",
                                 "good_answer": "Elles les atténuent en absorbant l'eau en excès",
-                                "wrong_answers": [
+                                "answers": [
                                     "Elles les aggravent en utilisant des pompiers",
-                                    "Elles les ignorent et font des châteaux de sable"
+                                    "Elles les ignorent et font des châteaux de sable",
+                                    "Elles les atténuent en absorbant l'eau en excès"
                                 ]
                             },
                             {
                                 "question": "Qu'est-ce qu'un marais ?",
                                 "good_answer": "Un écosystème humide avec une végétation aquatique flottante",
-                                "wrong_answers": [
+                                "answers": [
                                     "Une tartine beurrée",
-                                    "Une danse traditionnelle"
+                                    "Une danse traditionnelle",
+                                    "Un écosystème humide avec une végétation aquatique flottante"
                                 ]
                             },
                             {
                                 "question": "Pourquoi est-il important de préserver les zones humides ?",
                                 "good_answer": "Elles abritent une biodiversité exceptionnelle",
-                                "wrong_answers": [
+                                "answers": [
                                     "Elles sont le repaire des extraterrestres",
-                                    "Elles ont des restaurants étoilés Michelin"
+                                    "Elles ont des restaurants étoilés Michelin",
+                                    "Elles abritent une biodiversité exceptionnelle"
                                 ]
                             },
                             {
                                 "question": "Quelle est la meilleure façon de visiter une zone humide ?",
                                 "good_answer": "En respectant la réglementation en vigueur",
-                                "wrong_answers": [
+                                "answers": [
                                     "En organisant une rave-party géante",
-                                    "En portant un sombrero fluorescent"
+                                    "En portant un sombrero fluorescent",
+                                    "En respectant la réglementation en vigueur"
                                 ]
                             }
                         ]
@@ -892,65 +988,73 @@
                             {
                                 "question": "Quelle est la principale cause de dégradation des zones humides ?",
                                 "good_answer": "La pollution",
-                                "wrong_answers": [
+                                "answers": [
                                     "Les oiseaux",
-                                    "La danse de la pluie"
+                                    "La danse de la pluie",
+                                    "La pollution"
                                 ]
                             },
                             {
                                 "question": "Quel est l'animal emblématique des zones humides ?",
                                 "good_answer": "Le castor",
-                                "wrong_answers": [
+                                "answers": [
                                     "La licorne",
-                                    "Le kangourou"
+                                    "Le kangourou",
+                                    "Le castor"
                                 ]
                             },
                             {
                                 "question": "Qu'est-ce qu'un marais ?",
                                 "good_answer": "Une zone humide principalement composée d'herbes et de roseaux",
-                                "wrong_answers": [
+                                "answers": [
                                     "Un dessert sucré",
-                                    "Un type de chapeau"
+                                    "Un type de chapeau",
+                                    "Une zone humide principalement composée d'herbes et de roseaux"
                                 ]
                             },
                             {
                                 "question": "Quel est l'effet bénéfique des zones humides sur l'environnement ?",
                                 "good_answer": "Elles filtrent et purifient l'eau",
-                                "wrong_answers": [
+                                "answers": [
                                     "Elles rendent les grenouilles sympathiques",
-                                    "Elles produisent des arcs-en-ciel"
+                                    "Elles produisent des arcs-en-ciel",
+                                    "Elles filtrent et purifient l'eau"
                                 ]
                             },
                             {
                                 "question": "Quelle est la plus grande zone humide du monde ?",
                                 "good_answer": "Le Pantanal au Brésil",
-                                "wrong_answers": [
+                                "answers": [
                                     "Mon jardin",
-                                    "Le désert du Sahara"
+                                    "Le désert du Sahara",
+                                    "Le Pantanal au Brésil"
                                 ]
                             },
                             {
                                 "question": "Comment appelle-t-on un petit étang formé dans une zone humide ?",
                                 "good_answer": "Une mare",
-                                "wrong_answers": [
+                                "answers": [
                                     "Un bouillon de culture",
-                                    "Un jacuzzi"
+                                    "Un jacuzzi",
+                                    "Une mare"
                                 ]
                             },
                             {
                                 "question": "Quelle est la couleur de la vase présente dans les zones humides ?",
                                 "good_answer": "Marron",
-                                "wrong_answers": [
+                                "answers": [
                                     "Orange fluo",
-                                    "Arc-en-ciel"
+                                    "Arc-en-ciel",
+                                    "Marron"
                                 ]
                             },
                             {
                                 "question": "Qu'est-ce qu'une tourbière ?",
                                 "good_answer": "Une zone humide où se forme progressivement une sorte de terre spéciale appelée tourbe",
-                                "wrong_answers": [
+                                "answers": [
                                     "Une tour en béton",
-                                    "Une espèce de biscuit"
+                                    "Une espèce de biscuit",
+                                    "Une zone humide où se forme progressivement une sorte de terre spéciale appelée tourbe"
                                 ]
                             }
                         ]
@@ -965,41 +1069,46 @@
                             {
                                 "question": "Quel pourcentage des zones humides mondiales ont disparu au cours des 100 dernières années ?",
                                 "good_answer": "50%",
-                                "wrong_answers": [
+                                "answers": [
                                     "5%",
-                                    "25%"
+                                    "25%",
+                                    "50%"
                                 ]
                             },
                             {
                                 "question": "Quelle est la plus grande zone humide du monde en termes de superficie ?",
                                 "good_answer": "Le Pantanal",
-                                "wrong_answers": [
+                                "answers": [
                                     "Le Marais Poitevin",
-                                    "Les Everglades"
+                                    "Les Everglades",
+                                    "Le Pantanal"
                                 ]
                             },
                             {
                                 "question": "Combien d'espèces d'oiseaux dépendent des zones humides pour leur survie ?",
                                 "good_answer": "Plus de 1 000",
-                                "wrong_answers": [
+                                "answers": [
                                     "Moins de 100",
-                                    "Environ 500"
+                                    "Environ 500",
+                                    "Plus de 1 000"
                                 ]
                             },
                             {
                                 "question": "Quelle proportion des espèces menacées d'extinction vivent dans les zones humides ?",
                                 "good_answer": "Environ 40%",
-                                "wrong_answers": [
+                                "answers": [
                                     "Moins de 10%",
-                                    "Environ 20%"
+                                    "Environ 20%",
+                                    "Environ 40%"
                                 ]
                             },
                             {
                                 "question": "Quelle est la principale cause de la destruction des zones humides dans le monde ?",
                                 "good_answer": "L'urbanisation",
-                                "wrong_answers": [
+                                "answers": [
                                     "Le réchauffement climatique",
-                                    "L'agriculture intensive"
+                                    "L'agriculture intensive",
+                                    "L'urbanisation"
                                 ]
                             }
                         ]
@@ -1020,41 +1129,46 @@
                             {
                                 "question": "Quelle est la quantité d'eau nécessaire pour qu'un humain survive pendant une semaine sans aucune autre source de nourriture ?",
                                 "good_answer": "7 litres",
-                                "wrong_answers": [
+                                "answers": [
                                     "1 litre",
-                                    "20 litres"
+                                    "20 litres",
+                                    "7 litres"
                                 ]
                             },
                             {
                                 "question": "Quelle est la principale cause de perte d'eau potable dans les fuites d'un système de distribution d'eau ?",
                                 "good_answer": "Les canalisations défectueuses",
-                                "wrong_answers": [
+                                "answers": [
                                     "Les robinets qui restent ouverts",
-                                    "L'évaporation naturelle"
+                                    "L'évaporation naturelle",
+                                    "Les canalisations défectueuses"
                                 ]
                             },
                             {
                                 "question": "Quelle partie du monde est le plus touchée par le stress hydrique ?",
                                 "good_answer": "Le Moyen-Orient",
-                                "wrong_answers": [
+                                "answers": [
                                     "L'Amérique du Nord",
-                                    "L'Australie"
+                                    "L'Australie",
+                                    "Le Moyen-Orient"
                                 ]
                             },
                             {
                                 "question": "Quelle est la proportion d'eau salée sur Terre ?",
                                 "good_answer": "97 %",
-                                "wrong_answers": [
+                                "answers": [
                                     "50 %",
-                                    "75 %"
+                                    "75 %",
+                                    "97 %"
                                 ]
                             },
                             {
                                 "question": "Dans quelle activité quotidienne consommons-nous le plus d'eau en moyenne ?",
                                 "good_answer": "L'agriculture",
-                                "wrong_answers": [
+                                "answers": [
                                     "La consommation domestique",
-                                    "L'industrie"
+                                    "L'industrie",
+                                    "L'agriculture"
                                 ]
                             }
                         ]
@@ -1069,57 +1183,64 @@
                             {
                                 "question": "Quelle est la quantité d'eau douce disponible sur Terre ?",
                                 "good_answer": "2,5%",
-                                "wrong_answers": [
+                                "answers": [
                                     "50%",
-                                    "85%"
+                                    "85%",
+                                    "2,5%"
                                 ]
                             },
                             {
                                 "question": "Quelle est la consommation moyenne d'eau d'une chasse d'eau traditionnelle ?",
                                 "good_answer": "9 à 12 litres",
-                                "wrong_answers": [
+                                "answers": [
                                     "2 à 4 litres",
-                                    "15 à 18 litres"
+                                    "15 à 18 litres",
+                                    "9 à 12 litres"
                                 ]
                             },
                             {
                                 "question": "Quelle activité humaine utilise le plus d'eau dans le monde ?",
                                 "good_answer": "L'agriculture",
-                                "wrong_answers": [
+                                "answers": [
                                     "La production d'électricité",
-                                    "La consommation domestique"
+                                    "La consommation domestique",
+                                    "L'agriculture"
                                 ]
                             },
                             {
                                 "question": "Combien de litres d'eau faut-il pour produire une seule canette de soda ?",
                                 "good_answer": "250 à 300 litres",
-                                "wrong_answers": [
+                                "answers": [
                                     "50 à 100 litres",
-                                    "500 à 600 litres"
+                                    "500 à 600 litres",
+                                    "250 à 300 litres"
                                 ]
                             },
                             {
                                 "question": "Quel est le pourcentage d'eau froide dans un iceberg ?",
                                 "good_answer": "90%",
-                                "wrong_answers": [
+                                "answers": [
                                     "50%",
-                                    "25%"
+                                    "25%",
+                                    "90%"
                                 ]
                             },
                             {
                                 "question": "Quel pays possède le plus grand pourcentage de sa population sans accès à l'eau potable ?",
                                 "good_answer": "Somalie",
-                                "wrong_answers": [
+                                "answers": [
                                     "Inde",
-                                    "Brésil"
+                                    "Brésil",
+                                    "Somalie"
                                 ]
                             },
                             {
                                 "question": "Combien de litres d'eau faut-il pour produire une tonne de papier recyclé ?",
                                 "good_answer": "250 000 litres",
-                                "wrong_answers": [
+                                "answers": [
                                     "50 000 litres",
-                                    "500 000 litres"
+                                    "500 000 litres",
+                                    "250 000 litres"
                                 ]
                             }
                         ]
@@ -1134,28 +1255,31 @@
                             {
                                 "question": "Quelle est la principale source d'eau douce utilisée par les humains dans le monde ?",
                                 "good_answer": "Les eaux souterraines",
-                                "wrong_answers": [
+                                "answers": [
                                     "Les rivières",
                                     "Les lacs",
-                                    "Les glaciers"
+                                    "Les glaciers",
+                                    "Les eaux souterraines"
                                 ]
                             },
                             {
                                 "question": "Combien de litres d'eau utilise-t-on en moyenne par jour pour une douche de 10 minutes ?",
                                 "good_answer": "Environ 80 litres",
-                                "wrong_answers": [
+                                "answers": [
                                     "Environ 20 litres",
                                     "Environ 50 litres",
-                                    "Environ 120 litres"
+                                    "Environ 120 litres",
+                                    "Environ 80 litres"
                                 ]
                             },
                             {
                                 "question": "Qu'est-ce que la xéropaysagisme ?",
                                 "good_answer": "Une technique de jardinage permettant de réduire la consommation d'eau",
-                                "wrong_answers": [
+                                "answers": [
                                     "Une maladie des plantes causée par un excès d'arrosage",
                                     "La construction d'un barrage pour stocker de l'eau",
-                                    "Une méthode pour purifier l'eau"
+                                    "Une méthode pour purifier l'eau",
+                                    "Une technique de jardinage permettant de réduire la consommation d'eau"
                                 ]
                             }
                         ]
@@ -1170,28 +1294,31 @@
                             {
                                 "question": "Quelle est la principale cause de la pénurie d'eau dans de nombreuses régions du monde ?",
                                 "good_answer": "Le gaspillage excessif d'eau",
-                                "wrong_answers": [
+                                "answers": [
                                     "La pollution de l'eau",
                                     "Les précipitations insuffisantes",
-                                    "La surconsommation de boissons gazeuses"
+                                    "La surconsommation de boissons gazeuses",
+                                    "Le gaspillage excessif d'eau"
                                 ]
                             },
                             {
                                 "question": "Quel pourcentage de l'eau sur Terre est disponible pour la consommation humaine ?",
                                 "good_answer": "Moins de 1%",
-                                "wrong_answers": [
+                                "answers": [
                                     "Environ 25%",
                                     "Près de 50%",
-                                    "Plus de 75%"
+                                    "Plus de 75%",
+                                    "Moins de 1%"
                                 ]
                             },
                             {
                                 "question": "Qu'est-ce que l'agriculture durable peut contribuer à la conservation de l'eau ?",
                                 "good_answer": "La mise en place de techniques d'irrigation efficaces",
-                                "wrong_answers": [
+                                "answers": [
                                     "L'abandon de l'agriculture",
                                     "L'utilisation intensive d'engrais chimiques",
-                                    "L'augmentation de la consommation d'eau dans les exploitations agricoles"
+                                    "L'augmentation de la consommation d'eau dans les exploitations agricoles",
+                                    "La mise en place de techniques d'irrigation efficaces"
                                 ]
                             }
                         ]
@@ -1206,28 +1333,31 @@
                             {
                                 "question": "Quelle est la meilleure façon de conserver l'eau dans une maison ?",
                                 "good_answer": "Installer des pommeaux de douche à faible débit",
-                                "wrong_answers": [
+                                "answers": [
                                     "Laisser le robinet ouvert pendant que vous vous brossez les dents",
                                     "Remplir la baignoire à ras bord pour chaque bain",
-                                    "Arroser le jardin tous les jours"
+                                    "Arroser le jardin tous les jours",
+                                    "Installer des pommeaux de douche à faible débit"
                                 ]
                             },
                             {
                                 "question": "Combien d'eau est gaspillée par une fuite de robinet qui goutte constamment, chaque jour ?",
                                 "good_answer": "Environ 136 litres",
-                                "wrong_answers": [
+                                "answers": [
                                     "Environ 5 litres",
                                     "Environ 20 litres",
-                                    "Aucune eau n'est gaspillée"
+                                    "Aucune eau n'est gaspillée",
+                                    "Environ 136 litres"
                                 ]
                             },
                             {
                                 "question": "Qu'est-ce que la méthode de l'irrigation goutte à goutte ?",
                                 "good_answer": "Une méthode qui utilise des tuyaux à bas débit pour apporter de petites quantités d'eau directement aux plantes",
-                                "wrong_answers": [
+                                "answers": [
                                     "Une méthode qui utilise des arroseurs à haute pression pour mouiller toute la zone du jardin",
                                     "Une méthode qui n'utilise pas du tout d'eau pour l'arrosage des plantes",
-                                    "Une méthode qui implique de remplir une cuve d'eau et d'arroser manuellement les plantes"
+                                    "Une méthode qui implique de remplir une cuve d'eau et d'arroser manuellement les plantes",
+                                    "Une méthode qui utilise des tuyaux à bas débit pour apporter de petites quantités d'eau directement aux plantes"
                                 ]
                             }
                         ]
@@ -1241,28 +1371,31 @@
                             {
                                 "question": "Quelle est la principale raison de la conservation de l'eau ?",
                                 "good_answer": "Préserver les ressources en eau pour les générations futures",
-                                "wrong_answers": [
+                                "answers": [
                                     "Réduire les coûts de factures d'eau",
                                     "Éviter les restrictions d'eau imposées par le gouvernement",
-                                    "Maintenir les installations de traitement de l'eau en bon état"
+                                    "Maintenir les installations de traitement de l'eau en bon état",
+                                    "Préserver les ressources en eau pour les générations futures"
                                 ]
                             },
                             {
                                 "question": "Combien de litres d'eau peut être économisé en utilisant un pommeau de douche à faible débit par minute ?",
                                 "good_answer": "Environ 9 à 11 litres",
-                                "wrong_answers": [
+                                "answers": [
                                     "Environ 3 à 5 litres",
                                     "Environ 15 à 20 litres",
-                                    "Environ 25 à 30 litres"
+                                    "Environ 25 à 30 litres",
+                                    "Environ 9 à 11 litres"
                                 ]
                             },
                             {
                                 "question": "Qu'est-ce que l'irrigation goutte-à-goutte dans le contexte de la conservation de l'eau ?",
                                 "good_answer": "Une méthode d'arrosage qui fournit de l'eau directement aux racines des plantes",
-                                "wrong_answers": [
+                                "answers": [
                                     "Une technique d'arrosage qui nécessite une grande quantité d'eau",
                                     "Une pratique qui n'est pas adaptée aux climats arides",
-                                    "Une méthode qui gaspille plus d'eau que d'autres systèmes d'irrigation"
+                                    "Une méthode qui gaspille plus d'eau que d'autres systèmes d'irrigation",
+                                    "Une méthode d'arrosage qui fournit de l'eau directement aux racines des plantes"
                                 ]
                             }
                         ]
