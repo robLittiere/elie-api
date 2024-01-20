@@ -3,6 +3,7 @@
         {
             "id": 1,
             "name": "Energie Solaire",
+            "description" : "L'énergie solaire exploite la puissance du soleil pour produire de l'électricité de manière propre et renouvelable.",
             "quizzes": [
                 {
                     "id": 1,
@@ -167,6 +168,7 @@
         {
             "id": 2,
             "name": "Biodiversite",
+            "description": "La biodiversité englobe la variété des formes de vie sur Terre, assurant l'équilibre des écosystèmes et contribuant à la survie de la planète.",
             "quizzes": [
                 {
                     "id": 3,
@@ -410,6 +412,7 @@
         {
             "id": 3,
             "name": "Changement climatique",
+            "description" : "Le changement climatique se réfère aux modifications à long terme des conditions météorologiques mondiales, principalement dues à l'activité humaine, avec des impacts sur l'environnement.",
             "quizzes": [
                 {
                     "id": 6,
@@ -653,6 +656,7 @@
         {
             "id": 4,
             "name": "Ecologie Marine",
+            "description" : "L'écologie marine étudie les interactions entre les organismes marins et leur environnement, crucial pour la compréhension et la préservation des océans.",
             "quizzes": [
                 {
                     "id": 9,
@@ -897,6 +901,7 @@
         {
             "id": 5,
             "name": "Protection des zones humides",
+            "description" : "La protection des zones humides vise à préserver ces écosystèmes essentiels qui fournissent de l'eau douce, régulent les inondations et abritent une biodiversité unique.",
             "quizzes": [
                 {
                     "id": 12,
@@ -1119,6 +1124,7 @@
         {
             "id": 6,
             "name": "Conservation de l'eau",
+            "description" : "La conservation de l'eau implique des pratiques visant à économiser et à gérer judicieusement cette ressource précieuse pour répondre aux besoins actuels et futurs.",
             "quizzes": [
                 {
                     "id": 15,

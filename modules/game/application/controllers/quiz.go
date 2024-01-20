@@ -7,11 +7,14 @@ import (
 	"net/http"
 )
 
-func GetQuizzes(c *gin.Context) {
-	quizRepo := infrastructure.NewQuizRepo(config.DB)
+func GetQuizGame(c *gin.Context) {
+	// Get the quiz game id from the url as well as the query parameters
+	id := c.Param("id")
 	queryParams := c.Request.URL.Query()
 
-	data, err := quizRepo.BuildQueryAndFind(queryParams)
+	quizRepo := infrastructure.NewQuizRepo(config.DB)
+
+	data, err := quizRepo.BuildQueryAndFind(id, queryParams)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return

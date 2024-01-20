@@ -36,7 +36,7 @@ func (r *QuizRepo) Find() ([]models.Quiz, error) {
 	return quizzes, nil
 }
 
-func (r *QuizRepo) BuildQueryAndFind(queryParams map[string][]string) ([]models.QuizGameJSONMap, error) {
+func (r *QuizRepo) BuildQueryAndFind(id string, queryParams map[string][]string) ([]models.QuizGameJSONMap, error) {
 	// var quizGame models.QuizGame
 	quizzes := make([]models.QuizGameJSONMap, 0)
 
@@ -44,7 +44,7 @@ func (r *QuizRepo) BuildQueryAndFind(queryParams map[string][]string) ([]models.
 		Select("quiz").
 		Joins("JOIN jsonb_array_elements(data->'topic') as topic ON TRUE").
 		Joins("JOIN jsonb_array_elements(topic->'quizzes') as quiz ON TRUE").
-		Where("gid = ?", 5)
+		Where("id = ?", id)
 
 	err := r.BuildQuery(queryParams)
 	if err != nil {
