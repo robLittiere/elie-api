@@ -36,7 +36,7 @@ func (r *QuizRepo) Find() ([]models.Quiz, error) {
 	return quizzes, nil
 }
 
-func (r *QuizRepo) BuildQueryAndFind(id string, queryParams map[string][]string) ([]models.QuizGameJSONMap, error) {
+func (r *QuizRepo) BuildQueryAndFindByData(id string, queryParams map[string][]string) ([]models.QuizGameJSONMap, error) {
 	// var quizGame models.QuizGame
 	quizzes := make([]models.QuizGameJSONMap, 0)
 

@@ -15,6 +15,6 @@ func GameRoutes(router *gin.RouterGroup) {
 	quiz := router.Group("/games/quiz")
 	{
 		quiz.GET("/", controllers.GetQuizGames)
-		quiz.GET("/:id", controllers.GetQuizGame)
+		quiz.GET("/:id/data", controllers.GetQuizGameData)
 	}
 }
