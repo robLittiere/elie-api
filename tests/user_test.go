@@ -2,6 +2,7 @@ package tests
 
 import (
 	"elie-api/modules/common/criteria"
+	"elie-api/modules/common/repository"
 	"elie-api/modules/user/application/filters"
 	"elie-api/modules/user/domain/query"
 	"reflect"
@@ -12,20 +13,24 @@ func TestIShouldGetUserCriterias(t *testing.T) {
 
 	// Declare some fake query parameters
 	queryParams := map[string]string{
-		"uid":           "1",
-		"username":      "test",
+		"uuid":          "1",
+		"username":      "robinou",
 		"nonvalidParam": "test",
 	}
 	usernameCriteria := query.UsernameCriteria{Field: "username"}
-	uidCriteria := query.UuidCriteria{Field: "uid"}
+	uuidCriteria := query.UuidCriteria{Field: "uuid"}
 
-	expectedCriterias := []criteria.Criteria{&uidCriteria, &usernameCriteria}
+	expectedCriterias := []criteria.Criteria{&uuidCriteria, &usernameCriteria}
 	criteriaList := make([]criteria.Criteria, 0)
 
 	// That should return an error because nonvalidParam is not a valid filter
+	userFilterRegistry := filters.GetUserFilters()
 	for k, _ := range queryParams {
-		filterCriteria, _ := filters.GetUserFilter(k)
-		criteriaList = append(criteriaList, filterCriteria)
+		filterCriteria, err := repository.GetCriteria(k, userFilterRegistry)
+		if err == nil {
+			criteriaList = append(criteriaList, filterCriteria)
+		}
+
 	}
 
 	// Assert that the criteria list is the same as the expected one
@@ -35,9 +40,16 @@ func TestIShouldGetUserCriterias(t *testing.T) {
 
 }
 
-func TestIShouldGetAnErrorForNonValidFilter(t *testing.T) {
-	_, err := filters.GetUserFilter("nonvalidParam")
-	if err == nil {
-		t.Errorf("Expected an error but got nil")
+func TestIShouldGetAnErrorForANonValidFilter(t *testing.T) {
+	userFilterRegistry := filters.GetUserFilters()
+	queryParams := map[string]string{
+		"NonExistantFitler": "NonExistantValue",
+	}
+
+	for k, _ := range queryParams {
+		_, err := repository.GetCriteria(k, userFilterRegistry)
+		if err == nil {
+			t.Errorf("Expected an error but got nil")
+		}
 	}
 }

@@ -10,8 +10,14 @@ func GamificationRoutes(router *gin.RouterGroup) {
 	{
 		gamification.GET("/levels", controllers.GetLevels)
 		gamification.GET("/quests", controllers.GetQuests)
-		gamification.GET("/quests/user", controllers.GetUserQuests)
-		gamification.GET("/quests/daily", controllers.GetDailyQuests)
-		gamification.GET("/quests/weekly", controllers.GetWeeklyQuests)
+	}
+
+	quests := router.Group("/quests")
+	{
+		quests.GET("/", controllers.GetQuests)
+		quests.GET("/user", controllers.GetUserQuests)
+		quests.GET("/daily", controllers.GetDailyQuests)
+		quests.GET("/weekly", controllers.GetWeeklyQuests)
+		quests.POST("/progress", controllers.UpdateQuestProgress)
 	}
 }

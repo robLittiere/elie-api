@@ -1,6 +1,9 @@
 package models
 
-import "time"
+import (
+	"github.com/google/uuid"
+	"time"
+)
 
 type UserQuest struct {
 	Id          int       `json:"id" gorm:"primaryKey"`
@@ -11,4 +14,9 @@ type UserQuest struct {
 	IsCompleted bool      `json:"is_completed" gorm:"default:false"`
 	CreatedAt   time.Time `json:"created_at"`
 	UpdatedAt   time.Time `json:"updated_at"`
+}
+
+type UserQuestProgressRequest struct {
+	UserUuid uuid.UUID `json:"user_uuid"`
+	QuestId  int       `json:"quest_id"`
 }

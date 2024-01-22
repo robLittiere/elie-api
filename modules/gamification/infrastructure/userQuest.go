@@ -37,3 +37,18 @@ func (repo *UserQuestRepo) BuildQueryAndFind(queryParams map[string][]string) ([
 
 	return userQuests, nil
 }
+
+func (r *UserQuestRepo) FindByUuidAndQid(uProgress *models.UserQuestProgressRequest, u *models.UserQuest) error {
+	// Get user_id
+	var uid int
+	result := r.DB.Table("users").Select("id").Where("uuid = ?", uProgress.UserUuid).Scan(&uid)
+	if result.Error != nil {
+		return result.Error
+	}
+
+	result = r.DB.Preload("Quest").Where("user_id = ? AND quest_id = ?", uid, uProgress.QuestId).First(&u)
+	if result.Error != nil {
+		return result.Error
+	}
+	return nil
+}
