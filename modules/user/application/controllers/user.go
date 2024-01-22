@@ -45,3 +45,41 @@ func CreateUser(c *gin.Context) {
 	c.Status(http.StatusCreated)
 	return
 }
+
+func LoginHandler(c *gin.Context) {
+	userRepo := infrastructure.NewUserRepo(config.DB)
+	var userRequest models.UserRequest
+
+	if err := c.ShouldBindJSON(&userRequest); err != nil {
+		fmt.Printf("Missing request informations : %v\n", err.Error())
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		err := c.AbortWithError(http.StatusBadRequest, err)
+		if err != nil {
+			fmt.Printf("Error while aborting request : %v\n", err.Error())
+		}
+		return
+	}
+
+	user, err := userRepo.FindByEmail(userRequest.Email)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	publicUser := user.Serialize()
+	c.JSON(http.StatusOK, &publicUser)
+}
+
+func GetUser(c *gin.Context) {
+	userRepo := infrastructure.NewUserRepo(config.DB)
+	uid := c.Param("uuid")
+
+	user, err := userRepo.FindByUuid(uid)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	publicUser := user.Serialize()
+	c.JSON(http.StatusOK, &publicUser)
+
+}

@@ -2,6 +2,7 @@ package infrastructure
 
 import (
 	"elie-api/modules/common/repository"
+	models2 "elie-api/modules/gamification/models"
 	"elie-api/modules/user/application/filters"
 	"elie-api/modules/user/models"
 	"fmt"
@@ -47,13 +48,15 @@ func (r *UserRepo) CreateUser(user *models.User) error {
 	}
 
 	user.Uuid = uuid.New().String()
-	// Add basic level
-	lid := 1
-	result := r.DB.Table("levels").Select("id").Where("name = ?", "Basic").Scan(&lid)
+
+	// Get basic level and add it to the user
+	// TODO improve this by adding a user builder or something as we will need to add more default stuff to the user
+	var level models2.Level
+	result := r.DB.Table("levels").Select("id").Where("name = ?", "Basic").Scan(&level)
 	if result.Error != nil {
 		return result.Error
 	}
-	user.LevelId = lid
+	user.LevelId = level.ID
 
 	if err := user.HashPassword(user.Password, 2); err != nil {
 		return err
@@ -73,4 +76,23 @@ func (r *UserRepo) IsUserInDb(user models.User) error {
 		return err
 	}
 	return nil
+}
+
+func (r *UserRepo) FindByEmail(email string) (models.User, error) {
+	var user models.User
+	result := r.DB.Preload("Level").Where("email = ?", email).First(&user)
+	if result.Error != nil {
+		return user, result.Error
+	}
+	return user, nil
+
+}
+
+func (r *UserRepo) FindByUuid(uid string) (models.User, error) {
+	var user models.User
+	result := r.DB.Preload("Level").Where("uuid = ?", uid).First(&user)
+	if result.Error != nil {
+		return user, result.Error
+	}
+	return user, nil
 }

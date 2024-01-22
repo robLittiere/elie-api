@@ -59,10 +59,3 @@ func (user *User) CheckPassword(providedPassword string) error {
 	}
 	return nil
 }
-func GenerateHash(password string, cost int) (string, error) {
-	bytes, err := bcrypt.GenerateFromPassword([]byte(password), cost)
-	if err != nil {
-		return "", err
-	}
-	return string(bytes), nil
-}
