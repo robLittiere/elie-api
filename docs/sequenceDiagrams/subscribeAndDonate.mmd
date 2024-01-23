@@ -1,0 +1,17 @@
+sequenceDiagram
+    actor L as Lena
+    participant A as Application
+    participant S as Subscription
+    participant P as Payment Method
+
+    L->>A: Wants to subscribe
+    A-->L: Shows subscription options
+    L->>A: Chooses subscription method
+    A-->L: Redirect to payment method
+    L->>P: Enters payment details
+    P-->>A: Validates payment details
+    A->>S: Create(Lena)
+    S-->>A: Subscription created
+    A-->>L: Notifies Lena is now a subscriber
+    A->>L: Provides points and perks of subscriber
+

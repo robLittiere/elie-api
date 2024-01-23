@@ -1,0 +1,15 @@
+sequenceDiagram
+    actor L as Léna(user)
+    participant G as Game
+    participant QM as Quest Manager
+    participant SM as Success Manager
+    L->>G: startGame()
+    G->>QM: hasStartedGame()
+    G->>SM: hasStartedGame()
+    QM->>QM: updateQuestProgress(Game, Léna)
+    SM->>SM: updateSuccessProgress(Game, Léna)
+    G->>QM: hasFinishedGame(hasWon)
+    G->>SM: hasFinishedGame(hasWon)
+    QM->>QM: updateQuestProgress(Game, Léna)
+    QM->>L: notifyQuestProgress()
+    SM->>L: notifySuccessProgress()

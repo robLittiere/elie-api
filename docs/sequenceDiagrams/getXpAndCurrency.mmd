@@ -1,0 +1,19 @@
+sequenceDiagram
+    actor L as Léna(user)
+    participant A as Application
+    participant QM as Quest Manager
+    participant R as Reward Manager
+    L ->> A: Do quest action
+    A ->> QM: Léna has done an action that progresses a quest
+    QM ->> QM: updateQuestProgression
+    alt Léna has finished quest
+        QM ->> QM: updateQuestStatus
+        QM ->> A: Quest finished
+        A ->> R: Request reward
+        R ->> R: Calculate reward
+        R ->> A: Reward experience to user
+        A ->> L: Notify Quest finished and rewards xp
+    else Léna has not finished quest
+        QM ->> A: Quest not finished
+        A ->> L: Notify quest progression
+    end

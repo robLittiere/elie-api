@@ -15,10 +15,6 @@ func (c *QuestTypeNameCriteria) ApplyQuery(db *gorm.DB, value string) *gorm.DB {
 	if result.Error != nil {
 		return db
 	}
-	println(questType.Id)
-	println(questType.Id)
-	println(questType.Id)
-	println(questType.Id)
 	return db.Where("quest_type_id = ?", questType.Id)
 
 }
