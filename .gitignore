@@ -31,3 +31,6 @@ go.work
 
 # env
 .env
+
+# Images in docs
+docs/sequenceDiagrams/*.svg
