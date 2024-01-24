@@ -5,5 +5,6 @@
 
 -- +goose Down
 -- +goose StatementBegin
+    DELETE FROM users WHERE level_id = (SELECT id FROM levels WHERE name = 'Basic');
     DELETE FROM levels WHERE name = 'Basic';
 -- +goose StatementEnd

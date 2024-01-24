@@ -18,17 +18,32 @@ VALUES ((SELECT id FROM quest_types WHERE type = 'weekly'), 'Réussir des quizs'
 -- +goose Down
 -- +goose StatementBegin
 DELETE
+FROM user_quests
+WHERE quest_id IN (SELECT id FROM quests WHERE name = 'Se connecter');
+DELETE
 FROM quests
 WHERE name = 'Se connecter';
+DELETE
+FROM user_quests
+WHERE quest_id IN (SELECT id FROM quests WHERE name = 'Faire un quiz');
 DELETE
 FROM quests
 WHERE name = 'Faire un quiz';
 DELETE
+FROM user_quests
+WHERE quest_id IN (SELECT id FROM quests WHERE name = 'Réussir un quiz');
+DELETE
 FROM quests
 WHERE name = 'Réussir un quiz';
 DELETE
+FROM user_quests
+WHERE quest_id IN (SELECT id FROM quests WHERE name = 'Réussir des quizs');
+DELETE
 FROM quests
 WHERE name = 'Réussir des quizs';
+DELETE
+FROM user_quests
+WHERE quest_id IN (SELECT id FROM quests WHERE name = 'Jouer à des jeux');
 DELETE
 FROM quests
 WHERE name = 'Jouer à des jeux';

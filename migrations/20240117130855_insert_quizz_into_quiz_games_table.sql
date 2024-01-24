@@ -2,25 +2,26 @@
 -- +goose StatementBegin
 INSERT INTO quiz_games (gid, data, created_at, updated_at)
 values ((SELECT id FROM games WHERE name = 'Quiz' AND game_version = '1.0'),
-        '{
+           '{
     "topic": [
         {
             "id": 1,
-            "name": "Energie Solaire",
-            "description" : "L''énergie solaire exploite la puissance du soleil pour produire de l''électricité de manière propre et renouvelable.",
+            "name": "Energie solaire",
+            "description" : "L''énergie solaire produit de l''électricité propre et renouvelable en exploitant la puissance du soleil.",
             "quizzes": [
                 {
                     "id": 1,
-                    "topic": "Energie Solaire",
-                    "title": "Quiz Aléatoire sur l''Énergie Solaire",
+                    "topic": "Energie solaire",
+                    "title": "Qu''est-ce-que l''énergie solaire ?",
                     "questions": [
                         {
                             "question": "Quel est le processus par lequel l''énergie solaire est convertie en électricité ?",
                             "good_answer": "La conversion photovoltaïque",
                             "answers": [
                                 "La photosynthèse",
+                                "La conversion photovoltaïque",
                                 "La combustion solaire",
-                                "La conversion photovoltaïque"
+                                "La capture radiante"
                             ]
                         },
                         {
@@ -29,13 +30,15 @@ values ((SELECT id FROM games WHERE name = 'Quiz' AND game_version = '1.0'),
                             "answers": [
                                 "L''hydrogène",
                                 "Le carbone",
-                                "Le silicium"
+                                "Le silicium",
+                                "Le titane"
                             ]
                         },
                         {
                             "question": "Quel est l''appareil qui permet de suivre la trajectoire du soleil pour maximiser la capture d''énergie solaire ?",
                             "good_answer": "Le suiveur solaire",
                             "answers": [
+                                "Le traqueur solaire",
                                 "Le réflecteur solaire",
                                 "L''accumulateur solaire",
                                 "Le suiveur solaire"
@@ -47,6 +50,7 @@ values ((SELECT id FROM games WHERE name = 'Quiz' AND game_version = '1.0'),
                             "answers": [
                                 "Lumen (lm)",
                                 "Kilowatt-heure (kWh)",
+                                "Joule-solaire (Js)",
                                 "Watt-crête (Wc)"
                             ]
                         },
@@ -55,23 +59,26 @@ values ((SELECT id FROM games WHERE name = 'Quiz' AND game_version = '1.0'),
                             "good_answer": "La Chine",
                             "answers": [
                                 "Les États-Unis",
+                                "La Chine",
                                 "L''Inde",
-                                "La Chine"
+                                "La France"
                             ]
                         },
                         {
                             "question": "Quel avantage majeur de l''énergie solaire en fait une source d''énergie renouvelable attrayante ?",
                             "good_answer": "Elle ne produit pas de pollution atmosphérique",
                             "answers": [
+                                "Elle ne produit pas de pollution atmosphérique",
                                 "Elle est bon marché",
                                 "Elle est facile à stocker",
-                                "Elle ne produit pas de pollution atmosphérique"
+                                "Elle nécessite une faible consommation d''eau pour sa production"
                             ]
                         },
                         {
                             "question": "Quel dispositif permet de stocker l''énergie solaire pour une utilisation ultérieure ?",
                             "good_answer": "Les batteries solaires",
                             "answers": [
+                                "Les réservoirs à rayons solaires",
                                 "Les panneaux solaires",
                                 "Les onduleurs solaires",
                                 "Les batteries solaires"
@@ -81,25 +88,27 @@ values ((SELECT id FROM games WHERE name = 'Quiz' AND game_version = '1.0'),
                             "question": "Quelle est l''efficacité typique des panneaux solaires commerciaux ?",
                             "good_answer": "Entre 15% et 20%",
                             "answers": [
-                                "Plus de 50%",
-                                "Moins de 5%",
-                                "Entre 15% et 20%"
+                                "Moins de 15%",
+                                "Entre 15% et 20%",
+                                "Entre 25% et 50%",
+                                "Plus de 50%"
                             ]
                         }
                     ]
                 },
                 {
                     "id": 2,
-                    "topic": "Energie Solaire",
-                    "title": "Le Quiz Solaire Incroyable",
+                    "topic": "Energie solaire",
+                    "title": "Comment fonctionne l''énergie solaire ?",
                     "questions": [
                         {
                             "question": "Quelle est la source d''énergie principale du solaire photovoltaïque ?",
                             "good_answer": "Lumière du soleil",
                             "answers": [
                                 "Vent",
+                                "Lumière du soleil",
                                 "Pétrole",
-                                "Lumière du soleil"
+                                "Pluie"
                             ]
                         },
                         {
@@ -108,6 +117,7 @@ values ((SELECT id FROM games WHERE name = 'Quiz' AND game_version = '1.0'),
                             "answers": [
                                 "Batteries",
                                 "Aimants",
+                                "Bobines électroluminescentes",
                                 "Cellules photovoltaïques"
                             ]
                         },
@@ -115,9 +125,10 @@ values ((SELECT id FROM games WHERE name = 'Quiz' AND game_version = '1.0'),
                             "question": "Quel pays est le plus grand producteur d''énergie solaire au monde ?",
                             "good_answer": "Chine",
                             "answers": [
+                                "Chine",
                                 "États-Unis",
-                                "Inde",
-                                "Chine"
+                                "Canada",
+                                "Inde"
                             ]
                         },
                         {
@@ -126,22 +137,25 @@ values ((SELECT id FROM games WHERE name = 'Quiz' AND game_version = '1.0'),
                             "answers": [
                                 "Réservoirs d''eau",
                                 "Sacs de sable",
-                                "Batteries"
+                                "Batteries",
+                                "Cuves à photons"
                             ]
                         },
                         {
                             "question": "Quel est l''angle optimal pour l''installation de panneaux solaires afin de maximiser l''exposition au soleil ?",
                             "good_answer": "Entre 30 et 45 degrés",
                             "answers": [
-                                "90 degrés",
                                 "0 degrés",
-                                "Entre 30 et 45 degrés"
+                                "Entre 30 et 45 degrés",
+                                "Entre 60 et 75 degrés",
+                                "90 degrés"
                             ]
                         },
                         {
                             "question": "Quel type de rayonnement solaire est converti en énergie électrique par les panneaux solaires ?",
                             "good_answer": "Rayonnement solaire photovoltaïque",
                             "answers": [
+                                "Rayonnement gamma solaire",
                                 "Rayonnement infrarouge",
                                 "Rayonnement ultraviolet",
                                 "Rayonnement solaire photovoltaïque"
@@ -149,11 +163,12 @@ values ((SELECT id FROM games WHERE name = 'Quiz' AND game_version = '1.0'),
                         },
                         {
                             "question": "Quelle est la durée de vie typique des panneaux solaires ?",
-                            "good_answer": "Environ 25 ans",
+                            "good_answer": "25 ans",
                             "answers": [
                                 "5 ans",
-                                "50 ans",
-                                "Environ 25 ans"
+                                "15 ans",
+                                "25 ans",
+                                "35 ans"
                             ]
                         },
                         {
@@ -162,6 +177,7 @@ values ((SELECT id FROM games WHERE name = 'Quiz' AND game_version = '1.0'),
                             "answers": [
                                 "Gaz naturel",
                                 "Électricité",
+                                "Énergie hydrothermique",
                                 "Énergie solaire thermique"
                             ]
                         }
@@ -172,20 +188,21 @@ values ((SELECT id FROM games WHERE name = 'Quiz' AND game_version = '1.0'),
         {
             "id": 2,
             "name": "Biodiversite",
-            "description": "La biodiversité englobe la variété des formes de vie sur Terre, assurant l''équilibre des écosystèmes et contribuant à la survie de la planète.",
+            "description": "La biodiversité assure l''équilibre des écosystèmes et la survie de la planète.",
             "quizzes": [
                 {
                     "id": 3,
                     "topic": "Biodiversite",
-                    "title": "Le Quiz de la Biodiversité Étonnante",
+                    "title": "Qu''est-ce-que la biodiversité ?",
                     "questions": [
                         {
                             "question": "Combien d''espèces animales et végétales sont estimées vivre dans la forêt amazonienne ?",
                             "good_answer": "Des millions",
                             "answers": [
-                                "Des milliers",
                                 "Des centaines",
-                                "Des millions"
+                                "Des milliers",
+                                "Des millions",
+                                "Des milliards"
                             ]
                         },
                         {
@@ -193,6 +210,7 @@ values ((SELECT id FROM games WHERE name = 'Quiz' AND game_version = '1.0'),
                             "good_answer": "La pollution plastique",
                             "answers": [
                                 "La surpêche",
+                                "L''acidification des océans",
                                 "Le changement climatique",
                                 "La pollution plastique"
                             ]
@@ -201,9 +219,10 @@ values ((SELECT id FROM games WHERE name = 'Quiz' AND game_version = '1.0'),
                             "question": "Quel est le plus grand animal terrestre de la planète ?",
                             "good_answer": "L''éléphant d''Afrique",
                             "answers": [
+                                "L''éléphant d''Afrique",
                                 "Le rhinocéros",
                                 "Le lion",
-                                "L''éléphant d''Afrique"
+                                "Le cheval"
                             ]
                         },
                         {
@@ -211,8 +230,9 @@ values ((SELECT id FROM games WHERE name = 'Quiz' AND game_version = '1.0'),
                             "good_answer": "La destruction de l''habitat",
                             "answers": [
                                 "La chasse excessive",
+                                "La destruction de l''habitat",
                                 "Les espèces envahissantes",
-                                "La destruction de l''habitat"
+                                "Le réchauffement climatique"
                             ]
                         },
                         {
@@ -221,6 +241,7 @@ values ((SELECT id FROM games WHERE name = 'Quiz' AND game_version = '1.0'),
                             "answers": [
                                 "Le colibri",
                                 "Le moineau",
+                                "L''aigle",
                                 "L''albatros"
                             ]
                         },
@@ -230,16 +251,18 @@ values ((SELECT id FROM games WHERE name = 'Quiz' AND game_version = '1.0'),
                             "answers": [
                                 "Le tigre",
                                 "Le dauphin",
-                                "Le panda géant"
+                                "Le panda géant",
+                                "Le koala"
                             ]
                         },
                         {
                             "question": "Quelle est la plus grande réserve naturelle du monde, située en Antarctique ?",
                             "good_answer": "La réserve naturelle de l''Antarctique",
                             "answers": [
+                                "La réserve naturelle de l''Antarctique",
+                                "La réserve naturelle du Gondwana",
                                 "Le parc national de Yellowstone",
-                                "Le parc national des Galápagos",
-                                "La réserve naturelle de l''Antarctique"
+                                "Le parc national des Galápagos"
                             ]
                         },
                         {
@@ -248,6 +271,7 @@ values ((SELECT id FROM games WHERE name = 'Quiz' AND game_version = '1.0'),
                             "answers": [
                                 "La mutation génétique",
                                 "La reproduction asexuée",
+                                "L''ingénierie écologique",
                                 "La sélection naturelle"
                             ]
                         }
@@ -256,33 +280,36 @@ values ((SELECT id FROM games WHERE name = 'Quiz' AND game_version = '1.0'),
                 {
                     "id": 4,
                     "topic": "Biodiversite",
-                    "title": "Quiz sur la Biodiversité",
+                    "title": "Les enjeux de la biodiversité",
                     "questions": [
                         {
                             "question": "Combien d''espèces animales sont répertoriées dans le monde ?",
                             "good_answer": "Environ 8,7 millions",
                             "answers": [
-                                "Environ 1 million",
-                                "Environ 15 millions",
-                                "Environ 8,7 millions"
+                                "Environ 1,8 million",
+                                "Environ 8,7 millions",
+                                "Environ 11,9 millions",
+                                "Environ 15,2 millions"
                             ]
                         },
                         {
                             "question": "Quel pourcentage de la biodiversité marine est constitué de poissons ?",
                             "good_answer": "Environ 33%",
                             "answers": [
-                                "Environ 10%",
-                                "Environ 50%",
-                                "Environ 33%"
+                                "Environ 25%",
+                                "Environ 29%",
+                                "Environ 33%",
+                                "Environ 38%"
                             ]
                         },
                         {
                             "question": "Quelle est la plus grande menace pour la biodiversité actuellement ?",
                             "good_answer": "La perte d''habitat",
                             "answers": [
+                                "La perte d''habitat",
                                 "La chasse excessive",
                                 "La pollution de l''air",
-                                "La perte d''habitat"
+                                "La fragmentation des écosystèmes"
                             ]
                         },
                         {
@@ -291,6 +318,7 @@ values ((SELECT id FROM games WHERE name = 'Quiz' AND game_version = '1.0'),
                             "answers": [
                                 "La promotion de la biotechnologie",
                                 "La gestion des déchets",
+                                "La régulation des ressources génétiques",
                                 "La conservation de la diversité biologique"
                             ]
                         },
@@ -300,6 +328,7 @@ values ((SELECT id FROM games WHERE name = 'Quiz' AND game_version = '1.0'),
                             "answers": [
                                 "Les mammifères",
                                 "Les reptiles",
+                                "Les poissons",
                                 "Les insectes"
                             ]
                         },
@@ -309,16 +338,18 @@ values ((SELECT id FROM games WHERE name = 'Quiz' AND game_version = '1.0'),
                             "answers": [
                                 "Le désert du Sahara",
                                 "La toundra arctique",
-                                "La forêt amazonienne"
+                                "La forêt amazonienne",
+                                "Les prairies de Mongolie"
                             ]
                         },
                         {
                             "question": "Quel est le principal mécanisme de l''évolution de la biodiversité ?",
                             "good_answer": "La sélection naturelle",
                             "answers": [
+                                "La sélection naturelle",
                                 "La migration des espèces",
-                                "Les mutations aléatoires",
-                                "La sélection naturelle"
+                                "La compétition interspécifique",
+                                "Les mutations aléatoires"
                             ]
                         },
                         {
@@ -326,8 +357,9 @@ values ((SELECT id FROM games WHERE name = 'Quiz' AND game_version = '1.0'),
                             "good_answer": "La Colombie",
                             "answers": [
                                 "Les États-Unis",
+                                "La Colombie",
                                 "L''Australie",
-                                "La Colombie"
+                                "La Chine"
                             ]
                         }
                     ]
@@ -343,6 +375,7 @@ values ((SELECT id FROM games WHERE name = 'Quiz' AND game_version = '1.0'),
                             "answers": [
                                 "La quantité d''eau présente dans les océans",
                                 "Le nombre total de pays sur Terre",
+                                "La proportion d''oxygène dans l''atmosphère terrestre",
                                 "La variété des formes de vie sur Terre"
                             ]
                         },
@@ -352,16 +385,18 @@ values ((SELECT id FROM games WHERE name = 'Quiz' AND game_version = '1.0'),
                             "answers": [
                                 "Un type de microscope",
                                 "Une substance chimique toxique",
-                                "Un ensemble d''organismes vivants et de leur environnement physique"
+                                "Un ensemble d''organismes vivants et de leur environnement physique",
+                                "Une unité de mesure de la pression atmosphérique"
                             ]
                         },
                         {
                             "question": "Quel est l''objectif de la conservation de la biodiversité ?",
                             "good_answer": "Préserver les espèces et les écosystèmes pour les générations futures",
                             "answers": [
+                                "Préserver les espèces et les écosystèmes pour les générations futures",
                                 "Détruire les habitats naturels",
-                                "Promouvoir l''extinction des espèces",
-                                "Préserver les espèces et les écosystèmes pour les générations futures"
+                                "Encourager la perte irréversible d''espèces et d''écosystèmes",
+                                "Promouvoir l''extinction des espèces"
                             ]
                         },
                         {
@@ -370,6 +405,7 @@ values ((SELECT id FROM games WHERE name = 'Quiz' AND game_version = '1.0'),
                             "answers": [
                                 "Le réchauffement climatique",
                                 "La migration des espèces",
+                                "L''introduction d''espèces envahissantes",
                                 "La destruction des habitats naturels"
                             ]
                         },
@@ -377,9 +413,10 @@ values ((SELECT id FROM games WHERE name = 'Quiz' AND game_version = '1.0'),
                             "question": "Qu''est-ce qu''une espèce endémique ?",
                             "good_answer": "Une espèce présente uniquement dans une région spécifique",
                             "answers": [
+                                "Une espèce présente uniquement dans une région spécifique",
                                 "Une espèce en voie de disparition",
                                 "Une espèce invasive",
-                                "Une espèce présente uniquement dans une région spécifique"
+                                "Une espèce migratrice"
                             ]
                         },
                         {
@@ -388,16 +425,19 @@ values ((SELECT id FROM games WHERE name = 'Quiz' AND game_version = '1.0'),
                             "answers": [
                                 "La pollution de l''environnement",
                                 "La destruction des écosystèmes",
-                                "La fourniture de ressources alimentaires et médicinales"
+                                "La fourniture de ressources alimentaires et médicinales",
+                                "La régulation naturelle des ravageurs et des maladies"
+
                             ]
                         },
                         {
                             "question": "Qu''est-ce qu''un corridor biologique ?",
                             "good_answer": "Une zone qui relie les habitats naturels et permet aux espèces de se déplacer",
                             "answers": [
+                                "Une méthode de culture biologique sans l''utilisation de pesticides",
+                                "Une zone qui relie les habitats naturels et permet aux espèces de se déplacer",
                                 "Un outil utilisé pour mesurer la température",
-                                "Un terme désignant un groupe d''oies",
-                                "Une zone qui relie les habitats naturels et permet aux espèces de se déplacer"
+                                "Un terme désignant un groupe d''oies"
                             ]
                         },
                         {
@@ -406,6 +446,7 @@ values ((SELECT id FROM games WHERE name = 'Quiz' AND game_version = '1.0'),
                             "answers": [
                                 "La multiplication des ressources naturelles",
                                 "La limitation de l''accès aux ressources",
+                                "La gestion durable des ressources naturelles",
                                 "L''utilisation excessive des ressources naturelles au point de mettre en danger leur survie"
                             ]
                         }
@@ -416,12 +457,12 @@ values ((SELECT id FROM games WHERE name = 'Quiz' AND game_version = '1.0'),
         {
             "id": 3,
             "name": "Changement climatique",
-            "description" : "Le changement climatique se réfère aux modifications à long terme des conditions météorologiques mondiales, principalement dues à l''activité humaine, avec des impacts sur l''environnement.",
+            "description" : "Le changement climatique, causé par l''activité humaine, altère durablement les conditions météorologiques mondiales et impacte l''environnement.",
             "quizzes": [
                 {
                     "id": 6,
                     "topic": "Changement climatique",
-                    "title": "Quiz sur le Changement Climatique",
+                    "title": "Qu''est-ce-que le changement climatique",
                     "questions": [
                         {
                             "question": "Quelle est la principale cause du changement climatique actuel ?",
@@ -429,7 +470,8 @@ values ((SELECT id FROM games WHERE name = 'Quiz' AND game_version = '1.0'),
                             "answers": [
                                 "L''activité volcanique",
                                 "Les éruptions solaires",
-                                "Les émissions de gaz à effet de serre"
+                                "Les émissions de gaz à effet de serre",
+                                "La variation naturelle du climat"
                             ]
                         },
                         {
@@ -438,6 +480,7 @@ values ((SELECT id FROM games WHERE name = 'Quiz' AND game_version = '1.0'),
                             "answers": [
                                 "Le méthane (CH4)",
                                 "Le protoxyde d''azote (N2O)",
+                                "L''ozone troposphérique (O3)",
                                 "Le dioxyde de carbone (CO2)"
                             ]
                         },
@@ -445,9 +488,10 @@ values ((SELECT id FROM games WHERE name = 'Quiz' AND game_version = '1.0'),
                             "question": "Quel accord international vise à lutter contre le changement climatique en réduisant les émissions de gaz à effet de serre ?",
                             "good_answer": "L''Accord de Paris",
                             "answers": [
-                                "Le Traité de Kyoto",
-                                "Le Protocole de Montréal",
-                                "L''Accord de Paris"
+                                "L''accord de Paris",
+                                "Le traité de Kyoto",
+                                "Le protocole de Montréal",
+                                "La déclaration de Copenhague"
                             ]
                         },
                         {
@@ -456,6 +500,7 @@ values ((SELECT id FROM games WHERE name = 'Quiz' AND game_version = '1.0'),
                             "answers": [
                                 "Les blizzards",
                                 "Les tornades",
+                                "Les tempêtes tropicales",
                                 "Les vagues de chaleur"
                             ]
                         },
@@ -464,8 +509,9 @@ values ((SELECT id FROM games WHERE name = 'Quiz' AND game_version = '1.0'),
                             "good_answer": "L''acidification des océans",
                             "answers": [
                                 "L''augmentation du niveau de la mer",
+                                "L''acidification des océans",
                                 "La diminution des tempêtes",
-                                "L''acidification des océans"
+                                "La désertification des fonds marins"
                             ]
                         },
                         {
@@ -474,16 +520,18 @@ values ((SELECT id FROM games WHERE name = 'Quiz' AND game_version = '1.0'),
                             "answers": [
                                 "L''Europe occidentale",
                                 "L''Amérique du Nord",
-                                "L''Afrique subsaharienne"
+                                "L''Afrique subsaharienne",
+                                "L''Asie du Sud-Est"
                             ]
                         },
                         {
                             "question": "Quel est l''effet du changement climatique sur les glaciers et les calottes glaciaires ?",
                             "good_answer": "La fonte rapide",
                             "answers": [
+                                "La fonte rapide",
                                 "L''augmentation de la glace",
                                 "La stabilisation",
-                                "La fonte rapide"
+                                "La diminution graduelle"
                             ]
                         },
                         {
@@ -492,7 +540,8 @@ values ((SELECT id FROM games WHERE name = 'Quiz' AND game_version = '1.0'),
                             "answers": [
                                 "Elles émettent du méthane (CH4)",
                                 "Elles n''ont aucun effet sur le climat",
-                                "Elles absorbent le dioxyde de carbone (CO2)"
+                                "Elles absorbent le dioxyde de carbone (CO2)",
+                                "Elles produisent de l''ozone (O3)"
                             ]
                         }
                     ]
@@ -500,7 +549,7 @@ values ((SELECT id FROM games WHERE name = 'Quiz' AND game_version = '1.0'),
                 {
                     "id": 7,
                     "topic": "Changement climatique",
-                    "title": "Quiz sur le Changement Climatique",
+                    "title": "Comment s''effectue le changement climatique",
                     "questions": [
                         {
                             "question": "Quelle est la principale cause du changement climatique?",
@@ -508,6 +557,7 @@ values ((SELECT id FROM games WHERE name = 'Quiz' AND game_version = '1.0'),
                             "answers": [
                                 "Les éruptions volcaniques",
                                 "Les rayons cosmiques",
+                                "L''activité solaire",
                                 "Les émissions de gaz à effet de serre"
                             ]
                         },
@@ -517,25 +567,28 @@ values ((SELECT id FROM games WHERE name = 'Quiz' AND game_version = '1.0'),
                             "answers": [
                                 "L''oxygène (O2)",
                                 "L''azote (N2)",
-                                "Le dioxyde de carbone (CO2)"
+                                "Le dioxyde de carbone (CO2)",
+                                "L''hélium (He)"
                             ]
                         },
                         {
                             "question": "Qu''est-ce que l''effet de serre?",
                             "good_answer": "Le phénomène par lequel certaines substances emprisonnent la chaleur dans l''atmosphère terrestre.",
                             "answers": [
+                                "Le phénomène par lequel certaines substances emprisonnent la chaleur dans l''atmosphère terrestre.",
                                 "Un vent fort",
-                                "Un courant océanique",
-                                "Le phénomène par lequel certaines substances emprisonnent la chaleur dans l''atmosphère terrestre."
+                                "Les fortes pluies",
+                                "Un courant océanique"
                             ]
                         },
                         {
                             "question": "Quelle est la conséquence du réchauffement climatique sur les glaciers?",
                             "good_answer": "La fonte des glaciers",
                             "answers": [
+                                "L''expansion des glaciers",
                                 "La croissance des glaciers",
-                                "La couleur des glaciers devient rouge",
-                                "La fonte des glaciers"
+                                "La fonte des glaciers",
+                                "La couleur des glaciers devient rouge"
                             ]
                         },
                         {
@@ -544,6 +597,7 @@ values ((SELECT id FROM games WHERE name = 'Quiz' AND game_version = '1.0'),
                             "answers": [
                                 "L''agriculture",
                                 "Le secteur de la santé",
+                                "Le secteur du transport",
                                 "Le secteur de l''énergie"
                             ]
                         },
@@ -551,9 +605,10 @@ values ((SELECT id FROM games WHERE name = 'Quiz' AND game_version = '1.0'),
                             "question": "Quel accord international vise à lutter contre le changement climatique?",
                             "good_answer": "L''Accord de Paris",
                             "answers": [
-                                "L''Accord de Rome",
-                                "L''Accord de Londres",
-                                "L''Accord de Paris"
+                                "L''accord de Rome",
+                                "L''accord de Paris",
+                                "L''accord de Londres",
+                                "L''accord de Prague"
                             ]
                         },
                         {
@@ -571,7 +626,8 @@ values ((SELECT id FROM games WHERE name = 'Quiz' AND game_version = '1.0'),
                             "answers": [
                                 "Libérer du dioxyde de carbone dans l''atmosphère",
                                 "Détruire la couche d''ozone",
-                                "Absorber le dioxyde de carbone de l''atmosphère"
+                                "Absorber le dioxyde de carbone de l''atmosphère",
+                                "La multiplication des cyclones tropicaux"
                             ]
                         }
                     ]
@@ -579,7 +635,7 @@ values ((SELECT id FROM games WHERE name = 'Quiz' AND game_version = '1.0'),
                 {
                     "id": 8,
                     "topic": "Changement climatique",
-                    "title": "Quiz sur le Réchauffement Climatique",
+                    "title": "Comprendre le réchauffement climatique",
                     "questions": [
                         {
                             "question": "Quel est l''impact du réchauffement climatique sur la fréquence des phénomènes météorologiques extrêmes ?",
@@ -587,25 +643,28 @@ values ((SELECT id FROM games WHERE name = 'Quiz' AND game_version = '1.0'),
                             "answers": [
                                 "Ils deviennent moins fréquents",
                                 "Ils restent inchangés",
-                                "Ils deviennent plus fréquents"
+                                "Ils deviennent plus fréquents",
+                                "Ils diminuent en intensité"
                             ]
                         },
                         {
                             "question": "Quelle est la principale source d''émission de gaz à effet de serre liée aux activités humaines ?",
                             "good_answer": "La combustion des énergies fossiles",
                             "answers": [
+                                "La combustion des énergies fossiles",
                                 "L''agriculture",
                                 "La déforestation",
-                                "La combustion des énergies fossiles"
+                                "Les déchets industriels"
                             ]
                         },
                         {
                             "question": "Quel phénomène climatique est associé au réchauffement des océans ?",
                             "good_answer": "L''élévation du niveau de la mer",
                             "answers": [
+                                "L''élévation du niveau de la mer",
                                 "La diminution des tempêtes",
                                 "La formation d''icebergs",
-                                "L''élévation du niveau de la mer"
+                                "L''acidification des océans"
                             ]
                         },
                         {
@@ -614,7 +673,8 @@ values ((SELECT id FROM games WHERE name = 'Quiz' AND game_version = '1.0'),
                             "answers": [
                                 "Les émissions de CO2",
                                 "Les poussières atmosphériques",
-                                "Les gaz réfrigérants"
+                                "Les gaz réfrigérants",
+                                "Les déchets industriels"
                             ]
                         },
                         {
@@ -623,6 +683,7 @@ values ((SELECT id FROM games WHERE name = 'Quiz' AND game_version = '1.0'),
                             "answers": [
                                 "L''augmentation des espèces",
                                 "La migration des espèces",
+                                "L''expansion des aires de répartition des espèces",
                                 "La perte de diversité biologique"
                             ]
                         },
@@ -630,9 +691,10 @@ values ((SELECT id FROM games WHERE name = 'Quiz' AND game_version = '1.0'),
                             "question": "Quelle est la principale conséquence du réchauffement climatique sur les régions polaires ?",
                             "good_answer": "La fonte accélérée des glaciers",
                             "answers": [
+                                "La fonte accélérée des glaciers",
                                 "L''augmentation de la banquise",
                                 "La stabilisation des températures",
-                                "La fonte accélérée des glaciers"
+                                "L''expansion des calottes glaciaires"
                             ]
                         },
                         {
@@ -641,16 +703,18 @@ values ((SELECT id FROM games WHERE name = 'Quiz' AND game_version = '1.0'),
                             "answers": [
                                 "Ils amplifient le réchauffement",
                                 "Ils sont insensibles à la chaleur",
-                                "Ils agissent comme un réservoir thermique"
+                                "Ils agissent comme un réservoir thermique",
+                                "Ils absorbent l''excès de chaleur du réchauffement climatique."
                             ]
                         },
                         {
                             "question": "Quel gaz est libéré par la fonte du permafrost, contribuant au réchauffement climatique ?",
                             "good_answer": "Le méthane",
                             "answers": [
+                                "Le méthane",
                                 "Le dioxyde de carbone",
                                 "L''oxygène",
-                                "Le méthane"
+                                "L''azote"
                             ]
                         }
                     ]
@@ -659,13 +723,13 @@ values ((SELECT id FROM games WHERE name = 'Quiz' AND game_version = '1.0'),
         },
         {
             "id": 4,
-            "name": "Ecologie Marine",
-            "description" : "L''écologie marine étudie les interactions entre les organismes marins et leur environnement, crucial pour la compréhension et la préservation des océans.",
+            "name": "Ecologie marine",
+            "description" : "L''écologie marine explore les liens entre organismes marins et environnement, essentiels pour la préservation des océans.",
             "quizzes": [
                 {
                     "id": 9,
-                    "topic": "Ecologie Marine",
-                    "title": "Quiz sur l''écologie marine",
+                    "topic": "Ecologie marine",
+                    "title": "Qu''est-ce-que l''écologie marine",
                     "questions": [
                         {
                             "question": "Quelle est la principale menace pour les récifs coralliens ?",
@@ -673,7 +737,8 @@ values ((SELECT id FROM games WHERE name = 'Quiz' AND game_version = '1.0'),
                             "answers": [
                                 "La pollution plastique",
                                 "La surpêche",
-                                "Le réchauffement climatique"
+                                "Le réchauffement climatique",
+                                "La diminution du taux de salinité de l''eau de mer"
                             ]
                         },
                         {
@@ -682,6 +747,7 @@ values ((SELECT id FROM games WHERE name = 'Quiz' AND game_version = '1.0'),
                             "answers": [
                                 "Le requin blanc",
                                 "L''orque",
+                                "Le dauphin",
                                 "La baleine bleue"
                             ]
                         },
@@ -689,9 +755,10 @@ values ((SELECT id FROM games WHERE name = 'Quiz' AND game_version = '1.0'),
                             "question": "Comment s''appelle la zone en pleine mer où la vie est très abondante ?",
                             "good_answer": "La zone pélagique",
                             "answers": [
+                                "La zone pélagique",
                                 "La zone benthique",
                                 "La zone abyssale",
-                                "La zone pélagique"
+                                "La zone littorale"
                             ]
                         },
                         {
@@ -699,8 +766,9 @@ values ((SELECT id FROM games WHERE name = 'Quiz' AND game_version = '1.0'),
                             "good_answer": "Une prairie sous-marine d''herbes marines",
                             "answers": [
                                 "Un corail géant",
+                                "Une prairie sous-marine d''herbes marines",
                                 "Un poisson de grande taille",
-                                "Une prairie sous-marine d''herbes marines"
+                                "Un écosystème aquatique constitué principalement de champignons marins."
                             ]
                         },
                         {
@@ -709,7 +777,8 @@ values ((SELECT id FROM games WHERE name = 'Quiz' AND game_version = '1.0'),
                             "answers": [
                                 "Un écosystème situé au fond de l''océan",
                                 "Un espace sans vie marine",
-                                "Un ensemble de communautés vivantes entre la terre et la mer"
+                                "Un ensemble de communautés vivantes entre la terre et la mer",
+                                "Un regroupement de plantes marines uniquement."
                             ]
                         },
                         {
@@ -718,6 +787,7 @@ values ((SELECT id FROM games WHERE name = 'Quiz' AND game_version = '1.0'),
                             "answers": [
                                 "Un mouvement régulier des marées",
                                 "Un tourbillon marin",
+                                "Le prout d''une balaine bleue",
                                 "Une série de vagues provoquée par un séisme sous-marin"
                             ]
                         },
@@ -726,17 +796,19 @@ values ((SELECT id FROM games WHERE name = 'Quiz' AND game_version = '1.0'),
                             "good_answer": "Des espèces non indigènes qui envahissent un écosystème marin",
                             "answers": [
                                 "Des espèces endémiques protégées",
+                                "Des espèces non indigènes qui envahissent un écosystème marin",
                                 "Des espèces rares et menacées",
-                                "Des espèces non indigènes qui envahissent un écosystème marin"
+                                "Des espèces indigènes adaptées aux écosystèmes marins."
                             ]
                         },
                         {
                             "question": "Qu''est-ce qu''un récif artificiel ?",
                             "good_answer": "Une structure créée par l''homme pour favoriser la biodiversité marine",
                             "answers": [
+                                "Une structure créée par l''homme pour favoriser la biodiversité marine",
                                 "Un récif naturel formé par des coraux",
                                 "Un récif sans vie marine",
-                                "Une structure créée par l''homme pour favoriser la biodiversité marine"
+                                "Une formation rocheuse sous-marine résultant de processus géologiques naturels."
                             ]
                         }
                     ]
@@ -744,7 +816,7 @@ values ((SELECT id FROM games WHERE name = 'Quiz' AND game_version = '1.0'),
                 {
                     "id": 10,
                     "topic": "Écologie marine",
-                    "title": "Quiz sur l''Écologie Marine",
+                    "title": "Les enjeux de l''écologie marine",
                     "questions": [
                         {
                             "question": "Quel est le plus grand contributeur à la pollution plastique des océans ?",
@@ -752,16 +824,18 @@ values ((SELECT id FROM games WHERE name = 'Quiz' AND game_version = '1.0'),
                             "answers": [
                                 "Les emballages alimentaires en carton",
                                 "Les déchets métalliques",
-                                "Les déchets plastiques à usage unique"
+                                "Les déchets plastiques à usage unique",
+                                "Les bouteilles d''eau en verre"
                             ]
                         },
                         {
                             "question": "Quel est le principal danger pour les récifs coralliens dans le contexte de l''écologie marine ?",
                             "good_answer": "Le blanchissement corallien",
                             "answers": [
+                                "Le blanchissement corallien",
                                 "L''acidification des océans",
                                 "La surpêche",
-                                "Le blanchissement corallien"
+                                "La migration des tortues marines"
                             ]
                         },
                         {
@@ -770,6 +844,7 @@ values ((SELECT id FROM games WHERE name = 'Quiz' AND game_version = '1.0'),
                             "answers": [
                                 "Le changement climatique",
                                 "La destruction de l''habitat",
+                                "La pollution lumineuse des zones côtières",
                                 "Les filets de pêche abandonnés"
                             ]
                         },
@@ -779,6 +854,7 @@ values ((SELECT id FROM games WHERE name = 'Quiz' AND game_version = '1.0'),
                             "answers": [
                                 "La stimulation de la croissance des algues",
                                 "L''amélioration de la biodiversité",
+                                "La promotion de la pêche durable",
                                 "La contamination des espèces marines"
                             ]
                         },
@@ -786,9 +862,10 @@ values ((SELECT id FROM games WHERE name = 'Quiz' AND game_version = '1.0'),
                             "question": "Quel est le rôle des mangroves dans l''équilibre de l''écosystème marin ?",
                             "good_answer": "Elles servent de nurserie pour de nombreuses espèces marines",
                             "answers": [
+                                "Elles servent de nurserie pour de nombreuses espèces marines",
                                 "Elles sont des lieux de reproduction pour les méduses",
                                 "Elles n''ont aucun impact sur l''écologie marine",
-                                "Elles servent de nurserie pour de nombreuses espèces marines"
+                                "Elles sont principalement des habitats pour les requins"
                             ]
                         },
                         {
@@ -797,7 +874,8 @@ values ((SELECT id FROM games WHERE name = 'Quiz' AND game_version = '1.0'),
                             "answers": [
                                 "La pêche artisanale",
                                 "La pêche industrielle responsable",
-                                "La pêche illégale, non déclarée et non réglementée (INN)"
+                                "La pêche illégale, non déclarée et non réglementée (INN)",
+                                "La cueillette de coquillages excessive"
                             ]
                         },
                         {
@@ -805,8 +883,9 @@ values ((SELECT id FROM games WHERE name = 'Quiz' AND game_version = '1.0'),
                             "good_answer": "Elle affaiblit leurs coquilles",
                             "answers": [
                                 "Elle renforce leurs coquilles",
+                                "Elle affaiblit leurs coquilles",
                                 "Elle n''affecte pas les coquillages",
-                                "Elle affaiblit leurs coquilles"
+                                "Elle les rend plus résistants aux prédateurs"
                             ]
                         },
                         {
@@ -815,24 +894,25 @@ values ((SELECT id FROM games WHERE name = 'Quiz' AND game_version = '1.0'),
                             "answers": [
                                 "L''amélioration de la qualité de l''eau",
                                 "L''augmentation de la productivité marine",
-                                "La perte d''habitats essentiels pour de nombreuses espèces"
+                                "La perte d''habitats essentiels pour de nombreuses espèces",
+                                "La diminution des températures océaniques"
                             ]
                         }
                     ]
                 },
-
                 {
                     "id": 11,
                     "topic": "Écologie marine",
-                    "title": "Quiz sur l''Écologie Marine",
+                    "title": "Préservez l''écologie marine",
                     "questions": [
                         {
                             "question": "Quel est le rôle des herbiers marins dans l''écosystème marin ?",
                             "good_answer": "Ils servent de nurserie et d''habitat pour de nombreuses espèces",
                             "answers": [
+                                "Ils servent de nurserie et d''habitat pour de nombreuses espèces",
                                 "Ils produisent de l''oxygène pour les poissons",
                                 "Ils n''ont aucun impact sur l''écosystème marin",
-                                "Ils servent de nurserie et d''habitat pour de nombreuses espèces"
+                                "Ils agissent comme des filtres naturels en purifiant l''eau de mer"
                             ]
                         },
                         {
@@ -841,7 +921,8 @@ values ((SELECT id FROM games WHERE name = 'Quiz' AND game_version = '1.0'),
                             "answers": [
                                 "La perte d''habitats",
                                 "Les changements climatiques",
-                                "La surpêche et le commerce des ailerons de requin"
+                                "La surpêche et le commerce des ailerons de requin",
+                                "La prédation par les méduses géantes"
                             ]
                         },
                         {
@@ -850,6 +931,7 @@ values ((SELECT id FROM games WHERE name = 'Quiz' AND game_version = '1.0'),
                             "answers": [
                                 "Elles favorisent la croissance des algues",
                                 "Elles n''ont aucun impact sur la faune marine",
+                                "Elles stimulent la reproduction des espèces marines",
                                 "Elles peuvent causer des mortalités massives de poissons et de coquillages"
                             ]
                         },
@@ -858,8 +940,9 @@ values ((SELECT id FROM games WHERE name = 'Quiz' AND game_version = '1.0'),
                             "good_answer": "Elle perturbe leur communication et leur orientation",
                             "answers": [
                                 "Elle renforce leur capacité d''écholocation",
+                                "Elle perturbe leur communication et leur orientation",
                                 "Elle n''affecte pas les cétacés",
-                                "Elle perturbe leur communication et leur orientation"
+                                "Elle améliore leur capacité à détecter les prédateurs marins"
                             ]
                         },
                         {
@@ -868,6 +951,7 @@ values ((SELECT id FROM games WHERE name = 'Quiz' AND game_version = '1.0'),
                             "answers": [
                                 "Elle améliore la flottabilité des oiseaux",
                                 "Elle n''a aucun effet sur les oiseaux marins",
+                                "Elle stimule la croissance des plumes chez les oiseaux marins",
                                 "Elle peut causer des dommages aux plumes et à la structure des plumes"
                             ]
                         },
@@ -875,6 +959,7 @@ values ((SELECT id FROM games WHERE name = 'Quiz' AND game_version = '1.0'),
                             "question": "Quel est le rôle des récifs coralliens dans la protection des côtes contre les tempêtes ?",
                             "good_answer": "Ils agissent comme des barrières naturelles",
                             "answers": [
+                                "Ils servent de sources d''énergie pour les tempêtes",
                                 "Ils amplifient l''impact des tempêtes",
                                 "Ils n''ont aucun effet sur les tempêtes",
                                 "Ils agissent comme des barrières naturelles"
@@ -884,9 +969,10 @@ values ((SELECT id FROM games WHERE name = 'Quiz' AND game_version = '1.0'),
                             "question": "Quel est l''effet de la montée du niveau de la mer sur les écosystèmes côtiers ?",
                             "good_answer": "Elle entraîne la perte d''habitats côtiers",
                             "answers": [
+                                "Elle entraîne la perte d''habitats côtiers",
                                 "Elle favorise la biodiversité côtière",
                                 "Elle n''a aucun impact sur les écosystèmes côtiers",
-                                "Elle entraîne la perte d''habitats côtiers"
+                                "Elle stimule la croissance des écosystèmes côtiers"
                             ]
                         },
                         {
@@ -894,8 +980,9 @@ values ((SELECT id FROM games WHERE name = 'Quiz' AND game_version = '1.0'),
                             "good_answer": "Les engins de pêche abandonnés qui continuent de capturer des animaux marins",
                             "answers": [
                                 "La pêche excessive",
+                                "Les engins de pêche abandonnés qui continuent de capturer des animaux marins",
                                 "La destruction des habitats marins",
-                                "Les engins de pêche abandonnés qui continuent de capturer des animaux marins"
+                                "La surpêche illégale"
                             ]
                         }
                     ]
@@ -905,244 +992,259 @@ values ((SELECT id FROM games WHERE name = 'Quiz' AND game_version = '1.0'),
         {
             "id": 5,
             "name": "Protection des zones humides",
-            "description" : "La protection des zones humides vise à préserver ces écosystèmes essentiels qui fournissent de l''eau douce, régulent les inondations et abritent une biodiversité unique.",
+            "description" : "Protéger les zones humides préserve des écosystèmes essentiels, assurant eau douce, régulation des inondations et biodiversité unique.",
             "quizzes": [
                 {
                     "id": 12,
                     "topic": "Protection des zones humides",
-                    "quiz": {
-                        "title": "Quiz de l''Envol du Héron",
-                        "questions": [
-                            {
-                                "question": "Quelle est la principale menace pour les zones humides ?",
-                                "good_answer": "Le drainage excessif",
-                                "answers": [
-                                    "Les castors",
-                                    "Les chauves-souris",
-                                    "Le drainage excessif"
-                                ]
-                            },
-                            {
-                                "question": "Quel est le rôle des zones humides dans l''écosystème ?",
-                                "good_answer": "Elles filtrent les eaux et purifient l''air",
-                                "answers": [
-                                    "Elles sont des habitats pour les dromadaires",
-                                    "Elles sont des plateformes de lancement de fusées",
-                                    "Elles filtrent les eaux et purifient l''air"
-                                ]
-                            },
-                            {
-                                "question": "Comment peut-on protéger les zones humides ?",
-                                "good_answer": "En limitant les activités humaines impactantes",
-                                "answers": [
-                                    "En construisant des gratte-ciels en leur centre",
-                                    "En organisant des courses de bateaux à moteur",
-                                    "En limitant les activités humaines impactantes"
-                                ]
-                            },
-                            {
-                                "question": "Quel oiseau est emblématique des zones humides ?",
-                                "good_answer": "Le héron cendré",
-                                "answers": [
-                                    "Le manchot empereur",
-                                    "Le pigeon voyageur",
-                                    "Le héron cendré"
-                                ]
-                            },
-                            {
-                                "question": "Quel est l''effet des zones humides sur les inondations ?",
-                                "good_answer": "Elles les atténuent en absorbant l''eau en excès",
-                                "answers": [
-                                    "Elles les aggravent en utilisant des pompiers",
-                                    "Elles les ignorent et font des châteaux de sable",
-                                    "Elles les atténuent en absorbant l''eau en excès"
-                                ]
-                            },
-                            {
-                                "question": "Qu''est-ce qu''un marais ?",
-                                "good_answer": "Un écosystème humide avec une végétation aquatique flottante",
-                                "answers": [
-                                    "Une tartine beurrée",
-                                    "Une danse traditionnelle",
-                                    "Un écosystème humide avec une végétation aquatique flottante"
-                                ]
-                            },
-                            {
-                                "question": "Pourquoi est-il important de préserver les zones humides ?",
-                                "good_answer": "Elles abritent une biodiversité exceptionnelle",
-                                "answers": [
-                                    "Elles sont le repaire des extraterrestres",
-                                    "Elles ont des restaurants étoilés Michelin",
-                                    "Elles abritent une biodiversité exceptionnelle"
-                                ]
-                            },
-                            {
-                                "question": "Quelle est la meilleure façon de visiter une zone humide ?",
-                                "good_answer": "En respectant la réglementation en vigueur",
-                                "answers": [
-                                    "En organisant une rave-party géante",
-                                    "En portant un sombrero fluorescent",
-                                    "En respectant la réglementation en vigueur"
-                                ]
-                            }
-                        ]
-                    }
+                    "title": "L''envol du Héron",
+                    "questions": [
+                        {
+                            "question": "Quelle est la principale menace pour les zones humides ?",
+                            "good_answer": "Le drainage excessif",
+                            "answers": [
+                                "Les castors",
+                                "Les chauves-souris",
+                                "Le drainage excessif",
+                                "La surpopulation de grenouilles"
+                            ]
+                        },
+                        {
+                            "question": "Quel est le rôle des zones humides dans l''écosystème ?",
+                            "good_answer": "Elles filtrent les eaux et purifient l''air",
+                            "answers": [
+                                "Elles sont des zones de recharge pour les extraterrestres",
+                                "Elles sont des habitats pour les dromadaires",
+                                "Elles sont des plateformes de lancement de fusées",
+                                "Elles filtrent les eaux et purifient l''air"
+                            ]
+                        },
+                        {
+                            "question": "Comment peut-on protéger les zones humides ?",
+                            "good_answer": "En limitant les activités humaines impactantes",
+                            "answers": [
+                                "En construisant des gratte-ciels en leur centre",
+                                "En organisant des courses de bateaux à moteur",
+                                "En introduisant des espèces de poissons dans l''écosystème des zones humides",
+                                "En limitant les activités humaines impactantes"
+                            ]
+                        },
+                        {
+                            "question": "Quel oiseau est emblématique des zones humides ?",
+                            "good_answer": "Le héron cendré",
+                            "answers": [
+                                "Le héron cendré",
+                                "Le manchot empereur",
+                                "Le pigeon voyageur",
+                                "La mouette rieuse"
+                            ]
+                        },
+                        {
+                            "question": "Quel est l''effet des zones humides sur les inondations ?",
+                            "good_answer": "Elles les atténuent en absorbant l''eau en excès",
+                            "answers": [
+                                "Elles les atténuent en absorbant l''eau en excès",
+                                "Elles les aggravent en utilisant des pompiers",
+                                "Elles les ignorent et font des châteaux de sable",
+                                "Elles intensifient les inondations en organisant des fêtes aquatiques"
+                            ]
+                        },
+                        {
+                            "question": "Qu''est-ce qu''un marais ?",
+                            "good_answer": "Un écosystème humide avec une végétation aquatique flottante",
+                            "answers": [
+                                "Une tartine beurrée",
+                                "Une danse traditionnelle",
+                                "Un écosystème humide avec une végétation aquatique flottante",
+                                "Un nuage de poussière stellaire"
+                            ]
+                        },
+                        {
+                            "question": "Pourquoi est-il important de préserver les zones humides ?",
+                            "good_answer": "Elles abritent une biodiversité exceptionnelle",
+                            "answers": [
+                                "Elles sont le repaire des extraterrestres",
+                                "Elles ont des restaurants étoilés Michelin",
+                                "Elles sont les quartiers généraux secrets des super-héros",
+                                "Elles abritent une biodiversité exceptionnelle"
+                            ]
+                        },
+                        {
+                            "question": "Quelle est la meilleure façon de visiter une zone humide ?",
+                            "good_answer": "En respectant la réglementation en vigueur",
+                            "answers": [
+                                "En organisant une rave-party géante",
+                                "En respectant la réglementation en vigueur",
+                                "En portant un sombrero fluorescent",
+                                "En parcourant la zone en sautant d''une pierre à l''autre pour éviter l''eau"
+                            ]
+                        }
+                    ]
                 },
                 {
                     "id": 13,
                     "topic": "Protection des zones humides",
-                    "quiz": {
-                        "title": "Quiz rigolo sur la protection des zones humides",
-                        "questions": [
-                            {
-                                "question": "Quelle est la principale cause de dégradation des zones humides ?",
-                                "good_answer": "La pollution",
-                                "answers": [
-                                    "Les oiseaux",
-                                    "La danse de la pluie",
-                                    "La pollution"
-                                ]
-                            },
-                            {
-                                "question": "Quel est l''animal emblématique des zones humides ?",
-                                "good_answer": "Le castor",
-                                "answers": [
-                                    "La licorne",
-                                    "Le kangourou",
-                                    "Le castor"
-                                ]
-                            },
-                            {
-                                "question": "Qu''est-ce qu''un marais ?",
-                                "good_answer": "Une zone humide principalement composée d''herbes et de roseaux",
-                                "answers": [
-                                    "Un dessert sucré",
-                                    "Un type de chapeau",
-                                    "Une zone humide principalement composée d''herbes et de roseaux"
-                                ]
-                            },
-                            {
-                                "question": "Quel est l''effet bénéfique des zones humides sur l''environnement ?",
-                                "good_answer": "Elles filtrent et purifient l''eau",
-                                "answers": [
-                                    "Elles rendent les grenouilles sympathiques",
-                                    "Elles produisent des arcs-en-ciel",
-                                    "Elles filtrent et purifient l''eau"
-                                ]
-                            },
-                            {
-                                "question": "Quelle est la plus grande zone humide du monde ?",
-                                "good_answer": "Le Pantanal au Brésil",
-                                "answers": [
-                                    "Mon jardin",
-                                    "Le désert du Sahara",
-                                    "Le Pantanal au Brésil"
-                                ]
-                            },
-                            {
-                                "question": "Comment appelle-t-on un petit étang formé dans une zone humide ?",
-                                "good_answer": "Une mare",
-                                "answers": [
-                                    "Un bouillon de culture",
-                                    "Un jacuzzi",
-                                    "Une mare"
-                                ]
-                            },
-                            {
-                                "question": "Quelle est la couleur de la vase présente dans les zones humides ?",
-                                "good_answer": "Marron",
-                                "answers": [
-                                    "Orange fluo",
-                                    "Arc-en-ciel",
-                                    "Marron"
-                                ]
-                            },
-                            {
-                                "question": "Qu''est-ce qu''une tourbière ?",
-                                "good_answer": "Une zone humide où se forme progressivement une sorte de terre spéciale appelée tourbe",
-                                "answers": [
-                                    "Une tour en béton",
-                                    "Une espèce de biscuit",
-                                    "Une zone humide où se forme progressivement une sorte de terre spéciale appelée tourbe"
-                                ]
-                            }
-                        ]
-                    }
+                    "title": "Qu''est-ce-que la protection des zones humides ?",
+                    "questions": [
+                        {
+                            "question": "Quelle est la principale cause de dégradation des zones humides ?",
+                            "good_answer": "La pollution",
+                            "answers": [
+                                "Les oiseaux",
+                                "La danse de la pluie",
+                                "La pollution",
+                                "Le réchauffement climatique"
+                            ]
+                        },
+                        {
+                            "question": "Quel est l''animal emblématique des zones humides ?",
+                            "good_answer": "Le castor",
+                            "answers": [
+                                "La licorne",
+                                "Le castor",
+                                "Le kangourou",
+                                "Le tigre"
+                            ]
+                        },
+                        {
+                            "question": "Qu''est-ce qu''un marais ?",
+                            "good_answer": "Une zone humide principalement composée d''herbes et de roseaux",
+                            "answers": [
+                                "Une zone humide principalement composée d''herbes et de roseaux",
+                                "Un dessert sucré",
+                                "Un type de chapeau",
+                                "un quartier dans Paris"
+                            ]
+                        },
+                        {
+                            "question": "Quel est l''effet bénéfique des zones humides sur l''environnement ?",
+                            "good_answer": "Elles filtrent et purifient l''eau",
+                            "answers": [
+                                "Elles rendent les grenouilles sympathiques",
+                                "Elles produisent des arcs-en-ciel",
+                                "Elles filtrent et purifient l''eau",
+                                "Elles servent de piste de danse pour les oiseaux migrateurs"
+                            ]
+                        },
+                        {
+                            "question": "Quelle est la plus grande zone humide du monde ?",
+                            "good_answer": "Le Pantanal au Brésil",
+                            "answers": [
+                                "Mon jardin",
+                                "Le désert du Sahara",
+                                "La Seine",
+                                "Le Pantanal au Brésil"
+                            ]
+                        },
+                        {
+                            "question": "Comment appelle-t-on un petit étang formé dans une zone humide ?",
+                            "good_answer": "Une mare",
+                            "answers": [
+                                "Un bouillon de culture",
+                                "Un jacuzzi",
+                                "Une mare",
+                                "Un bain de grenouilles"
+                            ]
+                        },
+                        {
+                            "question": "Quelle est la couleur de la vase présente dans les zones humides ?",
+                            "good_answer": "Marron",
+                            "answers": [
+                                "Marron",
+                                "Orange fluo",
+                                "Arc-en-ciel",
+                                "Vert"
+                            ]
+                        },
+                        {
+                            "question": "Qu''est-ce qu''une tourbière ?",
+                            "good_answer": "Une zone humide où se forme progressivement une sorte de terre spéciale appelée tourbe",
+                            "answers": [
+                                "Une tour en béton",
+                                "Une espèce de biscuit",
+                                "Un type de fruit tropical à la chair juteuse et sucrée",
+                                "Une zone humide où se forme progressivement une sorte de terre spéciale appelée tourbe"
+                            ]
+                        }
+                    ]
                 },
                 {
                     "id": 14,
                     "topic": "Protection des zones humides",
-                    "quiz": {
-                        "title": "Le marécage sophistiqué",
-                        "questions": [
-                            {
-                                "question": "Quel pourcentage des zones humides mondiales ont disparu au cours des 100 dernières années ?",
-                                "good_answer": "50%",
-                                "answers": [
-                                    "5%",
-                                    "25%",
-                                    "50%"
-                                ]
-                            },
-                            {
-                                "question": "Quelle est la plus grande zone humide du monde en termes de superficie ?",
-                                "good_answer": "Le Pantanal",
-                                "answers": [
-                                    "Le Marais Poitevin",
-                                    "Les Everglades",
-                                    "Le Pantanal"
-                                ]
-                            },
-                            {
-                                "question": "Combien d''espèces d''oiseaux dépendent des zones humides pour leur survie ?",
-                                "good_answer": "Plus de 1 000",
-                                "answers": [
-                                    "Moins de 100",
-                                    "Environ 500",
-                                    "Plus de 1 000"
-                                ]
-                            },
-                            {
-                                "question": "Quelle proportion des espèces menacées d''extinction vivent dans les zones humides ?",
-                                "good_answer": "Environ 40%",
-                                "answers": [
-                                    "Moins de 10%",
-                                    "Environ 20%",
-                                    "Environ 40%"
-                                ]
-                            },
-                            {
-                                "question": "Quelle est la principale cause de la destruction des zones humides dans le monde ?",
-                                "good_answer": "L''urbanisation",
-                                "answers": [
-                                    "Le réchauffement climatique",
-                                    "L''agriculture intensive",
-                                    "L''urbanisation"
-                                ]
-                            }
-                        ]
-                    }
+                    "title": "Le marécage sophistiqué",
+                    "questions": [
+                        {
+                            "question": "Quel pourcentage des zones humides mondiales ont disparu au cours des 100 dernières années ?",
+                            "good_answer": "50%",
+                            "answers": [
+                                "5%",
+                                "25%",
+                                "50%",
+                                "75%"
+                            ]
+                        },
+                        {
+                            "question": "Quelle est la plus grande zone humide du monde en termes de superficie ?",
+                            "good_answer": "Le Pantanal",
+                            "answers": [
+                                "Le Pantanal",
+                                "Le Marais Poitevin",
+                                "Les Everglades",
+                                "La Savane Mara"
+                            ]
+                        },
+                        {
+                            "question": "Combien d''espèces d''oiseaux dépendent des zones humides pour leur survie ?",
+                            "good_answer": "Plus de 1 000",
+                            "answers": [
+                                "Moins de 100",
+                                "Environ 500",
+                                "Plus de 1 000",
+                                "Plus de 10 000"
+                            ]
+                        },
+                        {
+                            "question": "Quelle proportion des espèces menacées d''extinction vivent dans les zones humides ?",
+                            "good_answer": "Environ 40%",
+                            "answers": [
+                                "Moins de 10%",
+                                "Environ 20%",
+                                "Environ 30%",
+                                "Environ 40%"
+                            ]
+                        },
+                        {
+                            "question": "Quelle est la principale cause de la destruction des zones humides dans le monde ?",
+                            "good_answer": "L''urbanisation",
+                            "answers": [
+                                "Le réchauffement climatique",
+                                "L''urbanisation",
+                                "L''agriculture intensive",
+                                "La surpêche"
+                            ]
+                        }
+                    ]
                 }
             ]
         },
         {
             "id": 6,
             "name": "Conservation de l''eau",
-            "description" : "La conservation de l''eau implique des pratiques visant à économiser et à gérer judicieusement cette ressource précieuse pour répondre aux besoins actuels et futurs.",
+            "description" : "La conservation de l''eau vise à économiser et gérer judicieusement cette ressource pour répondre aux besoins présents et futurs.",
             "quizzes": [
                 {
                     "id": 15,
                     "topic": "Conservation de l''eau",
-                    "quiz": {
-                        "title": "Le joueur d''eau",
-                        "questions": [
+                    "title": "Le joueur d''eau",
+                    "questions": [
                             {
                                 "question": "Quelle est la quantité d''eau nécessaire pour qu''un humain survive pendant une semaine sans aucune autre source de nourriture ?",
                                 "good_answer": "7 litres",
                                 "answers": [
                                     "1 litre",
-                                    "20 litres",
-                                    "7 litres"
+                                    "7 litres",
+                                    "13 litres",
+                                    "20 litres"
                                 ]
                             },
                             {
@@ -1151,7 +1253,8 @@ values ((SELECT id FROM games WHERE name = 'Quiz' AND game_version = '1.0'),
                                 "answers": [
                                     "Les robinets qui restent ouverts",
                                     "L''évaporation naturelle",
-                                    "Les canalisations défectueuses"
+                                    "Les canalisations défectueuses",
+                                    "Les poissons qui boivent l''eau"
                                 ]
                             },
                             {
@@ -1160,6 +1263,7 @@ values ((SELECT id FROM games WHERE name = 'Quiz' AND game_version = '1.0'),
                                 "answers": [
                                     "L''Amérique du Nord",
                                     "L''Australie",
+                                    "L''Antarctique",
                                     "Le Moyen-Orient"
                                 ]
                             },
@@ -1168,7 +1272,8 @@ values ((SELECT id FROM games WHERE name = 'Quiz' AND game_version = '1.0'),
                                 "good_answer": "97 %",
                                 "answers": [
                                     "50 %",
-                                    "75 %",
+                                    "78 %",
+                                    "91 %",
                                     "97 %"
                                 ]
                             },
@@ -1176,27 +1281,27 @@ values ((SELECT id FROM games WHERE name = 'Quiz' AND game_version = '1.0'),
                                 "question": "Dans quelle activité quotidienne consommons-nous le plus d''eau en moyenne ?",
                                 "good_answer": "L''agriculture",
                                 "answers": [
+                                    "L''agriculture",
                                     "La consommation domestique",
                                     "L''industrie",
-                                    "L''agriculture"
+                                    "La pêche sportive"
                                 ]
                             }
                         ]
-                    }
                 },
                 {
                     "id": 16,
                     "topic": "Conservation de l''eau",
-                    "quiz": {
-                        "title": "Plouf Plouf à la rescousse",
-                        "questions": [
+                    "title": "Plouf plouf à la rescousse",
+                    "questions": [
                             {
                                 "question": "Quelle est la quantité d''eau douce disponible sur Terre ?",
                                 "good_answer": "2,5%",
                                 "answers": [
-                                    "50%",
-                                    "85%",
-                                    "2,5%"
+                                    "2,5 %",
+                                    "3,4 %",
+                                    "5,3 %",
+                                    "5,7 %"
                                 ]
                             },
                             {
@@ -1204,8 +1309,9 @@ values ((SELECT id FROM games WHERE name = 'Quiz' AND game_version = '1.0'),
                                 "good_answer": "9 à 12 litres",
                                 "answers": [
                                     "2 à 4 litres",
+                                    "9 à 12 litres",
                                     "15 à 18 litres",
-                                    "9 à 12 litres"
+                                    "21 à 25 litres"
                                 ]
                             },
                             {
@@ -1214,15 +1320,17 @@ values ((SELECT id FROM games WHERE name = 'Quiz' AND game_version = '1.0'),
                                 "answers": [
                                     "La production d''électricité",
                                     "La consommation domestique",
-                                    "L''agriculture"
+                                    "L''agriculture",
+                                    "Les parcs aquatiques"
                                 ]
                             },
                             {
                                 "question": "Combien de litres d''eau faut-il pour produire une seule canette de soda ?",
                                 "good_answer": "250 à 300 litres",
                                 "answers": [
-                                    "50 à 100 litres",
-                                    "500 à 600 litres",
+                                    "100 à 150 litres",
+                                    "150 à 200 litres",
+                                    "200 à 250 litres",
                                     "250 à 300 litres"
                                 ]
                             },
@@ -1230,9 +1338,10 @@ values ((SELECT id FROM games WHERE name = 'Quiz' AND game_version = '1.0'),
                                 "question": "Quel est le pourcentage d''eau froide dans un iceberg ?",
                                 "good_answer": "90%",
                                 "answers": [
-                                    "50%",
-                                    "25%",
-                                    "90%"
+                                    "85 %",
+                                    "88 %",
+                                    "90 %",
+                                    "97 %"
                                 ]
                             },
                             {
@@ -1241,35 +1350,35 @@ values ((SELECT id FROM games WHERE name = 'Quiz' AND game_version = '1.0'),
                                 "answers": [
                                     "Inde",
                                     "Brésil",
-                                    "Somalie"
+                                    "Somalie",
+                                    "Botswana"
                                 ]
                             },
                             {
                                 "question": "Combien de litres d''eau faut-il pour produire une tonne de papier recyclé ?",
                                 "good_answer": "250 000 litres",
                                 "answers": [
-                                    "50 000 litres",
-                                    "500 000 litres",
+                                    "100 000 litres",
+                                    "150 000 litres",
+                                    "200 000 litres",
                                     "250 000 litres"
                                 ]
                             }
                         ]
-                    }
                 },
                 {
                     "id": 17,
                     "topic": "Conservation de l''eau",
-                    "quiz": {
-                        "title": "Pourquoi l''eau ne dit jamais de blagues ?",
-                        "questions": [
+                    "title": "Pourquoi l''eau ne dit jamais de blagues ?",
+                    "questions": [
                             {
                                 "question": "Quelle est la principale source d''eau douce utilisée par les humains dans le monde ?",
                                 "good_answer": "Les eaux souterraines",
                                 "answers": [
                                     "Les rivières",
                                     "Les lacs",
-                                    "Les glaciers",
-                                    "Les eaux souterraines"
+                                    "Les eaux souterraines",
+                                    "Les glaciers"
                                 ]
                             },
                             {
@@ -1278,8 +1387,8 @@ values ((SELECT id FROM games WHERE name = 'Quiz' AND game_version = '1.0'),
                                 "answers": [
                                     "Environ 20 litres",
                                     "Environ 50 litres",
-                                    "Environ 120 litres",
-                                    "Environ 80 litres"
+                                    "Environ 80 litres",
+                                    "Environ 120 litres"
                                 ]
                             },
                             {
@@ -1293,32 +1402,30 @@ values ((SELECT id FROM games WHERE name = 'Quiz' AND game_version = '1.0'),
                                 ]
                             }
                         ]
-                    }
                 },
                 {
                     "id": 18,
                     "topic": "Conservation de l''eau",
-                    "quiz": {
-                        "title": "Quand une goutte d''eau se transforme en super-héros",
-                        "questions": [
+                    "title": "Quand une goutte d''eau se transforme en super-héros",
+                    "questions": [
                             {
                                 "question": "Quelle est la principale cause de la pénurie d''eau dans de nombreuses régions du monde ?",
                                 "good_answer": "Le gaspillage excessif d''eau",
                                 "answers": [
                                     "La pollution de l''eau",
+                                    "Le gaspillage excessif d''eau",
                                     "Les précipitations insuffisantes",
-                                    "La surconsommation de boissons gazeuses",
-                                    "Le gaspillage excessif d''eau"
+                                    "La surconsommation de boissons gazeuses"
                                 ]
                             },
                             {
                                 "question": "Quel pourcentage de l''eau sur Terre est disponible pour la consommation humaine ?",
                                 "good_answer": "Moins de 1%",
                                 "answers": [
+                                    "Moins de 1%",
                                     "Environ 25%",
                                     "Près de 50%",
-                                    "Plus de 75%",
-                                    "Moins de 1%"
+                                    "Plus de 75%"
                                 ]
                             },
                             {
@@ -1327,96 +1434,17 @@ values ((SELECT id FROM games WHERE name = 'Quiz' AND game_version = '1.0'),
                                 "answers": [
                                     "L''abandon de l''agriculture",
                                     "L''utilisation intensive d''engrais chimiques",
-                                    "L''augmentation de la consommation d''eau dans les exploitations agricoles",
-                                    "La mise en place de techniques d''irrigation efficaces"
+                                    "La mise en place de techniques d''irrigation efficaces",
+                                    "L''augmentation de la consommation d''eau dans les exploitations agricoles"
                                 ]
                             }
                         ]
-                    }
-                },
-                {
-                    "id": 19,
-                    "topic": "Conservation de l''eau",
-                    "quiz": {
-                        "title": "Axoloto : Pokemon de type Eau",
-                        "questions": [
-                            {
-                                "question": "Quelle est la meilleure façon de conserver l''eau dans une maison ?",
-                                "good_answer": "Installer des pommeaux de douche à faible débit",
-                                "answers": [
-                                    "Laisser le robinet ouvert pendant que vous vous brossez les dents",
-                                    "Remplir la baignoire à ras bord pour chaque bain",
-                                    "Arroser le jardin tous les jours",
-                                    "Installer des pommeaux de douche à faible débit"
-                                ]
-                            },
-                            {
-                                "question": "Combien d''eau est gaspillée par une fuite de robinet qui goutte constamment, chaque jour ?",
-                                "good_answer": "Environ 136 litres",
-                                "answers": [
-                                    "Environ 5 litres",
-                                    "Environ 20 litres",
-                                    "Aucune eau n''est gaspillée",
-                                    "Environ 136 litres"
-                                ]
-                            },
-                            {
-                                "question": "Qu''est-ce que la méthode de l''irrigation goutte à goutte ?",
-                                "good_answer": "Une méthode qui utilise des tuyaux à bas débit pour apporter de petites quantités d''eau directement aux plantes",
-                                "answers": [
-                                    "Une méthode qui utilise des arroseurs à haute pression pour mouiller toute la zone du jardin",
-                                    "Une méthode qui n''utilise pas du tout d''eau pour l''arrosage des plantes",
-                                    "Une méthode qui implique de remplir une cuve d''eau et d''arroser manuellement les plantes",
-                                    "Une méthode qui utilise des tuyaux à bas débit pour apporter de petites quantités d''eau directement aux plantes"
-                                ]
-                            }
-                        ]
-                    }
-                },
-                {
-                    "id": 20,
-                    "topic": "Conservation de l''eau",
-                    "quiz": {
-                        "questions": [
-                            {
-                                "question": "Quelle est la principale raison de la conservation de l''eau ?",
-                                "good_answer": "Préserver les ressources en eau pour les générations futures",
-                                "answers": [
-                                    "Réduire les coûts de factures d''eau",
-                                    "Éviter les restrictions d''eau imposées par le gouvernement",
-                                    "Maintenir les installations de traitement de l''eau en bon état",
-                                    "Préserver les ressources en eau pour les générations futures"
-                                ]
-                            },
-                            {
-                                "question": "Combien de litres d''eau peut être économisé en utilisant un pommeau de douche à faible débit par minute ?",
-                                "good_answer": "Environ 9 à 11 litres",
-                                "answers": [
-                                    "Environ 3 à 5 litres",
-                                    "Environ 15 à 20 litres",
-                                    "Environ 25 à 30 litres",
-                                    "Environ 9 à 11 litres"
-                                ]
-                            },
-                            {
-                                "question": "Qu''est-ce que l''irrigation goutte-à-goutte dans le contexte de la conservation de l''eau ?",
-                                "good_answer": "Une méthode d''arrosage qui fournit de l''eau directement aux racines des plantes",
-                                "answers": [
-                                    "Une technique d''arrosage qui nécessite une grande quantité d''eau",
-                                    "Une pratique qui n''est pas adaptée aux climats arides",
-                                    "Une méthode qui gaspille plus d''eau que d''autres systèmes d''irrigation",
-                                    "Une méthode d''arrosage qui fournit de l''eau directement aux racines des plantes"
-                                ]
-                            }
-                        ]
-                    }
                 }
             ]
         }
     ],
     "version": 1
-}'
-           , NOW(), NOW());
+}', NOW(), NOW());
 
 -- +goose StatementEnd
 
