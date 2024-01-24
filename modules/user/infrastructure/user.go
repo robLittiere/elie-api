@@ -21,7 +21,7 @@ func NewUserRepo(db *gorm.DB) *UserRepo {
 
 func (r *UserRepo) Find() ([]models.User, error) {
 	var users []models.User
-	result := r.DB.Preload("Level").Preload("Quests").Find(&users)
+	result := r.DB.Preload("Level").Preload("UserQuests.Quest").Find(&users)
 	if result.Error != nil {
 		return nil, result.Error
 	}

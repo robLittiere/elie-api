@@ -4,6 +4,7 @@ import (
 	"elie-api/modules/common/repository"
 	"elie-api/modules/gamification/application/filters"
 	"elie-api/modules/gamification/models"
+
 	"gorm.io/gorm"
 )
 

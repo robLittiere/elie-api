@@ -7,18 +7,18 @@ import (
 )
 
 type User struct {
-	Id             int            `json:"id" gorm:"primary_key"`
-	Uuid           string         `json:"uuid"`
-	LevelId        int            `json:"level_id"`
-	Level          models.Level   `json:"level" gorm:"foreignKey:LevelId"`
-	Email          string         `json:"email" gorm:"unique;not_null"`
-	Password       string         `json:"password"`
-	Username       string         `json:"username" gorm:"unique;not_null"`
-	Xp             int            `json:"xp" gore:"default:0"`
-	CurrencyAmount int            `json:"currency_amount" gorm:"default:0"`
-	Quests         []models.Quest `json:"quests" gorm:"many2many:user_quests;"`
-	CreatedAt      time.Time      `json:"createdAt"`
-	UpdatedAt      time.Time      `json:"updatedAt"`
+	Id             int                `json:"id" gorm:"primary_key"`
+	Uuid           string             `json:"uuid"`
+	LevelId        int                `json:"level_id"`
+	Level          models.Level       `json:"level" gorm:"foreignKey:LevelId"`
+	Email          string             `json:"email" gorm:"unique;not_null"`
+	Password       string             `json:"password"`
+	Username       string             `json:"username" gorm:"unique;not_null"`
+	Xp             int                `json:"xp" gore:"default:0"`
+	CurrencyAmount int                `json:"currency_amount" gorm:"default:0"`
+	UserQuests     []models.UserQuest `json:"quests" gorm:"foreignKey:UserId"`
+	CreatedAt      time.Time          `json:"createdAt"`
+	UpdatedAt      time.Time          `json:"updatedAt"`
 }
 
 type PublicUser struct {
@@ -27,8 +27,9 @@ type PublicUser struct {
 	Level          models.Level
 	Email          string `json:"email"`
 	Username       string `json:"username"`
-	Xp             int    `json:"xp"`
-	CurrencyAmount int    `json:"currency_amount"`
+	UserQuests     []models.UserQuest
+	Xp             int `json:"xp"`
+	CurrencyAmount int `json:"currency_amount"`
 }
 
 func (user *User) Serialize() PublicUser {
@@ -38,6 +39,7 @@ func (user *User) Serialize() PublicUser {
 		Level:          user.Level,
 		Email:          user.Email,
 		Username:       user.Username,
+		UserQuests:     user.UserQuests,
 		Xp:             user.Xp,
 		CurrencyAmount: user.CurrencyAmount,
 	}

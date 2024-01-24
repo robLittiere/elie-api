@@ -3,18 +3,18 @@ package config
 import (
 	gameModels "elie-api/modules/game/models"
 	gamificationModels "elie-api/modules/gamification/models"
-	"elie-api/modules/user/models"
+	userModels "elie-api/modules/user/models"
 )
 
 func Migrate() {
 	err := DB.AutoMigrate(
-		&models.User{},
+		&userModels.User{},
 		&gameModels.Game{},
 		&gameModels.QuizGame{},
 		&gameModels.UserQuiz{},
 		&gamificationModels.Level{},
-		&gamificationModels.UserQuest{},
 		&gamificationModels.Quest{},
+		&gamificationModels.UserQuest{},
 		&gamificationModels.Success{},
 	)
 	if err != nil {
@@ -22,7 +22,7 @@ func Migrate() {
 	}
 
 	// Setup join tables
-	err = DB.SetupJoinTable(&models.User{}, "Quests", &gamificationModels.UserQuest{})
+	err = DB.SetupJoinTable(&userModels.User{}, "Quests", &gamificationModels.UserQuest{})
 	if err != nil {
 		return
 	}
