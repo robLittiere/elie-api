@@ -34,3 +34,4 @@ go.work
 
 # Images in docs
 docs/sequenceDiagrams/*.svg
+docs/sequenceDiagrams/*.png
