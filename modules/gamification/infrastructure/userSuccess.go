@@ -1,0 +1,55 @@
+package infrastructure
+
+import (
+	"elie-api/modules/common/repository"
+	"elie-api/modules/gamification/application/filters"
+	"elie-api/modules/gamification/models"
+
+	"gorm.io/gorm"
+)
+
+type UserSuccessRepo struct {
+	repository.BaseRepo
+}
+
+func NewUserSuccessRepo(db *gorm.DB) *UserSuccessRepo {
+	return &UserSuccessRepo{BaseRepo: repository.BaseRepo{DB: db, FilterRegistry: filters.GetUserSuccessFilterRegitry()}}
+}
+
+func (repo *UserSuccessRepo) Find() ([]models.UserSuccess, error) {
+	userSuccess := make([]models.UserSuccess, 0)
+	result := repo.DB.Preload("Success").Find(&userSuccess)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	return userSuccess, nil
+}
+
+func (repo *UserSuccessRepo) BuildQueryAndFind(queryParams map[string][]string) ([]models.UserSuccess, error) {
+	var userSuccess []models.UserSuccess
+	err := repo.BuildQuery(queryParams)
+	if err != nil {
+		return nil, err
+	}
+	result := repo.DB.Preload("Success").Find(&userSuccess)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+
+	return userSuccess, nil
+}
+
+func (r *UserSuccessRepo) FindByUuidAndQid(uProgress *models.UserSuccessProgressRequest, u *models.UserSuccess) error {
+	// Get user_id
+	var uid int
+	result := r.DB.Table("users").Select("id").Where("uuid = ?", uProgress.UserUuid).Scan(&uid)
+	if result.Error != nil {
+		return result.Error
+	}
+
+	result = r.DB.Preload("Success").Where("user_id = ? AND quest_id = ?", uid, uProgress.SuccessId).First(&u)
+	if result.Error != nil {
+		return result.Error
+	}
+	return nil
+}
