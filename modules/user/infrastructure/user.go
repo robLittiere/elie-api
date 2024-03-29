@@ -66,6 +66,23 @@ func (r *UserRepo) CreateUser(user *models.User) error {
 	if result.Error != nil {
 		return result.Error
 	}
+
+	// Assign all level 1 successes to the user
+	var successes []models2.Success
+	if err := r.DB.Table("successes").Select("id").Where("progression_rank = ?", 1).Find(&successes).Error; err != nil {
+		return err
+	}
+
+	for _, success := range successes {
+		userSuccess := models2.UserSuccess{
+			UserId:    user.Id,
+			SuccessId: success.Id,
+		}
+		if err := r.DB.Create(&userSuccess).Error; err != nil {
+			return err
+		}
+	}
+
 	return nil
 }
 

@@ -15,6 +15,7 @@ func Migrate() {
 		&gamificationModels.Level{},
 		&gamificationModels.Quest{},
 		&gamificationModels.UserQuest{},
+		&gamificationModels.UserSuccess{},
 		&gamificationModels.Success{},
 	)
 	if err != nil {
@@ -23,6 +24,11 @@ func Migrate() {
 
 	// Setup join tables
 	err = DB.SetupJoinTable(&userModels.User{}, "Quests", &gamificationModels.UserQuest{})
+	if err != nil {
+		return
+	}
+
+	err = DB.SetupJoinTable(&userModels.User{}, "Success", &gamificationModels.UserSuccess{})
 	if err != nil {
 		return
 	}
