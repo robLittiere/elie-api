@@ -59,5 +59,6 @@ func UpdateUser(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"message": "User updated successfully"})
+	publicUser := userData.Serialize()
+	c.JSON(http.StatusOK, &publicUser)
 }

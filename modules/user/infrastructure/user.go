@@ -121,10 +121,23 @@ func (r *UserRepo) UpdateUser(user *models.User) error {
 		return result.Error
 	}
 
+	var level models2.Level
+	result = r.DB.Select("id").Where("id = ?", user.LevelId).First(&level)
+	if result.Error != nil {
+		return fmt.Errorf("Level with id does not exist")
+	}
+
 	result = r.DB.Model(&existingUser).Updates(user)
 	if result.Error != nil {
 		return result.Error
 	}
 
 	return nil
+}
+
+func (r *UserRepo) ShouldIncreaseUserLevel(user *models.User, level *models2.Level) (bool, error) {
+	if user.Xp >= level.NextLevelXpRequirement {
+		return true, nil
+	}
+	return false, nil
 }
