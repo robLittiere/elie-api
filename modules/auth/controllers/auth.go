@@ -49,3 +49,7 @@ func SignupHandler(c *gin.Context) {
 	c.Status(http.StatusCreated)
 	return
 }
+
+func PingHandler(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{"message": "pong"})
+}

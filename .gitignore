@@ -32,6 +32,9 @@ go.work
 # env
 .env
 
+# air live reload tmp
+tmp/
+
 # Images in docs
 docs/sequenceDiagrams/*.svg
 docs/sequenceDiagrams/*.png

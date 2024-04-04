@@ -52,6 +52,15 @@ func ConnectDB() {
     dsn := "host=db user=postgres password=postgres dbname=postgres port=5432 sslmode=disable TimeZone=Europe/Paris"
 ```
 
+## Live reload
+Elie API uses [Air](https://github.com/cosmtrek/air) for live reload.  
+
+If you wish to perform a live reload, install `air` on your machine and run the following command:
+```bash
+air
+```
+`Air` uses the `.air.toml` file to know what to do. You can modify it to your needs. You can specify another config file by running `air -c <config_file>`.
+
 ## Build
 If you ever want to build the project you can run the following command:
 ```bash
