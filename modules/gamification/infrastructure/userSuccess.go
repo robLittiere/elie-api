@@ -4,7 +4,6 @@ import (
 	"elie-api/modules/common/repository"
 	"elie-api/modules/gamification/application/filters"
 	"elie-api/modules/gamification/models"
-
 	"gorm.io/gorm"
 )
 
@@ -39,7 +38,7 @@ func (repo *UserSuccessRepo) BuildQueryAndFind(queryParams map[string][]string) 
 	return userSuccess, nil
 }
 
-func (r *UserSuccessRepo) FindByUuidAndQid(uProgress *models.UserSuccessProgressRequest, u *models.UserSuccess) error {
+func (r *UserSuccessRepo) FindByUuidAndUserSuccessId(uProgress *models.UserSuccessProgressRequest, u *models.UserSuccess) error {
 	// Get user_id
 	var uid int
 	result := r.DB.Table("users").Select("id").Where("uuid = ?", uProgress.UserUuid).Scan(&uid)
@@ -47,7 +46,7 @@ func (r *UserSuccessRepo) FindByUuidAndQid(uProgress *models.UserSuccessProgress
 		return result.Error
 	}
 
-	result = r.DB.Preload("Success").Where("user_id = ? AND quest_id = ?", uid, uProgress.SuccessId).First(&u)
+	result = r.DB.Preload("Success").Where("user_id = ? AND success_id = ?", uid, uProgress.UserSuccessId).First(&u)
 	if result.Error != nil {
 		return result.Error
 	}
