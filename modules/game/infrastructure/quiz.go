@@ -59,3 +59,11 @@ func (r *QuizRepo) BuildQueryAndFindByData(id string, queryParams map[string][]s
 
 	return quizzes, nil
 }
+
+func (r *QuizRepo) CreateQuizGame(quizGame *models.UserQuiz) error {
+	result := r.DB.Create(quizGame)
+	if result.Error != nil {
+		return result.Error
+	}
+	return nil
+}
