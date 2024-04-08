@@ -7,7 +7,7 @@ import (
 
 func AuthRoutes(router *gin.RouterGroup) {
 	{
-		router.GET("/ping")
+		router.GET("/ping", controllers.PingHandler)
 		router.POST("/signup", controllers.SignupHandler)
 		router.POST("/login", controllers.LoginHandler)
 	}
