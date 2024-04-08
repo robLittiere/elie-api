@@ -129,30 +129,22 @@ func (r *UserRepo) UpdateUser(user *models.User) error {
 	return nil
 }
 
-func (r *UserRepo) IncrementUserLevel(user *models.User) error {
-	var existingUser models.User
-	result := r.DB.Select("id, level_id").Where("uuid = ?", user.Uuid).First(&existingUser)
-	if result.Error != nil {
-		return result.Error
+func (r *UserRepo) IncreaseUserXp(userQuest *models2.UserQuest, user *models.User) error {
+
+	user.Xp += userQuest.Quest.Xp
+
+	if user.Xp >= user.Level.NextLevelXpRequirement {
+		user.LevelId += 1
 	}
 
-	existingUser.LevelId += 1
+	fmt.Println("level", user.LevelId)
 
-	// Update only level_id field
-	result = r.DB.Model(&existingUser).Updates(map[string]interface{}{"level_id": existingUser.LevelId})
+	result := r.DB.Model(user).Updates(map[string]interface{}{
+		"xp": user.Xp,
+		"level_id": user.LevelId,
+	})
 	if result.Error != nil {
 		return result.Error
 	}
 	return nil
-}
-
-func (r *UserRepo) ShouldIncreaseUserLevel(user *models.User) (bool, error) {
-	fmt.Println("user", user)
-	if user.Xp >= user.Level.NextLevelXpRequirement {
-		err := r.IncrementUserLevel(user)
-		if err != nil {
-			return false, err
-		}
-	}
-	return false, nil
 }

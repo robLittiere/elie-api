@@ -11,6 +11,5 @@ func UserRoutes(router *gin.RouterGroup) {
 		user.GET("/", controllers.GetUsers)
 		user.GET("/:uuid", controllers.GetUser)
 		user.PATCH("/:uuid", controllers.UpdateUser)
-		user.PATCH("/:uuid/level", controllers.IncrementUserLevel)
 	}
 }
