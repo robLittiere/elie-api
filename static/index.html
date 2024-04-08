@@ -44,6 +44,29 @@
                                 var item = document.createElement("div");
                                 item.innerHTML = "<b>Match found!</b>";
                                 appendLog(item);
+
+                                newConn = new WebSocket(
+                                    "ws://" +
+                                        document.location.host +
+                                        "/ws/dualquiz/" +
+                                        data.room_id + "/1"
+                                );
+
+                                newConn.onclose = function (evt) {
+                                    var item = document.createElement("div");
+                                    item.innerHTML = "<b>Connection closed.</b>";
+                                    appendLog(item);
+                                };
+
+                                newConn.onmessage = function (evt) {
+                                    data = JSON.parse(evt.data);
+                                    console.log(data)
+                                    if (data.type.toLowerCase() == "dualquiz") {
+                                        var item = document.createElement("div");
+                                        item.innerHTML = "<b>Question: " + data.question + "</b>";
+                                        appendLog(item);
+                                    }
+                                };
                             }
                         };
                     } else {
@@ -84,6 +107,30 @@
                                 var item = document.createElement("div");
                                 item.innerHTML = "<b>Match found!</b>";
                                 appendLog(item);
+
+                                newConn = new WebSocket(
+                                    "ws://" +
+                                    document.location.host +
+                                    "/ws/dualquiz/" +
+                                    data.room_id + "/2"
+                                );
+
+                                newConn.onclose = function (evt) {
+                                    var item = document.createElement("div");
+                                    item.innerHTML = "<b>Connection closed.</b>";
+                                    appendLog(item);
+                                };
+
+                                newConn.onmessage = function (evt) {
+                                    data = JSON.parse(evt.data);
+                                    console.log(data)
+                                    if (data.type.toLowerCase() == "dualquiz") {
+                                        var item = document.createElement("div");
+                                        item.innerHTML = "<b>Question: " + data.question + "</b>";
+                                        appendLog(item);
+                                    }
+                                };
+
                             }
                         };
                     } else {

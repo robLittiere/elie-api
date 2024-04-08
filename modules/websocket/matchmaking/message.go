@@ -1,8 +1,22 @@
 package matchmaking
 
-type Message struct {
+type QueueMessage struct {
 	Type          string `json:"type"`
 	Status        string `json:"status"`
-	GameID        int    `json:"game_id"`
+	GameID        int    `json:"GameID"`
 	QueuePosition int    `json:"queue_position"`
+}
+
+type RoomMessage struct {
+	Type   string `json:"type"`
+	Status string `json:"status"`
+	GameID int    `json:"GameID"`
+	RoomID int    `json:"room_id"`
+}
+
+type DualQuizMessage struct {
+	Type   string `json:"type"`
+	Status string `json:"status"`
+	RoomID int    `json:"room_id"`
+	Data   string `json:"data"`
 }
