@@ -24,6 +24,7 @@ func GetUserQuests(c *gin.Context) {
 
 func UpdateQuestProgress(c *gin.Context) {
 	userQuestRepo := infrastructure.NewUserQuestRepo(config.DB)
+	/*userRepo := infraUser.NewUserRepo(config.DB)*/
 	userProgressReq := models.UserQuestProgressRequest{}
 
 	if err := c.ShouldBindJSON(&userProgressReq); err != nil {
@@ -36,7 +37,12 @@ func UpdateQuestProgress(c *gin.Context) {
 		return
 	}
 
-	// Launch update here
+/*	user, err := userRepo.FindByUuid(userProgressReq.UserUuid.String())
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+		return
+	}*/
+
 	// TODO update user progression for a quest
 
 	c.JSON(200, &userQuest)
