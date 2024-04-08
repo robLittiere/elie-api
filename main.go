@@ -7,6 +7,7 @@ import (
 	"elie-api/modules/gamification"
 	"elie-api/modules/user"
 	"elie-api/modules/websocket"
+	"elie-api/modules/websocket/dualquiz"
 	"elie-api/modules/websocket/matchmaking"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -25,9 +26,18 @@ func initRouter() *gin.Engine {
 
 	router.Use(cors.Default())
 
-	// Setup websocket hub
-	hub := matchmaking.NewHub()
-	go hub.Run()
+	// Setup websocket matchHub
+	matchHub := matchmaking.NewHub()
+	dqHub := dualquiz.NewDqHub()
+	matchHub.WithRoomCreator(dqHub)
+
+	hubs := map[string]websocket.Hub{
+		"matchmaking": matchHub,
+		"dualquiz":    dqHub,
+	}
+
+	go matchHub.Run()
+	go dqHub.Run()
 
 	// Serve static index html for websocket tests
 	router.Static("/static", "./static")
@@ -39,7 +49,7 @@ func initRouter() *gin.Engine {
 	user.UserRoutes(version)
 	gamification.GamificationRoutes(version)
 	game.GameRoutes(version)
-	websocket.WebsocketRoutes(router, hub)
+	websocket.WebsocketRoutes(router, hubs)
 
 	return router
 }
