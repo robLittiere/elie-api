@@ -68,18 +68,8 @@ func (r *QuizRepo) CreateUserQuiz(quizGame *models.UserQuiz) error {
 	return nil
 }
 
-func (r *QuizRepo) FindQuizzesCompletedByUser(userUuid string) ([]models.UserQuiz, error) {
-	var userQuizzes []models.UserQuiz
-
-	var uid int
-	result := r.DB.Table("users").Select("id").Where("uuid = ?", userUuid).Scan(&uid)
-	if result.Error != nil {
-		return nil, result.Error
-	}
-
-	result = r.DB.Where("user_id = ?", uid).Find(&userQuizzes)
-	if result.Error != nil {
-		return nil, result.Error
-	}
-	return userQuizzes, nil
+func (r *QuizRepo) FindQuizCompletedByUser(userId string) ([]int, error) {
+	var quizIds []int
+	_ = r.DB.Table("user_quizzes").Select("id").Where("user_id = ?", userId).Scan(&quizIds)
+	return quizIds, nil
 }
