@@ -15,14 +15,17 @@ func GamificationRoutes(router *gin.RouterGroup) {
 	quests := router.Group("/quests")
 	{
 		quests.GET("/", controllers.GetQuests)
-		quests.GET("/user", controllers.GetUserQuests)
 		quests.GET("/daily", controllers.GetDailyQuests)
 		quests.GET("/weekly", controllers.GetWeeklyQuests)
-		quests.POST("/progress", controllers.UpdateQuestProgress)
+		quests.GET("/user", controllers.GetUserQuests)
+		quests.POST("/user", controllers.CreateUserQuest)
+		quests.PATCH("/user/progress", controllers.UpdateUserQuestProgress)
+		quests.POST("/:quest_id/user/:uuid/currency", controllers.AddCurrencyAmountQuestToUser)
 	}
 
 	success := router.Group("/success")
 	{
 		success.GET("/user", controllers.GetUserSuccess)
+		success.POST(":success_id/user/:uuid/currency", controllers.AddCurrencyAmountSuccessToUser)
 	}
 }

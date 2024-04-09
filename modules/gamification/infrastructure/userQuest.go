@@ -4,7 +4,6 @@ import (
 	"elie-api/modules/common/repository"
 	"elie-api/modules/gamification/application/filters"
 	"elie-api/modules/gamification/models"
-
 	"gorm.io/gorm"
 )
 
@@ -47,7 +46,25 @@ func (r *UserQuestRepo) FindByUuidAndQid(uProgress *models.UserQuestProgressRequ
 		return result.Error
 	}
 
-	result = r.DB.Preload("Quest").Where("user_id = ? AND quest_id = ?", uid, uProgress.QuestId).First(&u)
+	result = r.DB.Preload("Quest").Where("user_id = ? AND quest_id = ?", uid, uProgress.UserQuestId).First(&u)
+	if result.Error != nil {
+		return result.Error
+	}
+	return nil
+}
+
+func (r *UserQuestRepo) IncrementUserQuestProgression(userQuest *models.UserQuest) error {
+
+	userQuest.Progression += 1
+
+	if userQuest.Progression >= userQuest.Quest.DoneCondition {
+		userQuest.IsCompleted = true
+	}
+
+	result := r.DB.Model(userQuest).Updates(map[string]interface{}{
+		"progression":  userQuest.Progression,
+		"is_completed": userQuest.IsCompleted,
+	})
 	if result.Error != nil {
 		return result.Error
 	}

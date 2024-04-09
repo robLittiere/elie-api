@@ -17,6 +17,6 @@ type UserSuccess struct {
 }
 
 type UserSuccessProgressRequest struct {
-	UserUuid  uuid.UUID `json:"user_uuid"`
-	SuccessId int       `json:"success_id"`
+	UserUuid      uuid.UUID `json:"user_uuid"`
+	UserSuccessId int       `json:"success_id"`
 }
