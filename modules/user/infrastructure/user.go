@@ -139,8 +139,8 @@ func (r *UserRepo) IncreaseUserXp(userQuest *models2.UserQuest, user *models.Use
 
 	fmt.Println("level", user.LevelId)
 
-	result := r.DB.Model(user).Updates(map[string]interface{}{
-		"xp": user.Xp,
+	result := r.DB.Model(&user).Omit("Level").Updates(map[string]interface{}{
+		"xp":       user.Xp,
 		"level_id": user.LevelId,
 	})
 	if result.Error != nil {
