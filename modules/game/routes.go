@@ -17,7 +17,7 @@ func GameRoutes(router *gin.RouterGroup) {
 	{
 		quiz.GET("/", controllers.GetQuizGames)
 		quiz.GET("/:id/data", controllers.GetQuizGameData)
-		game.POST("/completed", controllers.CompletedQuizUser)
-		game.GET("/:id/quizzes", controllers.GetUserQuizzes)
+		quiz.POST("/completed", controllers.CompletedQuizUser)
+		quiz.GET("/:id", controllers.GetUserQuizzes)
 	}
 }

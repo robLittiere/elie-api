@@ -2,9 +2,9 @@ package controllers
 
 import (
 	"elie-api/config"
+	"elie-api/modules/game/domain/service"
 	"elie-api/modules/game/infrastructure"
 	"elie-api/modules/game/models"
-	infraUser "elie-api/modules/user/infrastructure"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -26,26 +26,32 @@ func GetQuizGameData(c *gin.Context) {
 }
 
 func CompletedQuizUser(c *gin.Context) {
-	var userquiz models.UserQuiz
 	var userquizRequest models.UserQuizRequest
 
 	if err := c.ShouldBindJSON(&userquizRequest); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	fmt.Printf("UserQuizRequest: %v\n", userquizRequest)
+	var userquiz = service.GetUserIdByUuid(config.DB, userquizRequest)
 
-	// sortir le get user by uuid dans un service
-	userRepo := infraUser.NewUserRepo(config.DB)
-	user, err := userRepo.FindByUuid(userquizRequest.UserUuid)
+	if userquiz.UserID == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "User not found"})
+		return
+	}
+
+	//verify if the user has already completed the quiz
+	userQuizService := service.NewUserQuizService(config.DB)
+	exist, err := userQuizService.CheckUserQuizExist(userquiz)
+	fmt.Printf("exist: %v\n", exist)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	userquiz.UserID = user.Id
-	userquiz.QuizId = userquizRequest.QuizId
+	if exist {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "User already completed this quiz"})
+		return
+	}
 
-	// rajouter des cas d'excption dans le service exemple: si le quiz n'existe pas, si l'utilisateur n'existe pas, etc
 	quizRepo := infrastructure.NewQuizRepo(config.DB)
 	err = quizRepo.CreateUserQuiz(&userquiz)
 	if err != nil {
@@ -58,11 +64,13 @@ func CompletedQuizUser(c *gin.Context) {
 
 func GetUserQuizzes(c *gin.Context) {
 	userID := c.Param("id")
+
 	quizRepo := infrastructure.NewQuizRepo(config.DB)
-	quizzes, err := quizRepo.FindQuizzesCompletedByUser(userID)
+	quizId, err := quizRepo.FindQuizCompletedByUser(userID)
+
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	c.JSON(200, &quizzes)
+	c.JSON(200, gin.H{"quizId": quizId})
 }
