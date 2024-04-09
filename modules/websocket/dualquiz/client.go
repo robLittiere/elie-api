@@ -1,12 +1,12 @@
-package matchmaking
+package dualquiz
 
 import (
+	"elie-api/modules/websocket/matchmaking"
 	"encoding/json"
 	"fmt"
+	"github.com/gorilla/websocket"
 	"log"
 	"time"
-
-	"github.com/gorilla/websocket"
 )
 
 const (
@@ -35,7 +35,7 @@ var upgrader = websocket.Upgrader{
 
 // Client is a middleman between the websocket connection and the hub.
 type Client struct {
-	hub *Hub
+	hub *DqHub
 
 	// The websocket connection.
 	conn *websocket.Conn
@@ -46,8 +46,8 @@ type Client struct {
 	// User uuid
 	UserUuid string
 
-	// Game id
-	GameID int
+	// Room id
+	RoomID int
 }
 
 // readPump pumps messages from the websocket connection to the hub.
@@ -71,9 +71,9 @@ func (c *Client) readPump() {
 			}
 			break
 		}
-		var msg QueueMessage
+		var msg matchmaking.QueueMessage
 		err = json.Unmarshal(message, &msg)
-		fmt.Printf("QueueMessage received: %v\n", msg)
+		fmt.Printf("Message received: %v\n", msg)
 
 		c.hub.broadcast <- message
 	}
@@ -107,7 +107,7 @@ func (c *Client) writePump() {
 			w.Write(message)
 
 			// Print out the message being sent
-			fmt.Printf("QueueMessage sent: %s\n", message)
+			fmt.Printf("Message sent: %s\n", message)
 
 			// Add queued chat messages to the current websocket message.
 			n := len(c.send)
