@@ -41,3 +41,23 @@ func GetUser(c *gin.Context) {
 	c.JSON(http.StatusOK, &publicUser)
 
 }
+
+func UpdateUser(c *gin.Context) {
+	userRepo := infrastructure.NewUserRepo(config.DB)
+	uid := c.Param("uuid")
+
+	var userData models.User
+	if err := c.ShouldBindJSON(&userData); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request data"})
+		return
+	}
+
+	userData.Uuid = uid
+
+	if err := userRepo.UpdateUser(&userData); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK,  gin.H{})
+}

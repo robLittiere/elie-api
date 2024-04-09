@@ -3,6 +3,7 @@ package controllers
 import (
 	"elie-api/config"
 	"elie-api/modules/gamification/infrastructure"
+	infraUser "elie-api/modules/user/infrastructure"
 	"elie-api/modules/gamification/models"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -22,7 +23,7 @@ func GetUserQuests(c *gin.Context) {
 	c.JSON(200, userQuests)
 }
 
-func UpdateQuestProgress(c *gin.Context) {
+func CreateUserQuest(c *gin.Context) {
 	userQuestRepo := infrastructure.NewUserQuestRepo(config.DB)
 	userProgressReq := models.UserQuestProgressRequest{}
 
@@ -36,8 +37,41 @@ func UpdateQuestProgress(c *gin.Context) {
 		return
 	}
 
-	// Launch update here
-	// TODO update user progression for a quest
+	c.JSON(200, &userQuest)
+}
+
+func UpdateUserQuestProgress(c *gin.Context) {
+	userQuestRepo := infrastructure.NewUserQuestRepo(config.DB)
+	userRepo := infraUser.NewUserRepo(config.DB)
+	userProgressReq := models.UserQuestProgressRequest{}
+
+	if err := c.ShouldBindJSON(&userProgressReq); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+		return
+	}
+	var userQuest models.UserQuest
+	if err := userQuestRepo.FindByUuidAndQid(&userProgressReq, &userQuest); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+		return
+	}
+
+	if err := userQuestRepo.IncrementUserQuestProgression(&userQuest); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+		return
+	}
+
+	user, err := userRepo.FindByUuid(userProgressReq.UserUuid.String())
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+		return
+	}
+
+	if userQuest.IsCompleted == true {
+		if err := userRepo.IncreaseUserXp(&userQuest, &user); err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+			return
+		}
+	}
 
 	c.JSON(200, &userQuest)
 }

@@ -113,3 +113,38 @@ func (r *UserRepo) FindByUuid(uid string) (models.User, error) {
 	}
 	return user, nil
 }
+
+func (r *UserRepo) UpdateUser(user *models.User) error {
+	var existingUser models.User
+	result := r.DB.Select("id").Where("uuid = ?", user.Uuid).First(&existingUser)
+	if result.Error != nil {
+		return result.Error
+	}
+
+	result = r.DB.Model(&existingUser).Updates(user)
+	if result.Error != nil {
+		return result.Error
+	}
+
+	return nil
+}
+
+func (r *UserRepo) IncreaseUserXp(userQuest *models2.UserQuest, user *models.User) error {
+
+	user.Xp += userQuest.Quest.Xp
+
+	if user.Xp >= user.Level.NextLevelXpRequirement {
+		user.LevelId += 1
+	}
+
+	fmt.Println("level", user.LevelId)
+
+	result := r.DB.Model(user).Updates(map[string]interface{}{
+		"xp": user.Xp,
+		"level_id": user.LevelId,
+	})
+	if result.Error != nil {
+		return result.Error
+	}
+	return nil
+}
