@@ -46,7 +46,7 @@ func (r *UserQuestRepo) FindByUuidAndQid(uProgress *models.UserQuestProgressRequ
 		return result.Error
 	}
 
-	result = r.DB.Preload("Quest").Where("user_id = ? AND quest_id = ?", uid, uProgress.QuestId).First(&u)
+	result = r.DB.Preload("Quest").Where("user_id = ? AND quest_id = ?", uid, uProgress.UserQuestId).First(&u)
 	if result.Error != nil {
 		return result.Error
 	}
@@ -62,7 +62,7 @@ func (r *UserQuestRepo) IncrementUserQuestProgression(userQuest *models.UserQues
 	}
 
 	result := r.DB.Model(userQuest).Updates(map[string]interface{}{
-		"progression": userQuest.Progression,
+		"progression":  userQuest.Progression,
 		"is_completed": userQuest.IsCompleted,
 	})
 	if result.Error != nil {
@@ -70,4 +70,3 @@ func (r *UserQuestRepo) IncrementUserQuestProgression(userQuest *models.UserQues
 	}
 	return nil
 }
-

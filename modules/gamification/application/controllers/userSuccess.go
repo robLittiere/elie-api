@@ -5,7 +5,6 @@ import (
 	"elie-api/modules/gamification/infrastructure"
 	"elie-api/modules/gamification/models"
 	infrastructureUser "elie-api/modules/user/infrastructure"
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"net/http"
@@ -46,7 +45,7 @@ func UpdateSuccessProgress(c *gin.Context) {
 	c.JSON(200, &userSuccess)
 }
 
-func AddCurrencyAmountToUser(c *gin.Context) {
+func AddCurrencyAmountSuccessToUser(c *gin.Context) {
 	successId := c.Param("success_id")
 	uid := c.Param("uuid")
 
@@ -65,10 +64,6 @@ func AddCurrencyAmountToUser(c *gin.Context) {
 		return
 	}
 
-	fmt.Println("user success = ", userSuccess.Success.CurrencyReward)
-
-	fmt.Println("user success completed = ", userSuccess.IsCompleted)
-
 	// Check if the success is completed
 	if userSuccess.IsCompleted {
 		// Get the user details
@@ -77,20 +72,19 @@ func AddCurrencyAmountToUser(c *gin.Context) {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
-		fmt.Println("user", user)
 
-		//// Add CurrencyReward to CurrencyAmount
-		//user.CurrencyAmount += success.CurrencyReward
-		//
-		//// Update the user's CurrencyAmount
-		//if err := userRepo.Update(&user); err != nil {
-		//	c.JSON(http.StatusInternalServerError, gin.H{"message": "Failed to update user"})
-		//	return
-		//}
-		//
-		//// Return success message
-		//c.JSON(http.StatusOK, gin.H{"message": "Currency added successfully"})
-		//return
+		// Add CurrencyReward to CurrencyAmount
+		user.CurrencyAmount += userSuccess.Success.CurrencyReward
+
+		// Update the user's CurrencyAmount
+		if err := userRepo.UpdateUser(&user); err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"message": "Failed to update user"})
+			return
+		}
+
+		// Return success message
+		c.JSON(http.StatusOK, gin.H{"message": "Currency added successfully"})
+		return
 	}
 
 	//c.JSON(http.StatusBadRequest, gin.H{"message": "Success is not completed yet"})

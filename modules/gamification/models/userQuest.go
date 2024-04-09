@@ -17,6 +17,6 @@ type UserQuest struct {
 }
 
 type UserQuestProgressRequest struct {
-	UserUuid uuid.UUID `json:"user_uuid"`
-	QuestId  int       `json:"quest_id"`
+	UserUuid    uuid.UUID `json:"user_uuid"`
+	UserQuestId int       `json:"quest_id"`
 }
