@@ -41,3 +41,9 @@ func ConnectTestDb() {
 	}
 	DB = db
 }
+
+func SetUpTestDatabase() {
+	ConnectTestDb()
+	DropTables()
+	Migrate()
+}

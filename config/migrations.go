@@ -40,9 +40,31 @@ func Migrate() {
 // DropTables Drop tables if they exist
 func DropTables() {
 	// Example
-	/*	if (DB.Migrator().HasTable(&models.User{})) {
-			DB.Migrator().DropTable(&models.User{})
-		}
-
-	*/
+	if (DB.Migrator().HasTable(userModels.User{})) {
+		DB.Migrator().DropTable(userModels.User{})
+	}
+	if (DB.Migrator().HasTable(gameModels.Game{})) {
+		DB.Migrator().DropTable(gameModels.Game{})
+	}
+	if (DB.Migrator().HasTable(gameModels.QuizGame{})) {
+		DB.Migrator().DropTable(gameModels.QuizGame{})
+	}
+	if (DB.Migrator().HasTable(gameModels.UserQuiz{})) {
+		DB.Migrator().DropTable(gameModels.UserQuiz{})
+	}
+	if (DB.Migrator().HasTable(gamificationModels.Level{})) {
+		DB.Migrator().DropTable(gamificationModels.Level{})
+	}
+	if (DB.Migrator().HasTable(gamificationModels.Quest{})) {
+		DB.Migrator().DropTable(gamificationModels.Quest{})
+	}
+	if (DB.Migrator().HasTable(gamificationModels.UserQuest{})) {
+		DB.Migrator().DropTable(gamificationModels.UserQuest{})
+	}
+	if (DB.Migrator().HasTable(gamificationModels.UserSuccess{})) {
+		DB.Migrator().DropTable(gamificationModels.UserSuccess{})
+	}
+	if (DB.Migrator().HasTable(gamificationModels.Success{})) {
+		DB.Migrator().DropTable(gamificationModels.Success{})
+	}
 }

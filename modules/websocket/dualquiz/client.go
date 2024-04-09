@@ -48,6 +48,8 @@ type Client struct {
 
 	// Room id
 	RoomID int
+
+	CurrentStatus Status
 }
 
 // readPump pumps messages from the websocket connection to the hub.

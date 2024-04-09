@@ -30,6 +30,7 @@ func LoginHandler(c *gin.Context) {
 	}
 	publicUser := user.Serialize()
 	c.JSON(http.StatusOK, &publicUser)
+	return
 }
 
 func SignupHandler(c *gin.Context) {
@@ -45,8 +46,9 @@ func SignupHandler(c *gin.Context) {
 	err := userRepo.CreateUser(&user)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
 	}
-	c.Status(http.StatusCreated)
+	c.JSON(http.StatusCreated, gin.H{})
 	return
 }
 
