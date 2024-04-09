@@ -60,10 +60,26 @@ func (r *QuizRepo) BuildQueryAndFindByData(id string, queryParams map[string][]s
 	return quizzes, nil
 }
 
-func (r *QuizRepo) CreateQuizGame(quizGame *models.UserQuiz) error {
+func (r *QuizRepo) CreateUserQuiz(quizGame *models.UserQuiz) error {
 	result := r.DB.Create(quizGame)
 	if result.Error != nil {
 		return result.Error
 	}
 	return nil
+}
+
+func (r *QuizRepo) FindQuizzesCompletedByUser(userUuid string) ([]models.UserQuiz, error) {
+	var userQuizzes []models.UserQuiz
+
+	var uid int
+	result := r.DB.Table("users").Select("id").Where("uuid = ?", userUuid).Scan(&uid)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+
+	result = r.DB.Where("user_id = ?", uid).Find(&userQuizzes)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	return userQuizzes, nil
 }
