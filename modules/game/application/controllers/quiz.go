@@ -4,6 +4,8 @@ import (
 	"elie-api/config"
 	"elie-api/modules/game/infrastructure"
 	"elie-api/modules/game/models"
+	infraUser "elie-api/modules/user/infrastructure"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -23,19 +25,44 @@ func GetQuizGameData(c *gin.Context) {
 	c.JSON(200, &data)
 }
 
-func CreateUserQuizz(c *gin.Context) {
-	userquizz := models.UserQuiz{}
-	if err := c.ShouldBindJSON(&userquizz); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+func CompletedQuizUser(c *gin.Context) {
+	var userquiz models.UserQuiz
+	var userquizRequest models.UserQuizRequest
+
+	if err := c.ShouldBindJSON(&userquizRequest); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
+	fmt.Printf("UserQuizRequest: %v\n", userquizRequest)
 
-	quizRepo := infrastructure.NewQuizRepo(config.DB)
-	err := quizRepo.CreateQuizGame(&userquizz)
+	// sortir le get user by uuid dans un service
+	userRepo := infraUser.NewUserRepo(config.DB)
+	user, err := userRepo.FindByUuid(userquizRequest.UserUuid)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
+	userquiz.UserID = user.Id
+	userquiz.QuizId = userquizRequest.QuizId
 
-	c.JSON(http.StatusCreated, &userquizz)
+	// rajouter des cas d'excption dans le service exemple: si le quiz n'existe pas, si l'utilisateur n'existe pas, etc
+	quizRepo := infrastructure.NewQuizRepo(config.DB)
+	err = quizRepo.CreateUserQuiz(&userquiz)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(200, gin.H{})
+	return
+}
+
+func GetUserQuizzes(c *gin.Context) {
+	userID := c.Param("id")
+	quizRepo := infrastructure.NewQuizRepo(config.DB)
+	quizzes, err := quizRepo.FindQuizzesCompletedByUser(userID)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(200, &quizzes)
 }
