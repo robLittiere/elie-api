@@ -135,9 +135,8 @@ func (r *UserRepo) IncreaseUserXp(userQuest *models2.UserQuest, user *models.Use
 
 	if user.Xp >= user.Level.NextLevelXpRequirement {
 		user.LevelId += 1
+		user.Xp -= user.Level.NextLevelXpRequirement
 	}
-
-	fmt.Println("level", user.LevelId)
 
 	result := r.DB.Model(&user).Omit("Level").Updates(map[string]interface{}{
 		"xp":       user.Xp,
