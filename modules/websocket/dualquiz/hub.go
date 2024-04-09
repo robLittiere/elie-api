@@ -63,6 +63,7 @@ func (h *DqHub) Run() {
 		case client := <-h.register:
 			h.clientsMux.Lock()
 			h.clients[client] = true
+			client.CurrentStatus = StatusConnected
 			h.clientsMux.Unlock()
 			h.HandleConnection(client)
 		case client := <-h.unregister:
@@ -167,7 +168,7 @@ func (h *DqHub) addClientToGameRoom(client *Client) error {
 }
 
 // TODO: Implement an observer to know the state of the rooms at each connection and disconnection
-// TODO: Implement a function to launch the game when there are 2 players in the room
+// TODO: Implement a function to launch the game when there are 2 ready players in the room
 func (dqh *DqHub) HandleConnection(client *Client) {
 
 	// Whenever we receive a connection, we need to attribute the client to its room
