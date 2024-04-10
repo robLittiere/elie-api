@@ -4,6 +4,8 @@ import (
 	"elie-api/modules/common/repository"
 	"elie-api/modules/gamification/application/filters"
 	"elie-api/modules/gamification/models"
+	modelsUser "elie-api/modules/user/models"
+	"errors"
 	"gorm.io/gorm"
 )
 
@@ -50,5 +52,62 @@ func (r *UserSuccessRepo) FindByUuidAndUserSuccessId(uProgress *models.UserSucce
 	if result.Error != nil {
 		return result.Error
 	}
+	return nil
+}
+
+func (r *UserSuccessRepo) IncrementUserSuccessProgression(userSuccess *models.UserSuccess) error {
+
+	userSuccess.Progression += 1
+
+	if userSuccess.Progression >= userSuccess.Success.DoneCondition {
+		userSuccess.IsCompleted = true
+	}
+
+	result := r.DB.Model(userSuccess).Updates(map[string]interface{}{
+		"progression":  userSuccess.Progression,
+		"is_completed": userSuccess.IsCompleted,
+	})
+	if result.Error != nil {
+		return result.Error
+	}
+	return nil
+}
+
+func (r *UserSuccessRepo) AddCurrencyAmountSuccessToUser(user *modelsUser.User, userSuccess *models.UserSuccess) error {
+	user.CurrencyAmount += userSuccess.Success.CurrencyReward
+
+	result := r.DB.Model(user).Updates(map[string]interface{}{
+		"currency_amount": user.CurrencyAmount,
+	})
+	if result.Error != nil {
+		return result.Error
+	}
+	return nil
+}
+
+func (r *UserSuccessRepo) AddNewUserSuccessByUser(user *modelsUser.User, userSuccess *models.UserSuccess) error {
+	var successes []models.Success
+
+	var tags = userSuccess.Success.Tags
+	var progressionRank = userSuccess.Success.ProgressionRank
+	var nextProgressionRank = progressionRank + 1
+
+	if err := r.DB.Table("successes").Select("id").Where("tags = ? AND progression_rank = ?", tags, nextProgressionRank).Find(&successes).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil
+		}
+		return err
+	}
+
+	for _, success := range successes {
+		userSuccess := models.UserSuccess{
+			UserId:    user.Id,
+			SuccessId: success.Id,
+		}
+		if err := r.DB.Create(&userSuccess).Error; err != nil {
+			return err
+		}
+	}
+
 	return nil
 }

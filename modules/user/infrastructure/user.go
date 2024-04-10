@@ -130,9 +130,40 @@ func (r *UserRepo) UpdateUser(user *models.User) error {
 	return nil
 }
 
-func (r *UserRepo) IncreaseUserXp(userQuest *models2.UserQuest, user *models.User) error {
+func (r *UserRepo) IncreaseUserXpQuest(userQuest *models2.UserQuest, user *models.User) error {
 
 	user.Xp += userQuest.Quest.Xp
+	// Check if the user has enough xp to level up
+	if user.Xp >= user.Level.NextLevelXpRequirement {
+		var nextLevel models2.Level
+		result := r.DB.First(&nextLevel, user.LevelId+1)
+
+		// We need to get the next level in order to know if the user is already max level
+		if result.Error != nil {
+			// User is already max level as there is no next level
+			if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+				return nil
+			}
+			return result.Error
+		}
+
+		user.LevelId += 1
+		user.Xp -= user.Level.NextLevelXpRequirement
+	}
+
+	result := r.DB.Model(&user).Omit("Level").Updates(map[string]interface{}{
+		"xp":       user.Xp,
+		"level_id": user.LevelId,
+	})
+	if result.Error != nil {
+		return result.Error
+	}
+	return nil
+}
+
+func (r *UserRepo) IncreaseUserXpSuccess(userSuccess *models2.UserSuccess, user *models.User) error {
+
+	user.Xp += userSuccess.Success.Xp
 	// Check if the user has enough xp to level up
 	if user.Xp >= user.Level.NextLevelXpRequirement {
 		var nextLevel models2.Level

@@ -4,6 +4,7 @@ import (
 	"elie-api/modules/common/repository"
 	"elie-api/modules/gamification/application/filters"
 	"elie-api/modules/gamification/models"
+	modelsUser "elie-api/modules/user/models"
 	"gorm.io/gorm"
 )
 
@@ -64,6 +65,18 @@ func (r *UserQuestRepo) IncrementUserQuestProgression(userQuest *models.UserQues
 	result := r.DB.Model(userQuest).Updates(map[string]interface{}{
 		"progression":  userQuest.Progression,
 		"is_completed": userQuest.IsCompleted,
+	})
+	if result.Error != nil {
+		return result.Error
+	}
+	return nil
+}
+
+func (r *UserQuestRepo) AddCurrencyAmountQuestToUser(user *modelsUser.User, userQuest *models.UserQuest) error {
+	user.CurrencyAmount += userQuest.Quest.CurrencyReward
+
+	result := r.DB.Model(user).Updates(map[string]interface{}{
+		"currency_amount": user.CurrencyAmount,
 	})
 	if result.Error != nil {
 		return result.Error
