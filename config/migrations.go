@@ -17,6 +17,7 @@ func Migrate() {
 		&gamificationModels.UserQuest{},
 		&gamificationModels.UserSuccess{},
 		&gamificationModels.Success{},
+		&gamificationModels.QuestType{},
 	)
 	if err != nil {
 		return
@@ -60,6 +61,9 @@ func DropTables() {
 	}
 	if (DB.Migrator().HasTable(gamificationModels.UserQuest{})) {
 		DB.Migrator().DropTable(gamificationModels.UserQuest{})
+	}
+	if (DB.Migrator().HasTable(gamificationModels.QuestType{})) {
+		DB.Migrator().DropTable(gamificationModels.QuestType{})
 	}
 	if (DB.Migrator().HasTable(gamificationModels.UserSuccess{})) {
 		DB.Migrator().DropTable(gamificationModels.UserSuccess{})

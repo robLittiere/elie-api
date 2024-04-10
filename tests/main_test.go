@@ -1,25 +1,42 @@
 package tests
 
 import (
+	"elie-api/config"
 	"elie-api/modules/auth"
 	"elie-api/modules/game"
 	"elie-api/modules/gamification"
+	models2 "elie-api/modules/gamification/models"
 	"elie-api/modules/user"
 	"elie-api/modules/websocket"
 	"elie-api/modules/websocket/dualquiz"
 	"elie-api/modules/websocket/matchmaking"
+	"github.com/gin-gonic/gin"
+	"github.com/jaswdr/faker/v2"
 	"net/http"
 	"net/http/httptest"
 	"net/url"
-
-	"github.com/gin-gonic/gin"
 )
 
-func main() {
-	// Init Router
-	router := InitRouter()
+var (
+	c      *gin.Context
+	w      *httptest.ResponseRecorder
+	router *gin.Engine
+	f      faker.Faker
+)
 
-	router.Run(":8080")
+func init() {
+	c, w = CreateGinTestContext()
+	f = faker.New()
+	config.SetUpTestDatabase()
+
+	// Add default data to test users
+	level := models2.Level{
+		Name:                   "Basic",
+		NextLevelXpRequirement: 20,
+		LevelNumber:            1,
+		CurrencyWon:            1,
+	}
+	config.DB.Create(&level)
 }
 
 func InitRouter() *gin.Engine {

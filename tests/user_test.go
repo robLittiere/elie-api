@@ -7,45 +7,24 @@ import (
 	"elie-api/modules/common/criteria"
 	"elie-api/modules/common/repository"
 	"elie-api/modules/fixtures"
-	models2 "elie-api/modules/gamification/models"
+	userFixtures "elie-api/modules/fixtures/user"
 	userController "elie-api/modules/user/application/controllers"
 	"elie-api/modules/user/application/filters"
 	"elie-api/modules/user/domain/query"
 	"elie-api/modules/user/infrastructure"
 	"elie-api/modules/user/models"
 	"encoding/json"
-	"github.com/gin-gonic/gin"
 	"github.com/go-playground/assert/v2"
 	"net/http"
-	"net/http/httptest"
 	"net/url"
 	"reflect"
 	"testing"
 )
 
-var (
-	c      *gin.Context
-	w      *httptest.ResponseRecorder
-	router *gin.Engine
-)
-
-func init() {
-	c, w = CreateGinTestContext()
-	config.SetUpTestDatabase()
-
-	// Add default data to test users
-	level := models2.Level{
-		Name:                   "Basic",
-		NextLevelXpRequirement: 10,
-		LevelNumber:            1,
-		CurrencyWon:            1,
-	}
-	config.DB.Create(&level)
-}
-
 func TestIShouldCreateWithSignupUserHandler(t *testing.T) {
+	c, w = CreateGinTestContext()
 	uq := models.UserRequest{
-		Email:    "rob@mail.com",
+		Email:    "anothermailnottakenforsure@mail.com",
 		Password: "robinoux",
 	}
 
@@ -63,10 +42,11 @@ func TestIShouldCreateWithSignupUserHandler(t *testing.T) {
 }
 
 func TestIShouldCreateUserE2E(t *testing.T) {
+	c, w = CreateGinTestContext()
 	router = InitRouter()
 	uq := models.UserRequest{
-		Email:    "rob@mail.com",
-		Password: "robinoux",
+		Email:    "mailnottakenforsure@mail.com",
+		Password: "robinator",
 	}
 	jsonv, _ := json.Marshal(uq)
 
@@ -97,7 +77,7 @@ func TestIShouldGetUserWithLoginHandler(t *testing.T) {
 	// Create a user using signup handler
 	uq := models.UserRequest{
 		Email:    "rob@mail.com",
-		Password: "robinoux",
+		Password: "rob",
 	}
 
 	fixtures.MockJsonPost(c, uq)
@@ -169,14 +149,9 @@ func TestIShouldGetAnErrorForANonValidFilter(t *testing.T) {
 }
 
 func TestIShouldGetUserByUsername(t *testing.T) {
-	// Add user to database
-	user := models.User{
-		Email:    "rob&mail.com",
-		Password: "rob",
-		Username: "robinou",
-		LevelId:  1,
-	}
-	config.DB.Create(&user)
+	c, w = CreateGinTestContext()
+
+	user := userFixtures.CreateUser(map[string]interface{}{"Username": "elrobinator"})
 
 	u := url.Values{}
 	u.Add("username", user.Username)

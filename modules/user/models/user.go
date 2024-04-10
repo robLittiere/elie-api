@@ -8,12 +8,12 @@ import (
 
 type User struct {
 	Id             int                  `json:"id" gorm:"primary_key"`
-	Uuid           string               `json:"uuid"`
+	Uuid           string               `json:"uuid" faker:"uuid_hyphenated"`
 	LevelId        int                  `json:"level_id"`
 	Level          models.Level         `json:"level" gorm:"foreignKey:LevelId"`
 	Email          string               `json:"email" gorm:"unique;not_null"`
 	Password       string               `json:"password"`
-	Username       string               `json:"username" gorm:"unique;not_null"`
+	Username       string               `json:"username"`
 	Xp             int                  `json:"xp" gore:"default:0"`
 	CurrencyAmount int                  `json:"currency_amount" gorm:"default:0"`
 	UserQuests     []models.UserQuest   `json:"quests" gorm:"foreignKey:UserId"`
