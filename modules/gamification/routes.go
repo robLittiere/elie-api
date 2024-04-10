@@ -22,8 +22,9 @@ func GamificationRoutes(router *gin.RouterGroup) {
 		quests.PATCH("/user/progress", controllers.UpdateUserQuestProgress)
 	}
 
-	success := router.Group("/success")
+	success := router.Group("/successes")
 	{
+		success.GET("/", controllers.GetSuccess)
 		success.GET("/user", controllers.GetUserSuccess)
 		success.PATCH("/user/progress", controllers.UpdateUserSuccessProgress)
 	}
