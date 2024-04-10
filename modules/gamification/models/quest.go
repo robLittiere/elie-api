@@ -11,7 +11,7 @@ type Quest struct {
 	Difficulty     string    `json:"difficulty"`
 	CurrencyReward int       `json:"currency_reward" gorm:"default:0"`
 	DoneCondition  int       `json:"done_condition"`
-	Tags           []string  `json:"tags" gorm:"type:text[]"`
+	Tags           string    `json:"tags"`
 	CreatedAt      time.Time `json:"createdAt"`
 	UpdatedAt      time.Time `json:"updatedAt"`
 }
