@@ -25,14 +25,14 @@ func GetQuizGameData(c *gin.Context) {
 	c.JSON(200, &data)
 }
 
-func CompletedQuizUser(c *gin.Context) {
+func CompleteUserQuiz(c *gin.Context) {
 	var userquizRequest models.UserQuizRequest
 
 	if err := c.ShouldBindJSON(&userquizRequest); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	var userquiz = service.GetUserIdByUuid(config.DB, userquizRequest)
+	var userquiz = service.GetUserQuizFromRequest(config.DB, userquizRequest)
 
 	if userquiz.UserID == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "User not found"})
@@ -41,13 +41,14 @@ func CompletedQuizUser(c *gin.Context) {
 
 	//verify if the user has already completed the quiz
 	userQuizService := service.NewUserQuizService(config.DB)
-	exist, err := userQuizService.CheckUserQuizExist(userquiz)
+	exist, err := userQuizService.UserQuizExists(userquiz)
 	fmt.Printf("exist: %v\n", exist)
+
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	if exist {
+	if exist == false {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "User already completed this quiz"})
 		return
 	}

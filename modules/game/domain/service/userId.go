@@ -8,7 +8,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func GetUserIdByUuid(db *gorm.DB, userquizRequest modelUserQuizz.UserQuizRequest) modelUserQuizz.UserQuiz {
+func GetUserQuizFromRequest(db *gorm.DB, userquizRequest modelUserQuizz.UserQuizRequest) modelUserQuizz.UserQuiz {
 	var userquiz modelUserQuizz.UserQuiz
 
 	userRepo := infraUser.NewUserRepo(config.DB)
