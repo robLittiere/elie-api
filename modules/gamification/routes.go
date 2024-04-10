@@ -23,8 +23,9 @@ func GamificationRoutes(router *gin.RouterGroup) {
 		quests.POST("/:quest_id/user/:uuid/currency", controllers.AddCurrencyAmountQuestToUser)
 	}
 
-	success := router.Group("/success")
+	success := router.Group("/successes")
 	{
+		success.GET("/", controllers.GetSuccess)
 		success.GET("/user", controllers.GetUserSuccess)
 		success.POST(":success_id/user/:uuid/currency", controllers.AddCurrencyAmountSuccessToUser)
 	}
