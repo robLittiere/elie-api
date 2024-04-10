@@ -5,6 +5,7 @@ import (
 	"elie-api/modules/gamification/application/filters"
 	"elie-api/modules/gamification/models"
 	modelsUser "elie-api/modules/user/models"
+	"errors"
 	"gorm.io/gorm"
 )
 
@@ -92,6 +93,9 @@ func (r *UserSuccessRepo) AddNewUserSuccessByUser(user *modelsUser.User, userSuc
 	var nextProgressionRank = progressionRank + 1
 
 	if err := r.DB.Table("successes").Select("id").Where("tags = ? AND progression_rank = ?", tags, nextProgressionRank).Find(&successes).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil
+		}
 		return err
 	}
 
