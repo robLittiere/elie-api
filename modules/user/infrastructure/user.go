@@ -129,7 +129,7 @@ func (r *UserRepo) UpdateUser(user *models.User) error {
 	return nil
 }
 
-func (r *UserRepo) IncreaseUserXp(userQuest *models2.UserQuest, user *models.User) error {
+func (r *UserRepo) IncreaseUserXpQuest(userQuest *models2.UserQuest, user *models.User) error {
 
 	user.Xp += userQuest.Quest.Xp
 
@@ -140,7 +140,27 @@ func (r *UserRepo) IncreaseUserXp(userQuest *models2.UserQuest, user *models.Use
 	fmt.Println("level", user.LevelId)
 
 	result := r.DB.Model(user).Updates(map[string]interface{}{
-		"xp": user.Xp,
+		"xp":       user.Xp,
+		"level_id": user.LevelId,
+	})
+	if result.Error != nil {
+		return result.Error
+	}
+	return nil
+}
+
+func (r *UserRepo) IncreaseUserXpSuccess(userSuccess *models2.UserSuccess, user *models.User) error {
+
+	user.Xp += userSuccess.Success.Xp
+
+	if user.Xp >= user.Level.NextLevelXpRequirement {
+		user.LevelId += 1
+	}
+
+	fmt.Println("level", user.LevelId)
+
+	result := r.DB.Model(user).Updates(map[string]interface{}{
+		"xp":       user.Xp,
 		"level_id": user.LevelId,
 	})
 	if result.Error != nil {

@@ -50,7 +50,17 @@ func UpdateUserSuccessProgress(c *gin.Context) {
 	}
 
 	if userSuccess.IsCompleted == true {
+		if err := userRepo.IncreaseUserXpSuccess(&userSuccess, &user); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+			return
+		}
+
 		if err := userSuccessRepo.AddCurrencyAmountSuccessToUser(&user, &userSuccess); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+			return
+		}
+
+		if err := userSuccessRepo.AddNewUserSuccessByUser(&user, &userSuccess); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 			return
 		}

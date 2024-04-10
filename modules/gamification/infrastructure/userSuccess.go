@@ -83,3 +83,27 @@ func (r *UserSuccessRepo) AddCurrencyAmountSuccessToUser(user *modelsUser.User, 
 	}
 	return nil
 }
+
+func (r *UserSuccessRepo) AddNewUserSuccessByUser(user *modelsUser.User, userSuccess *models.UserSuccess) error {
+	var successes []models.Success
+
+	var tags = userSuccess.Success.Tags
+	var progressionRank = userSuccess.Success.ProgressionRank
+	var nextProgressionRank = progressionRank + 1
+
+	if err := r.DB.Table("successes").Select("id").Where("tags = ? AND progression_rank = ?", tags, nextProgressionRank).Find(&successes).Error; err != nil {
+		return err
+	}
+
+	for _, success := range successes {
+		userSuccess := models.UserSuccess{
+			UserId:    user.Id,
+			SuccessId: success.Id,
+		}
+		if err := r.DB.Create(&userSuccess).Error; err != nil {
+			return err
+		}
+	}
+
+	return nil
+}

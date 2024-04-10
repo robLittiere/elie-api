@@ -67,7 +67,7 @@ func UpdateUserQuestProgress(c *gin.Context) {
 	}
 
 	if userQuest.IsCompleted == true {
-		if err := userRepo.IncreaseUserXp(&userQuest, &user); err != nil {
+		if err := userRepo.IncreaseUserXpQuest(&userQuest, &user); err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
 			return
 		}
