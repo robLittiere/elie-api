@@ -137,11 +137,9 @@ func (r *UserRepo) IncreaseUserXp(userQuest *models2.UserQuest, user *models.Use
 		var nextLevel models2.Level
 		result := r.DB.First(&nextLevel, user.LevelId + 1)
 		if result.Error != nil {
-			return fmt.Errorf("no next level found")
+			user.LevelId += 1
+			user.Xp -= user.Level.NextLevelXpRequirement
 		}
-
-		user.LevelId += 1
-		user.Xp -= user.Level.NextLevelXpRequirement
 	}
 
 	result := r.DB.Model(&user).Omit("Level").Updates(map[string]interface{}{
