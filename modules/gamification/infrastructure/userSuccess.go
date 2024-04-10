@@ -55,6 +55,14 @@ func (r *UserSuccessRepo) FindByUuidAndUserSuccessId(uProgress *models.UserSucce
 	return nil
 }
 
+func (r *UserSuccessRepo) FindByTagAndUser(tag string, userId int, u *models.UserSuccess) error {
+	result := r.DB.Joins("JOIN successes ON user_successes.success_id = successes.id").Where("successes.tags = ? AND user_successes.user_id = ?", tag, userId).First(&u)
+	if result.Error != nil {
+		return result.Error
+	}
+	return nil
+}
+
 func (r *UserSuccessRepo) IncrementUserSuccessProgression(userSuccess *models.UserSuccess) error {
 
 	userSuccess.Progression += 1

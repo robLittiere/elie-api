@@ -5,6 +5,7 @@ import (
 	"elie-api/modules/gamification/infrastructure"
 	"elie-api/modules/gamification/models"
 	infraUser "elie-api/modules/user/infrastructure"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -31,6 +32,9 @@ func CreateUserQuest(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
+
+	fmt.Println("userProgressReq", userProgressReq)
+
 	var userQuest models.UserQuest
 	if err := userQuestRepo.FindByUuidAndQid(&userProgressReq, &userQuest); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
@@ -43,6 +47,7 @@ func CreateUserQuest(c *gin.Context) {
 func UpdateUserQuestProgress(c *gin.Context) {
 	userQuestRepo := infrastructure.NewUserQuestRepo(config.DB)
 	userRepo := infraUser.NewUserRepo(config.DB)
+	userSuccessRepo := infrastructure.NewUserSuccessRepo(config.DB)
 	userProgressReq := models.UserQuestProgressRequest{}
 
 	if err := c.ShouldBindJSON(&userProgressReq); err != nil {
@@ -64,6 +69,45 @@ func UpdateUserQuestProgress(c *gin.Context) {
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
+	}
+
+	var userSuccess models.UserSuccess
+	err = userSuccessRepo.FindByTagAndUser(userQuest.Quest.Tags, userQuest.UserId, &userSuccess)
+	if err != nil {
+		return
+	} else {
+
+		userProgressSuccess := models.UserSuccessProgressRequest{
+			UserUuid:    userProgressReq.UserUuid,
+			UserSuccessId: userSuccess.SuccessId,
+		}
+
+		if err := userSuccessRepo.FindByUuidAndUserSuccessId(&userProgressSuccess, &userSuccess); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+			return
+		}
+
+		if err := userSuccessRepo.IncrementUserSuccessProgression(&userSuccess); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+			return
+		}
+
+		if userSuccess.IsCompleted == true {
+			if err := userRepo.IncreaseUserXpSuccess(&userSuccess, &user); err != nil {
+				c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+				return
+			}
+
+			if err := userSuccessRepo.AddCurrencyAmountSuccessToUser(&user, &userSuccess); err != nil {
+				c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+				return
+			}
+
+			if err := userSuccessRepo.AddNewUserSuccessByUser(&user, &userSuccess); err != nil {
+				c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+				return
+			}
+		}
 	}
 
 	if userQuest.IsCompleted == true {

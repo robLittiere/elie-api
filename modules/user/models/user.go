@@ -29,6 +29,7 @@ type PublicUser struct {
 	Email          string `json:"email"`
 	Username       string `json:"username"`
 	UserQuests     []models.UserQuest
+	UserSuccesses  []models.UserSuccess
 	Xp             int `json:"xp"`
 	CurrencyAmount int `json:"currency_amount"`
 }
@@ -41,6 +42,7 @@ func (user *User) Serialize() PublicUser {
 		Email:          user.Email,
 		Username:       user.Username,
 		UserQuests:     user.UserQuests,
+		UserSuccesses:  user.UserSuccess,
 		Xp:             user.Xp,
 		CurrencyAmount: user.CurrencyAmount,
 	}
