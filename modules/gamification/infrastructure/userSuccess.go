@@ -54,6 +54,24 @@ func (r *UserSuccessRepo) FindByUuidAndUserSuccessId(uProgress *models.UserSucce
 	return nil
 }
 
+func (r *UserSuccessRepo) IncrementUserSuccessProgression(userSuccess *models.UserSuccess) error {
+
+	userSuccess.Progression += 1
+
+	if userSuccess.Progression >= userSuccess.Success.DoneCondition {
+		userSuccess.IsCompleted = true
+	}
+
+	result := r.DB.Model(userSuccess).Updates(map[string]interface{}{
+		"progression":  userSuccess.Progression,
+		"is_completed": userSuccess.IsCompleted,
+	})
+	if result.Error != nil {
+		return result.Error
+	}
+	return nil
+}
+
 func (r *UserSuccessRepo) AddCurrencyAmountSuccessToUser(user *modelsUser.User, userSuccess *models.UserSuccess) error {
 	user.CurrencyAmount += userSuccess.Success.CurrencyReward
 
