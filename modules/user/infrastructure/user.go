@@ -5,6 +5,7 @@ import (
 	models2 "elie-api/modules/gamification/models"
 	"elie-api/modules/user/application/filters"
 	"elie-api/modules/user/models"
+	"errors"
 	"fmt"
 	"github.com/google/uuid"
 	"gorm.io/gorm"
@@ -132,14 +133,22 @@ func (r *UserRepo) UpdateUser(user *models.User) error {
 func (r *UserRepo) IncreaseUserXp(userQuest *models2.UserQuest, user *models.User) error {
 
 	user.Xp += userQuest.Quest.Xp
+	// Check if the user has enough xp to level up
 	if user.Xp >= user.Level.NextLevelXpRequirement {
-
 		var nextLevel models2.Level
-		result := r.DB.First(&nextLevel, user.LevelId + 1)
+		result := r.DB.First(&nextLevel, user.LevelId+1)
+
+		// We need to get the next level in order to know if the user is already max level
 		if result.Error != nil {
-			user.LevelId += 1
-			user.Xp -= user.Level.NextLevelXpRequirement
+			// User is already max level as there is no next level
+			if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+				return nil
+			}
+			return result.Error
 		}
+
+		user.LevelId += 1
+		user.Xp -= user.Level.NextLevelXpRequirement
 	}
 
 	result := r.DB.Model(&user).Omit("Level").Updates(map[string]interface{}{
