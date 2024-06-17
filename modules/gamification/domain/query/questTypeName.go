@@ -10,8 +10,8 @@ type QuestTypeNameCriteria struct {
 }
 
 func (c *QuestTypeNameCriteria) ApplyQuery(db *gorm.DB, value string) *gorm.DB {
-	var questType models.QuestType
-	result := db.Model(&models.QuestType{}).Where("type = ?", value).First(&questType)
+	var questType models.Tag
+	result := db.Model(&models.Tag{}).Where("type = ?", value).First(&questType)
 	if result.Error != nil {
 		return db
 	}

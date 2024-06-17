@@ -88,11 +88,11 @@ func (r *UserSuccessRepo) AddCurrencyAmountSuccessToUser(user *modelsUser.User, 
 func (r *UserSuccessRepo) AddNewUserSuccessByUser(user *modelsUser.User, userSuccess *models.UserSuccess) error {
 	var successes []models.Success
 
-	var tags = userSuccess.Success.Tags
+	var tag = userSuccess.Success.Tag
 	var progressionRank = userSuccess.Success.ProgressionRank
 	var nextProgressionRank = progressionRank + 1
 
-	if err := r.DB.Table("successes").Select("id").Where("tags = ? AND progression_rank = ?", tags, nextProgressionRank).Find(&successes).Error; err != nil {
+	if err := r.DB.Table("successes").Select("id").Where("tag = ? AND progression_rank = ?", tag, nextProgressionRank).Find(&successes).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return nil
 		}

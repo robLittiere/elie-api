@@ -1,22 +1,22 @@
 -- +goose Up
 -- +goose StatementBegin
-    INSERT INTO tag (name) VALUES ('PlayQuizTag');
-    INSERT INTO tag (name) VALUES ('PlayGameTag');
-    INSERT INTO tag (name) VALUES ('WonQuizTag');
-    INSERT INTO tag (name) VALUES ('WonGameTag');
-    INSERT INTO tag (name) VALUES ('ConnectionTag');
-    INSERT INTO tag (name) VALUES ('LevelTag');
-    INSERT INTO tag (name) VALUES ('AvatarTag');
+    INSERT INTO tags (name) VALUES ('PlayQuizTag');
+    INSERT INTO tags (name) VALUES ('PlayGameTag');
+    INSERT INTO tags (name) VALUES ('WonQuizTag');
+    INSERT INTO tags (name) VALUES ('WonGameTag');
+    INSERT INTO tags (name) VALUES ('ConnectionTag');
+    INSERT INTO tags (name) VALUES ('LevelTag');
+    INSERT INTO tags (name) VALUES ('AvatarTag');
 
 -- +goose StatementEnd
 
 -- +goose Down
 -- +goose StatementBegin
-    DELETE FROM tag WHERE name = 'PlayQuizTag';
-    DELETE FROM tag WHERE name = 'PlayGameTag';
-    DELETE FROM tag WHERE name = 'WonQuizTag';
-    DELETE FROM tag WHERE name = 'WonGameTag';
-    DELETE FROM tag WHERE name = 'ConnectionTag';
-    DELETE FROM tag WHERE name = 'LevelTag';
-    DELETE FROM tag WHERE name = 'AvatarTag';
+    DELETE FROM tags WHERE name = 'PlayQuizTag';
+    DELETE FROM tags WHERE name = 'PlayGameTag';
+    DELETE FROM tags WHERE name = 'WonQuizTag';
+    DELETE FROM tags WHERE name = 'WonGameTag';
+    DELETE FROM tags WHERE name = 'ConnectionTag';
+    DELETE FROM tags WHERE name = 'LevelTag';
+    DELETE FROM tags WHERE name = 'AvatarTag';
 -- +goose StatementEnd
