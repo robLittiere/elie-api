@@ -8,7 +8,7 @@ import (
 )
 
 func CreateQuest(data map[string]interface{}) models.Quest {
-	questType := CreateQuestType()
+	tag := CreateTag()
 	var quest = models.Quest{}
 
 	val := reflect.ValueOf(&quest).Elem()
@@ -16,7 +16,7 @@ func CreateQuest(data map[string]interface{}) models.Quest {
 	defaults := map[string]interface{}{
 		"Name":           "Win a game",
 		"DoneCondition":  3,
-		"Tags":           "game",
+		"TagId":         1,
 		"Xp":             10,
 		"Difficulty":     "easy",
 		"CurrencyReward": 0,
@@ -29,18 +29,19 @@ func CreateQuest(data map[string]interface{}) models.Quest {
 		}
 		val.FieldByName(key).Set(reflect.ValueOf(value))
 	}
-	quest.QuestTypeId = questType.Id
+	quest.TagId = tag.Id
 
 	config.DB.Create(&quest)
 	return quest
 }
 
-func CreateQuestType() models.QuestType {
-	var questType = models.QuestType{
-		Type: "daily",
+func CreateTag() models.Tag {
+	var tag = models.Tag{
+		Id: 1,
+		Name: "WinGameTag",
 	}
-	config.DB.Create(&questType)
-	return questType
+	config.DB.Create(&tag)
+	return tag
 }
 
 func CreateUserQuest(user userModels.User, quest models.Quest) models.UserQuest {
