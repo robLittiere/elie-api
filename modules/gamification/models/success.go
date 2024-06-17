@@ -8,6 +8,8 @@ type Success struct {
 	Id              int       `json:"id" gorm:"primary_key"`
 	Name            string    `json:"name"`
 	Xp              int       `json:"xp"`
+	TagId          int       `json:"tag_id"`
+	Tag	           Tag       `json:"tag"  gorm:"foreignKey:TagId"`
 	Difficulty      string    `json:"difficulty"`
 	DoneCondition   int       `json:"done_condition"`
 	ProgressionRank int       `json:"progression_rank"`

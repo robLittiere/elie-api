@@ -4,8 +4,8 @@ import "time"
 
 type Quest struct {
 	Id             int       `json:"id" gorm:"primary_key"`
-	QuestTypeId    int       `json:"quest_type_id"`
-	QuestType      QuestType `json:"quest_type" gorm:"foreignKey:QuestTypeId"`
+	TagId          int       `json:"tag_id"`
+	Tag	           Tag       `json:"tag"  gorm:"foreignKey:TagId"`
 	Name           string    `json:"name"`
 	Xp             int       `json:"xp"`
 	Difficulty     string    `json:"difficulty"`
@@ -14,9 +14,4 @@ type Quest struct {
 	Tags           string    `json:"tags"`
 	CreatedAt      time.Time `json:"createdAt"`
 	UpdatedAt      time.Time `json:"updatedAt"`
-}
-
-type QuestType struct {
-	Id   int    `json:"id" gorm:"primary_key"`
-	Type string `json:"type"`
 }
