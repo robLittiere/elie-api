@@ -15,8 +15,8 @@ type RoomMessage struct {
 }
 
 type DualQuizMessage struct {
-	Type   string `json:"type"`
-	Status string `json:"status"`
-	RoomID int    `json:"room_id"`
-	Data   string `json:"data"`
+	Type    string `json:"type"`
+	Status  string `json:"status"`
+	RoomID  int    `json:"room_id"`
+	Message string `json:"message"`
 }

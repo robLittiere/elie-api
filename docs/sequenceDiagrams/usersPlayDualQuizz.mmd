@@ -1,0 +1,30 @@
+sequenceDiagram
+    actor P as Paul
+    actor L as Lena
+    participant A as Application
+    participant B as Backend
+
+    P->>L: Wants to play and is matched with Lena
+    L ->> P: Wants to play and is matched with Paul
+    Note over P, L: Both players are matched and the game starts
+    L ->> A: Started the game
+    A ->> L: Sends a message saying its waiting for the opponent
+    P ->> A: Started the game
+
+    B ->> A: Gives a quiz to play
+    B ->> A: Launch the game
+
+    loop Gameloop
+        A ->> B: Await for server information
+        A ->> B: Send the answer to the server
+        B ->> A: Send the result of the answer
+    end
+
+    L ->> A: Perform the quiz
+    P ->> A: Perform the quiz
+    A ->> B: Synchronize with the server
+    B ->> A: Send of result of the dual
+    A ->> L: Send the result of the dual
+    A ->> P: Send the result of the dual
+
+

@@ -60,7 +60,6 @@ func (h *Hub) Run() {
 			if _, ok := h.clients[client]; ok {
 				delete(h.clients, client)
 				close(client.send)
-				// err := h.RemoveClientFromQueue(client)
 				err := h.queueHandler.RemoveClientFromQueue(client.GameID, client.UserUuid)
 				if err != nil {
 					log.Printf("Error removing client from queue: %v", err)
@@ -156,7 +155,6 @@ func (h *Hub) tryMatchClient(gameId int) error {
 		roomId := h.roomCreator.CreateRoom(client1, client2)
 
 		// Send a message to the clients containing the room id
-
 		msg := RoomMessage{
 			Type:   "Match",
 			Status: "Match Found",

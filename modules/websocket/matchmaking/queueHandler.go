@@ -17,7 +17,6 @@ func (qHandler *QueueHandler) AddClientToQueueForGame(gameId int, client *Client
 	qHandler.queueMux.Lock()
 	defer qHandler.queueMux.Unlock()
 
-	fmt.Printf("Adding client %v to queue for game %v\n", client.UserUuid, gameId)
 	qHandler.queue[gameId] = append(qHandler.queue[gameId], client)
 }
 
@@ -25,7 +24,6 @@ func (qHandler *QueueHandler) CreateUserPositionInQueue(uuid string, gameId int)
 	qHandler.userPosInQueueMux.Lock()
 	defer qHandler.userPosInQueueMux.Unlock()
 
-	fmt.Printf("Creating user position in queue for client %v\n", uuid)
 	qHandler.userPosInQueue[uuid] = len(qHandler.queue[gameId]) - 1
 }
 
@@ -49,8 +47,6 @@ func (qHandler *QueueHandler) RemoveClientFromQueue(clientGameId int, clientUuid
 }
 
 func (qHandler *QueueHandler) HandleMatchClient(gameId int, uuid1 string, uuid2 string) error {
-
-	fmt.Printf("Attempting to match clients %v and %v for game %v...\n", uuid1, uuid2, gameId)
 
 	qHandler.deleteClientInQueueFromUuid(gameId, uuid1)
 	qHandler.deleteClientInQueueFromUuid(gameId, uuid2)
@@ -90,8 +86,6 @@ func (qHandler *QueueHandler) deleteClientInQueueFromUuid(gameId int, uuid strin
 	qHandler.queueMux.Lock()
 	defer qHandler.queueMux.Unlock()
 
-	fmt.Printf("Deleting client %v from queue for game %v...\n", uuid, gameId)
-
 	for i, client := range qHandler.queue[gameId] {
 		if client.UserUuid == uuid {
 			qHandler.queue[gameId] = append(qHandler.queue[gameId][:i], qHandler.queue[gameId][i+1:]...)
@@ -103,8 +97,6 @@ func (qHandler *QueueHandler) deleteClientInQueueFromUuid(gameId int, uuid strin
 func (qHandler *QueueHandler) removeMatchedClientsFromQueue(gameId int) {
 	qHandler.queueMux.Lock()
 	defer qHandler.queueMux.Unlock()
-
-	fmt.Printf("Removing matched clients from queue for game %v\n", gameId)
 
 	qHandler.queue[gameId] = qHandler.queue[gameId][2:]
 
@@ -119,8 +111,6 @@ func (qHandler *QueueHandler) updateClientPositionsInQueue(gameId int) {
 	defer qHandler.queueMux.Unlock()
 	defer qHandler.userPosInQueueMux.Unlock()
 
-	fmt.Printf("Updating client positions in queue for game %v...\n", gameId)
-
 	for i, client := range qHandler.queue[gameId] {
 		qHandler.userPosInQueue[client.UserUuid] = i
 	}
@@ -129,8 +119,6 @@ func (qHandler *QueueHandler) updateClientPositionsInQueue(gameId int) {
 func (qHandler *QueueHandler) deleteClientInUserPosition(uuid string) {
 	qHandler.userPosInQueueMux.Lock()
 	defer qHandler.userPosInQueueMux.Unlock()
-
-	fmt.Printf("Deleting client %v from user position in queue\n", uuid)
 
 	delete(qHandler.userPosInQueue, uuid)
 }
