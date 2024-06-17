@@ -1,0 +1,15 @@
+sequenceDiagram
+    actor L as Lena(user)
+    actor P as Paul(user)
+    participant Q as Queue
+    participant A as Application
+    participant G as Game
+    L ->> Q: Join for a game
+    P ->> Q: Join for a game
+    Q ->> A: Is notified that Lena and Paul want to play through WS messages
+    A ->> A: Displays a matchmaking message to Lena and Paul
+    Q ->> Q: Matches Lena and Paul
+    Q ->> Q: Deletes Lena and Paul from the queue
+    Q ->> A: Notifies the application that Lena and Paul are matched
+    Q ->> A: Give Lena and Paul the game room
+    A ->> G: Redirects Lena and Paul to the game room

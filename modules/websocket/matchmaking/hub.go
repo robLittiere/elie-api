@@ -28,24 +28,19 @@ type Hub struct {
 	// Unregister requests from clients.
 	unregister chan *Client
 
-	queueMux sync.RWMutex
-	queue    map[int][]*Client
-
-	userPosInQueueMux sync.RWMutex
-	userPosInQueue    map[string]int
+	queueHandler *QueueHandler
 
 	roomCreator RoomCreator
 }
 
 func NewHub() *Hub {
 	return &Hub{
-		broadcast:      make(chan []byte),
-		register:       make(chan *Client),
-		unregister:     make(chan *Client),
-		clients:        make(map[*Client]bool),
-		uuidToClient:   make(map[string]*Client),
-		queue:          make(map[int][]*Client),
-		userPosInQueue: make(map[string]int),
+		broadcast:    make(chan []byte),
+		register:     make(chan *Client),
+		unregister:   make(chan *Client),
+		clients:      make(map[*Client]bool),
+		uuidToClient: make(map[string]*Client),
+		queueHandler: NewQueueHandler(),
 	}
 }
 
@@ -65,7 +60,8 @@ func (h *Hub) Run() {
 			if _, ok := h.clients[client]; ok {
 				delete(h.clients, client)
 				close(client.send)
-				err := h.RemoveClientFromQueue(client)
+				// err := h.RemoveClientFromQueue(client)
+				err := h.queueHandler.RemoveClientFromQueue(client.GameID, client.UserUuid)
 				if err != nil {
 					log.Printf("Error removing client from queue: %v", err)
 				}
@@ -87,37 +83,8 @@ func (h *Hub) Run() {
 	}
 }
 
-func (h *Hub) RemoveClientFromQueue(client *Client) error {
-	h.userPosInQueueMux.Lock()
-	defer h.userPosInQueueMux.Unlock()
-
-	if _, ok := h.userPosInQueue[client.UserUuid]; ok {
-		game_id := client.GameID
-
-		// Update queue games list
-		h.queue[game_id] = append(h.queue[game_id][:h.userPosInQueue[client.UserUuid]], h.queue[game_id][h.userPosInQueue[client.UserUuid]+1:]...)
-
-		// Update user position in queue
-		for i, client := range h.queue[game_id] {
-			h.userPosInQueue[client.UserUuid] = i
-		}
-		return nil
-	}
-	return fmt.Errorf("client %v was not in queue, there might a problem with the queue system", client.UserUuid)
-
-}
-
-func (h *Hub) RemoveClientFromUuidMap(client *Client) {
-	h.uuidToClientMux.Lock()
-	defer h.uuidToClientMux.Unlock()
-
-	if _, ok := h.uuidToClient[client.UserUuid]; ok {
-		delete(h.uuidToClient, client.UserUuid)
-	}
-}
-
 // serveWs handles websocket requests from the peer.
-func ServeWsMatchmaking(hub *Hub, w http.ResponseWriter, r *http.Request, game_id int, uuid string) {
+func ServeWsMatchmaking(hub *Hub, w http.ResponseWriter, r *http.Request, gameId int, uuid string) {
 	conn, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
 		log.Println(err)
@@ -132,17 +99,12 @@ func ServeWsMatchmaking(hub *Hub, w http.ResponseWriter, r *http.Request, game_i
 	if _, ok := hub.uuidToClient[uuid]; ok {
 		client = hub.uuidToClient[uuid]
 	} else {
-		client = &Client{hub: hub, conn: conn, send: make(chan []byte, 256), UserUuid: uuid, GameID: game_id}
+		client = &Client{hub: hub, conn: conn, send: make(chan []byte, 256), UserUuid: uuid, GameID: gameId}
 		hub.uuidToClient[uuid] = client
 
 		// Add client to the game queue and set the user's position in the queue
-		hub.queueMux.Lock()
-		hub.userPosInQueueMux.Lock()
-		hub.queue[game_id] = append(hub.queue[game_id], client)
-		hub.userPosInQueue[uuid] = len(hub.queue[game_id]) - 1
-		hub.userPosInQueueMux.Unlock()
-		hub.queueMux.Unlock()
-
+		hub.queueHandler.AddClientToQueueForGame(gameId, client)
+		hub.queueHandler.CreateUserPositionInQueue(uuid, gameId)
 	}
 	hub.uuidToClientMux.RUnlock()
 
@@ -152,47 +114,46 @@ func ServeWsMatchmaking(hub *Hub, w http.ResponseWriter, r *http.Request, game_i
 	go client.readPump()
 
 	// Match new user to queued user if possible
-	if err := TryMatchClient(hub, game_id); err != nil {
+	if err := hub.tryMatchClient(gameId); err != nil {
 		log.Printf("Error trying to match client: %v", err)
 	}
 
 	// Check if client is in queue and has not been matched
 	// We modify the queues when a match is made, so if he is still in the queue, he is still waiting
-	if _, ok := hub.userPosInQueue[uuid]; ok {
+	if hub.queueHandler.IsClientInPositionQueue(client.UserUuid) {
 		msg := QueueMessage{
 			Type:   "Queue",
 			Status: "In Queue",
-			GameID: game_id,
+			GameID: client.GameID,
 		}
 		SendMessage(client, msg)
 	}
 }
 
-func TryMatchClient(hub *Hub, gameId int) error {
-	hub.queueMux.Lock()
-	hub.userPosInQueueMux.Lock()
-	defer hub.userPosInQueueMux.Unlock()
-	defer hub.queueMux.Unlock()
+func (h *Hub) RemoveClientFromUuidMap(client *Client) {
+	h.uuidToClientMux.Lock()
+	defer h.uuidToClientMux.Unlock()
 
-	if len(hub.queue[gameId]) >= 2 {
-		client1 := hub.queue[gameId][0]
-		client2 := hub.queue[gameId][1]
-		hub.queue[gameId] = hub.queue[gameId][2:]
+	if _, ok := h.uuidToClient[client.UserUuid]; ok {
+		delete(h.uuidToClient, client.UserUuid)
+	}
+}
 
-		// update clients position in queue
-		for i, client := range hub.queue[gameId] {
-			hub.userPosInQueue[client.UserUuid] = i
+func (h *Hub) tryMatchClient(gameId int) error {
+	// If there are at least 2 clients in the queue, try to match
+	if h.queueHandler.CanMatchClientsForGame(gameId) {
+		client1, client2 := h.queueHandler.GetFirstClientsInQueueForGame(gameId)
+		err := h.queueHandler.HandleMatchClient(gameId, client1.UserUuid, client2.UserUuid)
+		if err != nil {
+			return err
 		}
-
-		delete(hub.userPosInQueue, client1.UserUuid)
-		delete(hub.userPosInQueue, client2.UserUuid)
 
 		// Create a private room
 		// For now we can use a room creator, but we can also use a room factory or anything else to create rooms
-		if hub.roomCreator == nil {
+		if h.roomCreator == nil {
 			return fmt.Errorf("Room creator not set : Need to set a room creator to create a room")
 		}
-		roomId := hub.roomCreator.CreateRoom(client1, client2)
+		roomId := h.roomCreator.CreateRoom(client1, client2)
 
 		// Send a message to the clients containing the room id
 
