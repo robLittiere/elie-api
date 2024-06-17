@@ -8,9 +8,9 @@ import (
 func GetQuestFilterRegistry() filter.Filters {
 	return filter.Filters{
 		{
-			Name:          "type",
-			Criteria:      &query.QuestTypeNameCriteria{Field: "type"},
-			Documentation: "Get quests by their type name",
+			Name:          "tag",
+			Criteria:      &query.QuestTagCriteria{Field: "tag"},
+			Documentation: "Get quests by their tag name",
 		},
 	}
 }
