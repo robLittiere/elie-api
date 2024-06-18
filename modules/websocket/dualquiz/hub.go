@@ -103,12 +103,13 @@ func ServeWsDualQuiz(h *DqHub, w http.ResponseWriter, r *http.Request, roomId in
 
 	client.hub.register <- client
 
+	// We need to save our instance of client in the hub
+	h.addClientToGameRoom(client)
+
 	err = h.HandleConnection(client)
 	if err != nil {
 		log.Println(err)
 	}
-	// We need to save our instance of client in the hub
-	h.addClientToGameRoom(client)
 
 	go client.writePump()
 	go client.readPump()
@@ -120,7 +121,7 @@ func ServeWsDualQuiz(h *DqHub, w http.ResponseWriter, r *http.Request, roomId in
 // Whenever we receive a connection, we need to attribute the client to its room
 func (dqh *DqHub) HandleConnection(client *Client) error {
 
-	var msg matchmaking.DualQuizMessage
+	var msg DualQuizMessage
 
 	// First we check if the connection is legitimate
 	if _, ok := dqh.waitingRooms[client.RoomID]; !ok {
@@ -138,26 +139,20 @@ func (dqh *DqHub) HandleConnection(client *Client) error {
 
 	// If both players are in the room, game is ready to start
 	if dqh.gameHandler.IsRoomReady(client.RoomID) {
-		msg = matchmaking.DualQuizMessage{
-			Type:    "DualQuiz",
-			Status:  "Game",
-			RoomID:  client.RoomID,
-			Message: "Game is starting",
-		}
-		dqh.sendMessageToRoom(client.RoomID, msg)
-
+		// Set the quiz for this room
 		dqh.gameHandler.SetQuizForRoom(client.RoomID)
-
 		// Launch game for this room
 		dqh.LaunchGame(client.RoomID)
 	}
 
 	if dqh.gameHandler.IsPlayerWaitingForOpponent(client.RoomID, client.UserUuid) {
-		msg = matchmaking.DualQuizMessage{
-			Type:    "DualQuiz",
-			Status:  "Pending",
-			RoomID:  client.RoomID,
-			Message: "Waiting for opponent",
+		roomStatus := dqh.gameHandler.GetRoomStatus(client.RoomID)
+		msg = DualQuizMessage{
+			Type:          "DualQuiz",
+			Status:        roomStatus,
+			StatusMessage: roomStatus.String(),
+			RoomID:        client.RoomID,
+			Message:       "Waiting for opponent",
 		}
 		dqh.sendMessage(client, msg)
 	}
@@ -196,16 +191,18 @@ func (dqh *DqHub) addClientToGameRoom(client *Client) {
 }
 
 func (dqh *DqHub) LaunchGame(roomId int) {
-	var msg matchmaking.DualQuizGameMessage
 	quizFromRoom := dqh.gameHandler.GetQuizData(roomId)
+	dqh.gameHandler.SetRoomStatus(roomId, GameStarting)
+
+	msg := DualQuizGameMessage{
+		Type:          "DualQuiz",
+		Status:        GameStarting,
+		StatusMessage: GameStarting.String(),
+		RoomID:        roomId,
+		QuizData:      quizFromRoom.ToJSON(),
+		Timer:         0,
+	}
 	for _, client := range dqh.gameRooms[roomId] {
-		msg = matchmaking.DualQuizGameMessage{
-			Type:     "DualQuiz",
-			Status:   "Start",
-			RoomID:   roomId,
-			QuizData: quizFromRoom.ToJSON(),
-			Timer:    0,
-		}
 		dqh.sendMessage(client, msg)
 	}
 }

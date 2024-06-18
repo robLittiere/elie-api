@@ -121,9 +121,10 @@ func ServeWsMatchmaking(hub *Hub, w http.ResponseWriter, r *http.Request, gameId
 	// We modify the queues when a match is made, so if he is still in the queue, he is still waiting
 	if hub.queueHandler.IsClientInPositionQueue(client.UserUuid) {
 		msg := QueueMessage{
-			Type:   "Queue",
-			Status: "In Queue",
-			GameID: client.GameID,
+			Type:          "Queue",
+			Status:        WaitingInQueue,
+			StatusMessage: WaitingInQueue.String(),
+			GameId:        client.GameID,
 		}
 		SendMessage(client, msg)
 	}
@@ -156,10 +157,11 @@ func (h *Hub) tryMatchClient(gameId int) error {
 
 		// Send a message to the clients containing the room id
 		msg := RoomMessage{
-			Type:   "Match",
-			Status: "Match Found",
-			GameID: gameId,
-			RoomID: roomId,
+			Type:          "Match",
+			Status:        MatchedInQueue,
+			StatusMessage: MatchedInQueue.String(),
+			GameId:        gameId,
+			RoomId:        roomId,
 		}
 		SendMessage(client1, msg)
 		SendMessage(client2, msg)

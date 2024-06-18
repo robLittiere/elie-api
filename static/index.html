@@ -33,15 +33,14 @@
                         };
 
                         conn.onmessage = function (evt) {
-                            console.log(evt)
                             data = JSON.parse(evt.data);
                             console.log(data)
-                            if (data.type.toLowerCase() == "queue") {
+                            if (data.status == 0) {
                                 var item = document.createElement("div");
                                 // create message add queue position from data.queue_position
                                 item.innerHTML = "<b>Waiting for match...</b>"
                                 appendLog(item);
-                            } else if (data.type.toLowerCase() == "match") {
+                            } else if (data.status == 1) {
                                 var item = document.createElement("div");
                                 item.innerHTML = "<b>Match found!</b>";
                                 appendLog(item);
@@ -60,12 +59,11 @@
                                 };
 
                                 newConn.onmessage = function (evt) {
-                                    console.log(evt)
                                     data = JSON.parse(evt.data);
                                     console.log(data)
-                                    if (data.status.toLowerCase() == "waiting") {
+                                    if (data.status == 0) {
                                         var item = document.createElement("div");
-                                        item.innerHTML = "<b>Question: " + data.data + "</b>";
+                                        item.innerHTML = "<b>Question: " + data.quiz_data + "</b>";
                                         appendLog(item);
                                     }
                                 };
@@ -100,12 +98,12 @@
                         conn.onmessage = function (evt) {
                             data = JSON.parse(evt.data);
                             console.log(data)
-                            if (data.type.toLowerCase() == "queue") {
+                            if (data.status == 0) {
                                 var item = document.createElement("div");
                                 // create message add queue position from data.queue_position
                                 item.innerHTML = "<b>Waiting for match...</b>"
                                 appendLog(item);
-                            } else if (data.type.toLowerCase() == "match") {
+                            } else if (data.status == 1) {
                                 var item = document.createElement("div");
                                 item.innerHTML = "<b>Match found!</b>";
                                 appendLog(item);
@@ -127,9 +125,9 @@
                                     newConn.onmessage = function (evt) {
                                         data = JSON.parse(evt.data);
                                         console.log(data)
-                                        if (data.status.toLowerCase() == "waiting") {
+                                        if (data.status == 0) {
                                             var item = document.createElement("div");
-                                            item.innerHTML = "<b>Question: " + data.data + "</b>";
+                                            item.innerHTML = "<b>Question: " + data.quiz_data + "</b>";
                                             appendLog(item);
                                         }
                                     };

@@ -26,12 +26,14 @@ type Room struct {
 	Players []*GameClient
 	Quiz    *models.Quiz
 	Timer   int
+	Status  GameStatus
 }
 
 func NewRoom(id int, players []*GameClient) *Room {
 	return &Room{
 		Id:      id,
 		Players: players,
+		Status:  GamePending,
 	}
 }
 
@@ -88,10 +90,29 @@ func (gh *GameHandler) IsPlayerWaitingForOpponent(id int, uuid string) bool {
 }
 
 func (gh *GameHandler) GetQuizData(roomId int) *models.Quiz {
-
 	gh.roomsMux.RLock()
 	defer gh.roomsMux.RUnlock()
 
 	return gh.rooms[roomId].Quiz
+}
 
+func (gh *GameHandler) SetStartingStatus(roomId int) {
+	gh.roomsMux.Lock()
+	defer gh.roomsMux.Unlock()
+
+	gh.rooms[roomId].Status = GameStarting
+}
+
+func (gh *GameHandler) GetRoomStatus(roomId int) GameStatus {
+	gh.roomsMux.RLock()
+	defer gh.roomsMux.RUnlock()
+
+	return gh.rooms[roomId].Status
+}
+
+func (gh *GameHandler) SetRoomStatus(roomId int, status GameStatus) {
+	gh.roomsMux.Lock()
+	defer gh.roomsMux.Unlock()
+
+	gh.rooms[roomId].Status = status
 }
