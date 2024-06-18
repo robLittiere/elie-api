@@ -13,5 +13,5 @@
 -- +goose StatementBegin
     DELETE FROM user_quests WHERE user_id = (SELECT id  from users WHERE email = 'rob@mail.com');
     DELETE FROM user_quests WHERE user_id = (SELECT id  from users WHERE email = 'lena@mail.com');
-    DELETE FROM user_quests WHERE user_id = (SELECT id  from users WHERE email = 'bbr@gmail.com');
+    DELETE FROM user_quests WHERE user_id = (SELECT id  from users WHERE email = 'barbara@mail.com');
 -- +goose StatementEnd
