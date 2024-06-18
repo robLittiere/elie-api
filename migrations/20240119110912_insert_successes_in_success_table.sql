@@ -3,7 +3,7 @@
     INSERT INTO successes (tag_id, name, xp, progression_rank, currency_reward, done_condition, created_at, updated_at)
     VALUES ((SELECT id FROM tags WHERE name = 'ConnectionTag'), 'Se connecter', 1000, 1, 100, 100, NOW(), NOW());
     INSERT INTO successes (tag_id, name, xp, progression_rank, currency_reward, done_condition, created_at, updated_at)
-    VALUES ((SELECT id FROM tags WHERE name = 'PlayGameTag'), 'Faire des quizs', 1000, 1, 100, 100, NOW(), NOW());
+    VALUES ((SELECT id FROM tags WHERE name = 'PlayQuizTag'), 'Faire des quizs', 1000, 1, 100, 100, NOW(), NOW());
     INSERT INTO successes (tag_id, name, xp, progression_rank, currency_reward, done_condition, created_at, updated_at)
     VALUES ((SELECT id FROM tags WHERE name = 'WonQuizTag'), 'Réussir des quizs', 2000, 1, 200, 100, NOW(), NOW());
     INSERT INTO successes (tag_id, name, xp, progression_rank, currency_reward, done_condition, created_at, updated_at)

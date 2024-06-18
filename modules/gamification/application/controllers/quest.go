@@ -19,27 +19,3 @@ func GetQuests(c *gin.Context) {
 
 	c.JSON(200, quests)
 }
-
-func GetDailyQuests(c *gin.Context) {
-	questRepo := infrastructure.NewQuestRepo(config.DB)
-	quests, err := questRepo.BuildQueryAndFind(map[string][]string{"type": {"daily"}})
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
-		return
-	}
-
-	// TODO: Add logic to get the 3 daily quests
-
-	c.JSON(200, quests)
-}
-
-func GetWeeklyQuests(c *gin.Context) {
-	questRepo := infrastructure.NewQuestRepo(config.DB)
-	quests, err := questRepo.BuildQueryAndFind(map[string][]string{"type": {"weekly"}})
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
-		return
-	}
-
-	c.JSON(200, quests)
-}

@@ -18,19 +18,23 @@ func NewSuccessRepo(db *gorm.DB) *SuccessRepo {
 // Find Get all successes from db
 func (r *SuccessRepo) Find() ([]models.Success, error) {
 	success := make([]models.Success, 0)
-	result := r.DB.Find(&success)
+	result := r.DB.Preload("Tag").Find(&success)
 	if result.Error != nil {
 		return nil, result.Error
 	}
 	return success, nil
 }
 
-func (r *SuccessRepo) GetByTag(tag string) ([]models.Success, error) {
-	success := make([]models.Success, 0)
-	result := r.DB.Where("tags = ?", tag).Find(&success)
-
-	if result.Error != nil {
-		return nil, result.Error
+func (r *SuccessRepo) BuildQueryAndFind(queryParams map[string][]string) ([]models.Success, error) {
+	var quests []models.Success
+	err := r.BuildQuery(queryParams)
+	if err != nil {
+		return nil, err
 	}
-	return success, nil
+	quests, err = r.Find()
+	if err != nil {
+		return nil, err
+	}
+
+	return quests, nil
 }

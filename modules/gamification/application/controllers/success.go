@@ -8,7 +8,9 @@ import (
 
 func GetSuccess(c *gin.Context) {
 	successRepo := infrastructure.NewSuccessRepo(config.DB)
-	successes, err := successRepo.Find()
+	queryParams := c.Request.URL.Query()
+
+	successes, err := successRepo.BuildQueryAndFind(queryParams)
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
 		return
