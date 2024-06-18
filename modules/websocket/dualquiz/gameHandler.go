@@ -1,18 +1,37 @@
 package dualquiz
 
 import (
+	"elie-api/config"
+	"elie-api/modules/game/infrastructure"
+	"elie-api/modules/game/models"
 	"fmt"
 	"sync"
 )
 
 type GameHandler struct {
 	roomsMux sync.RWMutex
-	rooms    map[int][]*GameClient
+	rooms    map[int]*Room
+	quizRepo *infrastructure.QuizRepo
 }
 
 func NewGameHandler() *GameHandler {
 	return &GameHandler{
-		rooms: make(map[int][]*GameClient),
+		rooms:    make(map[int]*Room),
+		quizRepo: infrastructure.NewQuizRepo(config.DB),
+	}
+}
+
+type Room struct {
+	Id      int
+	Players []*GameClient
+	Quiz    *models.Quiz
+	Timer   int
+}
+
+func NewRoom(id int, players []*GameClient) *Room {
+	return &Room{
+		Id:      id,
+		Players: players,
 	}
 }
 
@@ -21,15 +40,30 @@ func (gh *GameHandler) AddClientToRoom(roomId int, client *GameClient) {
 	defer gh.roomsMux.Unlock()
 
 	if _, ok := gh.rooms[roomId]; !ok {
-		gh.rooms[roomId] = make([]*GameClient, 0)
+		// Create an empty room
+		gh.rooms[roomId] = NewRoom(roomId, []*GameClient{})
 	}
 
-	gh.rooms[roomId] = append(gh.rooms[roomId], client)
+	gh.rooms[roomId].Players = append(gh.rooms[roomId].Players, client)
+
 }
 
-// LaunchGame launches the game for a given roomId
-func (gh *GameHandler) LaunchGame(roomId int) {
+// SetQuizForRoom launches the game for a given roomId
+func (gh *GameHandler) SetQuizForRoom(roomId int) {
 	// Launch the game
+	gh.roomsMux.RLock()
+	defer gh.roomsMux.RUnlock()
+
+	fmt.Printf("Launching game for room %d\n", roomId)
+	// Get a random quiz
+	quiz, err := gh.quizRepo.GetRandomQuiz()
+	if err != nil {
+		fmt.Printf("Error getting random quiz: %v\n", err)
+		return
+	}
+	// Set the quiz to the room
+	gh.rooms[roomId].Quiz = &quiz
+
 }
 
 // IsRoomReady checks if the room is ready for the game to be launched
@@ -39,18 +73,25 @@ func (gh *GameHandler) IsRoomReady(roomId int) bool {
 	defer gh.roomsMux.RUnlock()
 
 	fmt.Printf("Checking if room %d is ready...\n", roomId)
-	fmt.Printf("Room %d has %d players\n", roomId, len(gh.rooms[roomId]))
-	return len(gh.rooms[roomId]) == 2
+	fmt.Printf("Room %d has %d players\n", roomId, len(gh.rooms[roomId].Players))
+	return len(gh.rooms[roomId].Players) == 2
 }
 
 func (gh *GameHandler) IsPlayerWaitingForOpponent(id int, uuid string) bool {
 	gh.roomsMux.RLock()
 	defer gh.roomsMux.RUnlock()
 
-	fmt.Printf("Checking if player %s is waiting for opponent in room %d\n", uuid, id)
-	if len(gh.rooms[id]) == 1 {
-		fmt.Printf("there is only one player in the game room indeed")
-		return gh.rooms[id][0].UserUuid == uuid
+	if len(gh.rooms[id].Players) == 1 {
+		return gh.rooms[id].Players[0].UserUuid != uuid
 	}
 	return false
+}
+
+func (gh *GameHandler) GetQuizData(roomId int) *models.Quiz {
+
+	gh.roomsMux.RLock()
+	defer gh.roomsMux.RUnlock()
+
+	return gh.rooms[roomId].Quiz
+
 }

@@ -73,3 +73,26 @@ func (r *QuizRepo) FindQuizCompletedByUser(userId string) ([]int, error) {
 	_ = r.DB.Table("user_quizzes").Select("id").Where("user_id = ?", userId).Scan(&quizIds)
 	return quizIds, nil
 }
+
+func (r *QuizRepo) GetRandomQuiz() (models.Quiz, error) {
+	var quizData models.QuizGameJSONMap
+	var quiz models.Quiz
+	result := r.DB.Table("quiz_games").
+		Select("quizData").
+		Joins("JOIN jsonb_array_elements(data->'topic') as topic ON TRUE").
+		Joins("JOIN jsonb_array_elements(topic->'quizzes') as quizData ON TRUE").
+		Order("RANDOM()").
+		Limit(1).
+		Scan(&quizData)
+
+	if result.Error != nil {
+		return quiz, result.Error
+	}
+
+	err := quiz.LoadFromMap(quizData)
+	if err != nil {
+		return quiz, err
+	}
+
+	return quiz, nil
+}

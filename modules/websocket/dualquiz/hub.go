@@ -136,9 +136,8 @@ func (dqh *DqHub) HandleConnection(client *Client) error {
 
 	fmt.Printf("Client %s has joined room %d\n", client.UserUuid, client.RoomID)
 
+	// If both players are in the room, game is ready to start
 	if dqh.gameHandler.IsRoomReady(client.RoomID) {
-		// We are ready to launch the game
-
 		msg = matchmaking.DualQuizMessage{
 			Type:    "DualQuiz",
 			Status:  "Game",
@@ -147,8 +146,10 @@ func (dqh *DqHub) HandleConnection(client *Client) error {
 		}
 		dqh.sendMessageToRoom(client.RoomID, msg)
 
-		// Launch game
-		dqh.gameHandler.LaunchGame(client.RoomID)
+		dqh.gameHandler.SetQuizForRoom(client.RoomID)
+
+		// Launch game for this room
+		dqh.LaunchGame(client.RoomID)
 	}
 
 	if dqh.gameHandler.IsPlayerWaitingForOpponent(client.RoomID, client.UserUuid) {
@@ -192,4 +193,19 @@ func (dqh *DqHub) addClientToGameRoom(client *Client) {
 
 	dqh.gameRooms[client.RoomID] = append(dqh.gameRooms[client.RoomID], client)
 
+}
+
+func (dqh *DqHub) LaunchGame(roomId int) {
+	var msg matchmaking.DualQuizGameMessage
+	quizFromRoom := dqh.gameHandler.GetQuizData(roomId)
+	for _, client := range dqh.gameRooms[roomId] {
+		msg = matchmaking.DualQuizGameMessage{
+			Type:     "DualQuiz",
+			Status:   "Start",
+			RoomID:   roomId,
+			QuizData: quizFromRoom.ToJSON(),
+			Timer:    0,
+		}
+		dqh.sendMessage(client, msg)
+	}
 }

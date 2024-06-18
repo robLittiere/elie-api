@@ -111,7 +111,6 @@
                                 appendLog(item);
 
                                 // add delay here to fake loading times
-                                setTimeout(() => {
                                     newConn = new WebSocket(
                                         "ws://" +
                                         document.location.host +
@@ -134,7 +133,6 @@
                                             appendLog(item);
                                         }
                                     };
-                                }, 10000);
                             }
                         };
                     } else {

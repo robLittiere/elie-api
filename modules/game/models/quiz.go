@@ -16,9 +16,9 @@ type Topic struct {
 }
 
 type Question struct {
-	Question     string   `json:"question"`
-	GoodAnswer   string   `json:"good_answer"`
-	WrongAnswers []string `json:"wrong_answers"`
+	Question   string   `json:"question"`
+	GoodAnswer string   `json:"good_answer"`
+	Answers    []string `json:"answers"`
 }
 
 type Quiz struct {
@@ -43,6 +43,22 @@ type QuizGame struct {
 	Data      QuizGameJSONMap `json:"data" gorm:"type:jsonb"`
 	CreatedAt time.Time       `json:"createdAt"`
 	UpdatedAt time.Time       `json:"updatedAt"`
+}
+
+func (q *Quiz) LoadFromMap(m map[string]interface{}) error {
+	data, err := json.Marshal(m)
+	if err == nil {
+		err = json.Unmarshal(data, q)
+	}
+	return err
+}
+
+func (q *Quiz) ToJSON() string {
+	a, err := json.Marshal(q)
+	if err != nil {
+		panic(err)
+	}
+	return string(a)
 }
 
 func (q *QuizGameJSONMap) Value() (driver.Value, error) {
