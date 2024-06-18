@@ -13,6 +13,6 @@ const (
 )
 
 type Tag struct {
-	Id   int    `json:"id" gorm:"primaryKey"`
+	Id   int    `json:"id" gorm:"primary_key"`
 	Name TagName `json:"name"`
 }

@@ -17,7 +17,7 @@ func NewQuestRepo(db *gorm.DB) *QuestRepo {
 
 func (repo *QuestRepo) Find() ([]models.Quest, error) {
 	quests := make([]models.Quest, 0)
-	result := repo.DB.Find(&quests)
+	result := repo.DB.Preload("Tag").Find(&quests)
 	if result.Error != nil {
 		return nil, result.Error
 	}

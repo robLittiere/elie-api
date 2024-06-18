@@ -38,7 +38,7 @@ func CreateQuest(data map[string]interface{}) models.Quest {
 func CreateTag() models.Tag {
 	var tag = models.Tag{
 		Id: 1,
-		Name: "WinGameTag",
+		Name: "WonGameTag",
 	}
 	config.DB.Create(&tag)
 	return tag
