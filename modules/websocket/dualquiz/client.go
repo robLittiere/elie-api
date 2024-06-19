@@ -1,7 +1,6 @@
 package dualquiz
 
 import (
-	"elie-api/modules/websocket/matchmaking"
 	"encoding/json"
 	"fmt"
 	"github.com/gorilla/websocket"
@@ -73,11 +72,16 @@ func (c *Client) readPump() {
 			}
 			break
 		}
-		var msg matchmaking.QueueMessage
+		var msg ClientDualQuizMessage
 		err = json.Unmarshal(message, &msg)
-		fmt.Printf("Message received: %v\n", msg)
+		if err != nil {
+			log.Printf("Error unmarshalling message: %v\n", err)
+		}
 
-		c.hub.broadcast <- message
+		fmt.Printf("Message received from user %v : %v\n", c.UserUuid, msg)
+
+		c.hub.HandleClientAnswer(c, msg)
+
 	}
 }
 
@@ -109,7 +113,7 @@ func (c *Client) writePump() {
 			w.Write(message)
 
 			// Print out the message being sent
-			fmt.Printf("Message sent: %s\n", message)
+			// fmt.Printf("Message sent: %s\n", message)
 
 			// Add queued chat messages to the current websocket message.
 			n := len(c.send)

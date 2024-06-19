@@ -1,4 +1,4 @@
-package dualquiz
+package enum
 
 type GameStatus int
 

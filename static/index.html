@@ -4,8 +4,6 @@
         <title>Chat Example</title>
         <script type="text/javascript">
             window.onload = function () {
-                var conn;
-                var msg = document.getElementById("msg");
                 var log = document.getElementById("log");
 
                 function appendLog(item) {
@@ -20,7 +18,7 @@
                 document.getElementById("form-user-1").onsubmit = function () {
                     // init connection to websocket
                     if (window["WebSocket"]) {
-                        conn = new WebSocket(
+                        let conn = new WebSocket(
                             "ws://" +
                                 document.location.host +
                                 "/ws/matchmaking/1/1"
@@ -34,7 +32,6 @@
 
                         conn.onmessage = function (evt) {
                             data = JSON.parse(evt.data);
-                            console.log(data)
                             if (data.status == 0) {
                                 var item = document.createElement("div");
                                 // create message add queue position from data.queue_position
@@ -45,7 +42,7 @@
                                 item.innerHTML = "<b>Match found!</b>";
                                 appendLog(item);
 
-                                newConn = new WebSocket(
+                                let newConn = new WebSocket(
                                     "ws://" +
                                         document.location.host +
                                         "/ws/dualquiz/" +
@@ -63,8 +60,20 @@
                                     console.log(data)
                                     if (data.status == 0) {
                                         var item = document.createElement("div");
-                                        item.innerHTML = "<b>Question: " + data.quiz_data + "</b>";
+                                        item.innerHTML = "<b>Game has started for player 1...</b>";
                                         appendLog(item);
+
+                                        setTimeout(() => {
+                                            const message = {
+                                                type: "Answer",
+                                                choice: 0,
+                                            };
+                                            newConn.send(JSON.stringify(message));
+                                            var item = document.createElement("div");
+                                            item.innerHTML = "<b>Answer is sent for player 1...</b>";
+                                            appendLog(item);
+
+                                        }, 10000);
                                     }
                                 };
                             }
@@ -83,19 +92,19 @@
                 document.getElementById("form-user-2").onsubmit = function () {
                     // init connection to websocket
                     if (window["WebSocket"]) {
-                        conn = new WebSocket(
+                        let conn2 = new WebSocket(
                             "ws://" +
                             document.location.host +
                             "/ws/matchmaking/1/2"
                         );
 
-                        conn.onclose = function (evt) {
+                        conn2.onclose = function (evt) {
                             var item = document.createElement("div");
                             item.innerHTML = "<b>Connection closed.</b>";
                             appendLog(item);
                         };
 
-                        conn.onmessage = function (evt) {
+                        conn2.onmessage = function (evt) {
                             data = JSON.parse(evt.data);
                             console.log(data)
                             if (data.status == 0) {
@@ -109,26 +118,38 @@
                                 appendLog(item);
 
                                 // add delay here to fake loading times
-                                    newConn = new WebSocket(
+                                    let newConn2 = new WebSocket(
                                         "ws://" +
                                         document.location.host +
                                         "/ws/dualquiz/" +
                                         data.room_id + "/2"
                                     );
 
-                                    newConn.onclose = function (evt) {
+                                    newConn2.onclose = function (evt) {
                                         var item = document.createElement("div");
                                         item.innerHTML = "<b>Connection closed.</b>";
                                         appendLog(item);
                                     };
 
-                                    newConn.onmessage = function (evt) {
+                                    newConn2.onmessage = function (evt) {
                                         data = JSON.parse(evt.data);
                                         console.log(data)
                                         if (data.status == 0) {
                                             var item = document.createElement("div");
-                                            item.innerHTML = "<b>Question: " + data.quiz_data + "</b>";
+                                            item.innerHTML = "<b>Game has started for player 2</b>";
                                             appendLog(item);
+
+                                            setTimeout(() => {
+                                                const message = {
+                                                    type: "Answer",
+                                                    choice: 3,
+                                                };
+                                                newConn2.send(JSON.stringify(message));
+                                                var item = document.createElement("div");
+                                                item.innerHTML = "<b>Answer is sent for player 2...</b>";
+                                                appendLog(item);
+
+                                            }, 2000);
                                         }
                                     };
                             }

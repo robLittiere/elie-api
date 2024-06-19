@@ -1,18 +1,36 @@
 package dualquiz
 
+import "elie-api/modules/websocket/dualquiz/enum"
+
 type DualQuizMessage struct {
-	Type          string     `json:"type"`
-	Status        GameStatus `json:"status"`
-	StatusMessage string     `json:"status_message"`
-	RoomID        int        `json:"room_id"`
-	Message       string     `json:"message"`
+	Type          enum.MessageType `json:"type"`
+	TypeMessage   string           `json:"type_message"`
+	Status        enum.GameStatus  `json:"status"`
+	StatusMessage string           `json:"status_message"`
+	RoomID        int              `json:"room_id"`
+	Message       string           `json:"message"`
 }
 
 type DualQuizGameMessage struct {
-	Type          string     `json:"type"`
-	Status        GameStatus `json:"status"`
-	StatusMessage string     `json:"status_message"`
-	RoomID        int        `json:"room_id"`
-	QuizData      string     `json:"quiz_data"`
-	Timer         int        `json:"timer"`
+	Type            enum.MessageType `json:"type"`
+	TypeMessage     string           `json:"type_message"`
+	Status          enum.GameStatus  `json:"status"`
+	StatusMessage   string           `json:"status_message"`
+	RoomID          int              `json:"room_id"`
+	QuizData        string           `json:"quiz_data"`
+	CurrentQuestion int              `json:"current_question"`
+	Timer           int              `json:"timer"`
+}
+
+type DualQuizGameAnswerMessage struct {
+	Type          enum.MessageType `json:"type"`
+	TypeMessage   string           `json:"type_message"`
+	IsCorrect     bool             `json:"is_correct"`
+	CorrectAnswer int              `json:"correct_answer"`
+	EndTimer      int              `json:"end_timer"`
+}
+
+type ClientDualQuizMessage struct {
+	Type   string `json:"type"`
+	Choice int    `json:"choice"`
 }

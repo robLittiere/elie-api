@@ -4,6 +4,7 @@ import (
 	"elie-api/config"
 	"elie-api/modules/game/infrastructure"
 	"elie-api/modules/game/models"
+	"elie-api/modules/websocket/dualquiz/enum"
 	"fmt"
 	"sync"
 )
@@ -14,6 +15,16 @@ type GameHandler struct {
 	quizRepo *infrastructure.QuizRepo
 }
 
+type Room struct {
+	Id                   int
+	Players              []*GameClient
+	Quiz                 *models.Quiz
+	CurrentQuestion      int
+	CurrentCorrectAnswer int
+	Timer                int
+	Status               enum.GameStatus
+}
+
 func NewGameHandler() *GameHandler {
 	return &GameHandler{
 		rooms:    make(map[int]*Room),
@@ -21,19 +32,11 @@ func NewGameHandler() *GameHandler {
 	}
 }
 
-type Room struct {
-	Id      int
-	Players []*GameClient
-	Quiz    *models.Quiz
-	Timer   int
-	Status  GameStatus
-}
-
 func NewRoom(id int, players []*GameClient) *Room {
 	return &Room{
 		Id:      id,
 		Players: players,
-		Status:  GamePending,
+		Status:  enum.GamePending,
 	}
 }
 
@@ -50,22 +53,98 @@ func (gh *GameHandler) AddClientToRoom(roomId int, client *GameClient) {
 
 }
 
-// SetQuizForRoom launches the game for a given roomId
-func (gh *GameHandler) SetQuizForRoom(roomId int) {
-	// Launch the game
+func (gh *GameHandler) GetRoomStatus(roomId int) enum.GameStatus {
 	gh.roomsMux.RLock()
 	defer gh.roomsMux.RUnlock()
 
+	return gh.rooms[roomId].Status
+}
+
+func (gh *GameHandler) GetCurrentQuestion(roomId int) int {
+	gh.roomsMux.RLock()
+	defer gh.roomsMux.RUnlock()
+
+	return gh.rooms[roomId].CurrentQuestion
+}
+
+func (gh *GameHandler) GetQuizData(roomId int) *models.Quiz {
+	gh.roomsMux.RLock()
+	defer gh.roomsMux.RUnlock()
+
+	return gh.rooms[roomId].Quiz
+}
+
+func (gh *GameHandler) GetCurrentCorrectAnswer(roomId int) int {
+	gh.roomsMux.RLock()
+	defer gh.roomsMux.RUnlock()
+
+	return gh.rooms[roomId].CurrentCorrectAnswer
+}
+
+func (gh *GameHandler) setQuizData(roomId int, quiz *models.Quiz) {
+	gh.roomsMux.Lock()
+	defer gh.roomsMux.Unlock()
+
+	gh.rooms[roomId].Quiz = quiz
+}
+
+func (gh *GameHandler) setStartingStatus(roomId int) {
+	gh.roomsMux.Lock()
+	defer gh.roomsMux.Unlock()
+
+	gh.rooms[roomId].Status = enum.GameStarting
+}
+
+// SetQuizForRoom launches the game for a given roomId
+func (gh *GameHandler) SetQuizForRoom(roomId int) {
+	// Launch the game
 	fmt.Printf("Launching game for room %d\n", roomId)
+
 	// Get a random quiz
 	quiz, err := gh.quizRepo.GetRandomQuiz()
 	if err != nil {
 		fmt.Printf("Error getting random quiz: %v\n", err)
 		return
 	}
-	// Set the quiz to the room
-	gh.rooms[roomId].Quiz = &quiz
 
+	// Set the quiz to the room
+	gh.setQuizData(roomId, &quiz)
+	gh.setCurrentQuestion(roomId, 0)
+	gh.updateCurrentCorrectAnswer(roomId)
+}
+
+func (gh *GameHandler) setCurrentQuestion(roomId int, question int) {
+	gh.roomsMux.Lock()
+	defer gh.roomsMux.Unlock()
+
+	gh.rooms[roomId].CurrentQuestion = question
+}
+
+func (gh *GameHandler) setCurrentCorrectAnswer(roomId int, currentAnswerIndex int) {
+	gh.roomsMux.Lock()
+	defer gh.roomsMux.Unlock()
+
+	gh.rooms[roomId].CurrentCorrectAnswer = currentAnswerIndex
+}
+
+func (gh *GameHandler) updateCurrentCorrectAnswer(roomId int) {
+	currentQuestion := gh.GetCurrentQuestion(roomId)
+	quiz := gh.GetQuizData(roomId)
+
+	answers := quiz.Questions[currentQuestion].Answers
+	for i, answer := range answers {
+		if quiz.Questions[currentQuestion].GoodAnswer == answer {
+			gh.setCurrentCorrectAnswer(roomId, i)
+			break
+		}
+	}
+}
+
+func (gh *GameHandler) SetRoomStatus(roomId int, status enum.GameStatus) {
+	gh.roomsMux.Lock()
+	defer gh.roomsMux.Unlock()
+
+	gh.rooms[roomId].Status = status
 }
 
 // IsRoomReady checks if the room is ready for the game to be launched
@@ -89,30 +168,21 @@ func (gh *GameHandler) IsPlayerWaitingForOpponent(id int, uuid string) bool {
 	return false
 }
 
-func (gh *GameHandler) GetQuizData(roomId int) *models.Quiz {
-	gh.roomsMux.RLock()
-	defer gh.roomsMux.RUnlock()
+// IsAnswerCorrect Determine if the answer given to the current question is correct
+func (gh *GameHandler) IsAnswerCorrect(roomId int, msg ClientDualQuizMessage) bool {
 
-	return gh.rooms[roomId].Quiz
+	// Get the current question
+	return gh.GetCurrentCorrectAnswer(roomId) == msg.Choice
 }
 
-func (gh *GameHandler) SetStartingStatus(roomId int) {
+func (gh *GameHandler) AddToPlayerScore(roomId int, clientUuid string) {
 	gh.roomsMux.Lock()
 	defer gh.roomsMux.Unlock()
 
-	gh.rooms[roomId].Status = GameStarting
-}
-
-func (gh *GameHandler) GetRoomStatus(roomId int) GameStatus {
-	gh.roomsMux.RLock()
-	defer gh.roomsMux.RUnlock()
-
-	return gh.rooms[roomId].Status
-}
-
-func (gh *GameHandler) SetRoomStatus(roomId int, status GameStatus) {
-	gh.roomsMux.Lock()
-	defer gh.roomsMux.Unlock()
-
-	gh.rooms[roomId].Status = status
+	for _, player := range gh.rooms[roomId].Players {
+		if player.UserUuid == clientUuid {
+			player.Score++
+			break
+		}
+	}
 }

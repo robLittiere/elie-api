@@ -5,4 +5,5 @@ type GameClient struct {
 	RoomId     int
 	Points     int
 	AnswerTime int
+	Score      int
 }
