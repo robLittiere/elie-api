@@ -47,8 +47,6 @@ type Client struct {
 
 	// Room id
 	RoomID int
-
-	CurrentStatus Status
 }
 
 // readPump pumps messages from the websocket connection to the hub.
@@ -114,13 +112,6 @@ func (c *Client) writePump() {
 
 			// Print out the message being sent
 			// fmt.Printf("Message sent: %s\n", message)
-
-			// Add queued chat messages to the current websocket message.
-			n := len(c.send)
-			for i := 0; i < n; i++ {
-				w.Write(newline)
-				w.Write(<-c.send)
-			}
 
 			if err := w.Close(); err != nil {
 				return

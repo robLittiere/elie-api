@@ -13,9 +13,12 @@ import (
 // DqHub maintains the set of active clients and broadcasts messages to the
 // clients.
 type DqHub struct {
-	// Registered clients.
+	// Registered clients and know if they're connected.
 	clientsMux sync.RWMutex
 	clients    map[*Client]bool
+
+	// Map of clients by UUID.
+	clientsByUuid map[string]*Client
 
 	// Inbound messages from the clients.
 	broadcast chan []byte
@@ -38,15 +41,18 @@ type DqHub struct {
 }
 
 func NewDqHub() *DqHub {
-	return &DqHub{
-		broadcast:    make(chan []byte),
-		register:     make(chan *Client),
-		unregister:   make(chan *Client),
-		clients:      make(map[*Client]bool),
-		waitingRooms: make(map[int][]string),
-		gameRooms:    make(map[int][]*Client),
-		gameHandler:  NewGameHandler(),
+	hub := &DqHub{
+		broadcast:     make(chan []byte),
+		register:      make(chan *Client),
+		unregister:    make(chan *Client),
+		clients:       make(map[*Client]bool),
+		clientsByUuid: make(map[string]*Client),
+		waitingRooms:  make(map[int][]string),
+		gameRooms:     make(map[int][]*Client),
 	}
+
+	hub.gameHandler = NewGameHandler(hub)
+	return hub
 }
 
 func (dqh *DqHub) CreateRoom(client1 *matchmaking.Client, client2 *matchmaking.Client) int {
@@ -61,18 +67,27 @@ func (dqh *DqHub) CreateRoom(client1 *matchmaking.Client, client2 *matchmaking.C
 
 }
 
+func (dqh *DqHub) getClientByUuid(uuid string) (*Client, bool) {
+	dqh.clientsMux.RLock()
+	defer dqh.clientsMux.RUnlock()
+
+	client, ok := dqh.clientsByUuid[uuid]
+	return client, ok
+}
+
 func (h *DqHub) Run() {
 	for {
 		select {
 		case client := <-h.register:
 			h.clientsMux.Lock()
 			h.clients[client] = true
-			client.CurrentStatus = StatusConnected
+			h.clientsByUuid[client.UserUuid] = client
 			h.clientsMux.Unlock()
 		case client := <-h.unregister:
 			h.clientsMux.Lock()
 			if _, ok := h.clients[client]; ok {
 				delete(h.clients, client)
+				delete(h.clientsByUuid, client.UserUuid)
 				close(client.send)
 			}
 			h.clientsMux.Unlock()
@@ -135,10 +150,15 @@ func (dqh *DqHub) HandleConnection(client *Client) error {
 		return fmt.Errorf("room %d does not exist for user : %v", client.RoomID, client.UserUuid)
 	}
 
-	dqh.gameHandler.AddClientToRoom(client.RoomID, &GameClient{UserUuid: client.UserUuid, Score: 0})
+	dqh.gameHandler.AddClientToRoom(client.RoomID, &GameClient{
+		UserUuid:             client.UserUuid,
+		Score:                0,
+		HasAnsweredThisRound: false,
+	})
 
 	fmt.Printf("Client %s has joined room %d\n", client.UserUuid, client.RoomID)
 
+	// TODO Refactor game preparation, it is shiiit like that
 	// If both players are in the room, game is ready to start
 	if dqh.gameHandler.IsRoomReady(client.RoomID) {
 		// Set the quiz for this room
@@ -207,36 +227,80 @@ func (dqh *DqHub) LaunchGame(roomId int) {
 		CurrentQuestion: dqh.gameHandler.GetCurrentQuestion(roomId),
 		Timer:           0,
 	}
-	for _, client := range dqh.gameRooms[roomId] {
-		dqh.sendMessage(client, msg)
-	}
+	dqh.sendMessageToRoom(roomId, msg)
 }
 
-func (dqh *DqHub) HandleClientAnswer(c *Client, msg ClientDualQuizMessage) {
-	// We will pass the answer to the game handler
-	isClientCorrect := dqh.gameHandler.IsAnswerCorrect(c.RoomID, msg)
-	fmt.Printf("Client %s answered %v\n", c.UserUuid, isClientCorrect)
+func (dqh *DqHub) HandleClientAnswer(c *Client, msgFromClient ClientDualQuizMessage) {
+	dqh.gameHandler.onPlayerAnswer(c.RoomID, c.UserUuid, msgFromClient)
+}
 
-	if isClientCorrect {
-		dqh.gameHandler.AddToPlayerScore(c.RoomID, c.UserUuid)
-		// Send a you were correct message to the client
-		msg := DualQuizGameAnswerMessage{
-			Type:          enum.DualQuizAnswerType,
-			TypeMessage:   enum.DualQuizAnswerType.String(),
-			IsCorrect:     true,
-			CorrectAnswer: dqh.gameHandler.GetCurrentCorrectAnswer(c.RoomID),
-			EndTimer:      0,
-		}
-		dqh.sendMessage(c, msg)
-	} else {
-		// Send a you were wrong message to the client with the correct answer in it
-		msg := DualQuizGameAnswerMessage{
-			Type:          enum.DualQuizAnswerType,
-			TypeMessage:   enum.DualQuizAnswerType.String(),
-			IsCorrect:     false,
-			CorrectAnswer: dqh.gameHandler.GetCurrentCorrectAnswer(c.RoomID),
-			EndTimer:      0,
-		}
-		dqh.sendMessage(c, msg)
+func (dqh *DqHub) OnPlayerCorrectAnswer(clientUuid string, roomId int) {
+	// We need to send a message to the client that he was correct
+	msg := DualQuizGameAnswerMessage{
+		Type:           enum.DualQuizAnswerType,
+		TypeMessage:    enum.DualQuizAnswerType.String(),
+		FromClientUuid: clientUuid,
+		IsCorrect:      true,
+		CorrectAnswer:  dqh.gameHandler.GetCurrentCorrectAnswer(roomId),
+		EndTimer:       0,
 	}
+
+	dqh.sendMessageToRoom(roomId, msg)
+}
+
+func (dqh *DqHub) OnPlayerWrongAnswer(clientUuid string, roomId int) {
+	// We need to send a message to the client that he was wrong
+	msg := DualQuizGameAnswerMessage{
+		Type:           enum.DualQuizAnswerType,
+		TypeMessage:    enum.DualQuizAnswerType.String(),
+		FromClientUuid: clientUuid,
+		IsCorrect:      false,
+		CorrectAnswer:  dqh.gameHandler.GetCurrentCorrectAnswer(roomId),
+		EndTimer:       0,
+	}
+
+	dqh.sendMessageToRoom(roomId, msg)
+}
+
+func (dqh *DqHub) OnRoundEnd(roomId int) {
+	// We need to send a message to the clients that the round has ended
+	msg := DualQuizMessage{
+		Type:          enum.DualQuizType,
+		TypeMessage:   enum.DualQuizType.String(),
+		Status:        enum.GameRoundFinished,
+		StatusMessage: enum.GameRoundFinished.String(),
+		RoomID:        roomId,
+		Message:       "Round has ended",
+	}
+
+	dqh.sendMessageToRoom(roomId, msg)
+
+}
+
+func (dqh *DqHub) OnNextRoundStart(roomId int) {
+	// We need to send a message to the clients that the next round has started
+	msg := DualQuizMessage{
+		Type:          enum.DualQuizType,
+		TypeMessage:   enum.DualQuizType.String(),
+		Status:        enum.GameRoundStarting,
+		StatusMessage: enum.GameRoundStarting.String(),
+		RoomID:        roomId,
+		Message:       "Next round has started",
+	}
+
+	dqh.sendMessageToRoom(roomId, msg)
+
+	quizFromRoom := dqh.gameHandler.GetQuizData(roomId)
+	message := DualQuizGameMessage{
+		Type:            enum.DualQuizType,
+		TypeMessage:     enum.DualQuizType.String(),
+		Status:          enum.GameStarting,
+		StatusMessage:   enum.GameStarting.String(),
+		RoomID:          roomId,
+		QuizData:        quizFromRoom.ToJSON(),
+		CurrentQuestion: dqh.gameHandler.GetCurrentQuestion(roomId),
+		Timer:           0,
+	}
+	dqh.sendMessageToRoom(roomId, message)
+
 }

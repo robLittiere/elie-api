@@ -23,11 +23,12 @@ type DualQuizGameMessage struct {
 }
 
 type DualQuizGameAnswerMessage struct {
-	Type          enum.MessageType `json:"type"`
-	TypeMessage   string           `json:"type_message"`
-	IsCorrect     bool             `json:"is_correct"`
-	CorrectAnswer int              `json:"correct_answer"`
-	EndTimer      int              `json:"end_timer"`
+	Type           enum.MessageType `json:"type"`
+	TypeMessage    string           `json:"type_message"`
+	FromClientUuid string           `json:"client_uuid"`
+	IsCorrect      bool             `json:"is_correct"`
+	CorrectAnswer  int              `json:"correct_answer"`
+	EndTimer       int              `json:"end_timer"`
 }
 
 type ClientDualQuizMessage struct {

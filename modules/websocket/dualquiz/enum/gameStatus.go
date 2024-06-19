@@ -6,6 +6,8 @@ const (
 	GameStarting GameStatus = iota
 	GamePending
 	GameFinished
+	GameRoundStarting
+	GameRoundFinished
 )
 
 func (gs GameStatus) String() string {
@@ -16,6 +18,10 @@ func (gs GameStatus) String() string {
 		return "Game is on pause"
 	case GameFinished:
 		return "Game is finished"
+	case GameRoundStarting:
+		return "Round is starting"
+	case GameRoundFinished:
+		return "Round is finished"
 	}
-	return "Unknown Status"
+	return "Unknown PlayerStatus"
 }
