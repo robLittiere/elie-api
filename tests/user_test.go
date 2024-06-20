@@ -149,6 +149,7 @@ func TestIShouldGetAnErrorForANonValidFilter(t *testing.T) {
 }
 
 func TestIShouldGetUserByUsername(t *testing.T) {
+	Init()
 	c, w = CreateGinTestContext()
 
 	user := userFixtures.CreateUser(map[string]interface{}{"Username": "elrobinator"})

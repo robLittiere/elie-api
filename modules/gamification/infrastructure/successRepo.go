@@ -26,15 +26,15 @@ func (r *SuccessRepo) Find() ([]models.Success, error) {
 }
 
 func (r *SuccessRepo) BuildQueryAndFind(queryParams map[string][]string) ([]models.Success, error) {
-	var quests []models.Success
+	var successes []models.Success
 	err := r.BuildQuery(queryParams)
 	if err != nil {
 		return nil, err
 	}
-	quests, err = r.Find()
+	successes, err = r.Find()
 	if err != nil {
 		return nil, err
 	}
 
-	return quests, nil
+	return successes, nil
 }

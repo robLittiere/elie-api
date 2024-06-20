@@ -22,7 +22,7 @@ func GamificationRoutes(router *gin.RouterGroup) {
 
 	success := router.Group("/successes")
 	{
-		success.GET("/", controllers.GetSuccess)
+		success.GET("/", controllers.GetSuccesses)
 		success.GET("/user", controllers.GetUserSuccess)
 		success.PATCH("/user/progress", controllers.UpdateUserSuccessProgress)
 	}

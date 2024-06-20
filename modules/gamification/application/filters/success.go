@@ -8,8 +8,13 @@ import (
 func GetSuccessFilterRegitry() filter.Filters {
 	return filter.Filters{
 		{
-			Name:          "tag",
-			Criteria:      &query.SuccessTagCriteria{Field: "tag"},
+			Name:          "tag_id",
+			Criteria:      &query.SuccessWithTagIdCriteria{Field: "tag_id"},
+			Documentation: "Get successes by their tag id",
+		},
+		{
+			Name:          "tag_name",
+			Criteria:      &query.SuccessWithTagNameCriteria{Field: "tag_name"},
 			Documentation: "Get successes by their tag name",
 		},
 	}

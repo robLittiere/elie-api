@@ -1,38 +1,130 @@
 package tests
 
 import (
-	gameFixtures "elie-api/modules/fixtures/gamification"
-	gameController "elie-api/modules/gamification/application/controllers"
-	gamificationModels "elie-api/modules/gamification/models"
+	"elie-api/modules/fixtures"
+	gamificationFixtures "elie-api/modules/fixtures/gamification"
+	gamificationController "elie-api/modules/gamification/application/controllers"
+	"elie-api/modules/gamification/models"
 	"encoding/json"
-	"fmt"
-	"github.com/go-playground/assert/v2"
-	"net/http"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/suite"
+	"net/url"
+	"strconv"
 	"testing"
 )
 
-func TestIShouldGetSuccessWithCorrectTag(t *testing.T) {
+type SuccessTestSuite struct {
+	suite.Suite
+}
 
+func (s *SuccessTestSuite) SetupTest() {
+	Init()
+}
+
+func TestSuccessTestSuite(t *testing.T) {
+	suite.Run(t, new(SuccessTestSuite))
+}
+
+func (s *SuccessTestSuite) TestIShouldGetSuccessWithCorrectTag() {
+
+	// Setup 2 tags that we give to 2 different successes
 	c, w = CreateGinTestContext()
-	tag := gameFixtures.CreateTag()
+	levelTag := gamificationFixtures.CreateTag(map[string]interface{}{
+		"Name": models.LevelTag,
+	})
+	playQuizTag := gamificationFixtures.CreateTag(map[string]interface{}{
+		"Name": models.PlayQuizTag,
+	})
 
-	c.Request, _ = http.NewRequest("GET", fmt.Sprintf("/api/v1/successes?tag=%s", tag.Name), nil)
-	gameController.GetQuests(c)
+	success := gamificationFixtures.CreateSuccess(map[string]interface{}{
+		"TagId": levelTag.Id,
+	})
+	gamificationFixtures.CreateSuccess(map[string]interface{}{
+		"TagId": playQuizTag.Id,
+	})
 
-	assert.Equal(t, w.Code, http.StatusOK)
+	u := url.Values{}
+	u.Add("tag_id", strconv.Itoa(levelTag.Id))
 
-	var retrievedSuccesses []gamificationModels.Success
-	err := json.NewDecoder(w.Body).Decode(&retrievedSuccesses)
+	// Mock API call
+	fixtures.MockJsonGet(c, nil, u)
+	gamificationController.GetSuccesses(c)
+
+	// Assert we should only get the success with the tag we asked for
+	var successes []models.Success
+	err := json.NewDecoder(w.Body).Decode(&successes)
 	if err != nil {
-		t.Errorf("Error while decoding response : %v", err)
+		s.T().Errorf("Error while decoding response : %v", err)
 	}
 
-	for _, retrievedQuest := range retrievedSuccesses {
-		if retrievedQuest.TagId == tag.Id {
-			assert.Equal(t, retrievedQuest.TagId, tag.Id)
-			assert.Equal(t, retrievedQuest.Tag.Id, tag.Id)
-			assert.Equal(t, retrievedQuest.Tag.Name, tag.Name)
-			break
-		}
+	assert.Equal(s.T(), len(successes), 1)
+	assert.Equal(s.T(), successes[0].TagId, success.Id)
+	assert.Equal(s.T(), successes[0].Tag.Name, models.LevelTag)
+}
+
+func (s *SuccessTestSuite) TestIShouldGetSuccessWithCorrectTagName() {
+
+	// Setup
+	c, w = CreateGinTestContext()
+	playQuizTag := gamificationFixtures.CreateTag(map[string]interface{}{
+		"Name": models.PlayQuizTag,
+	})
+	levelTag := gamificationFixtures.CreateTag(map[string]interface{}{
+		"Name": models.LevelTag,
+	})
+
+	success := gamificationFixtures.CreateSuccess(map[string]interface{}{
+		"TagId": playQuizTag.Id,
+		"Name":  "test success",
+	})
+	gamificationFixtures.CreateSuccess(map[string]interface{}{
+		"TagId": levelTag.Id,
+		"Name":  "test success 2",
+	})
+
+	u := url.Values{}
+	u.Add("tag_name", string(models.PlayQuizTag))
+
+	// Mock API call
+	fixtures.MockJsonGet(c, nil, u)
+	gamificationController.GetSuccesses(c)
+
+	// Assert we should only get the success with the tag we asked for
+	var successes []models.Success
+	err := json.NewDecoder(w.Body).Decode(&successes)
+	if err != nil {
+		s.T().Errorf("Error while decoding response : %v", err)
 	}
+	assert.Equal(s.T(), 1, len(successes), "I should get only one success")
+	assert.Equal(s.T(), success.Id, successes[0].Tag.Id, "I should get the success with the correct tag")
+	assert.Equal(s.T(), models.PlayQuizTag, successes[0].Tag.Name)
+}
+
+func (s *SuccessTestSuite) TestIShouldGetNoSuccessIfSuccessDoesntHaveTag() {
+
+	// Setup
+	c, w = CreateGinTestContext()
+	playQuizTag := gamificationFixtures.CreateTag(map[string]interface{}{
+		"Name": models.PlayQuizTag,
+	})
+
+	gamificationFixtures.CreateSuccess(map[string]interface{}{
+		"TagId": playQuizTag.Id,
+		"Name":  "test success",
+	})
+
+	u := url.Values{}
+	u.Add("tag_name", string(models.LevelTag))
+
+	// Mock API call
+	fixtures.MockJsonGet(c, nil, u)
+	gamificationController.GetSuccesses(c)
+
+	// Assert we should only get the success with the tag we asked for
+	var successes []models.Success
+	err := json.NewDecoder(w.Body).Decode(&successes)
+	if err != nil {
+		s.T().Errorf("Error while decoding response : %v", err)
+	}
+	assert.Equal(s.T(), 0, len(successes), "I should get no success")
 }

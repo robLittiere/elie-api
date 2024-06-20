@@ -24,11 +24,11 @@ var (
 	f      faker.Faker
 )
 
-func init() {
-	c, w = CreateGinTestContext()
+func Init() {
 	f = faker.New()
 	config.SetUpTestDatabase()
 
+	// TODO this is shit, we should remove this please do it at some point <3
 	// Add default data to test users
 	level := models2.Level{
 		Name:                   "Basic",

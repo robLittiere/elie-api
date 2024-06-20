@@ -6,7 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func GetSuccess(c *gin.Context) {
+func GetSuccesses(c *gin.Context) {
 	successRepo := infrastructure.NewSuccessRepo(config.DB)
 	queryParams := c.Request.URL.Query()
 

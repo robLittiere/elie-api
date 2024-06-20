@@ -1,38 +1,106 @@
 package tests
 
 import (
-	gameFixtures "elie-api/modules/fixtures/gamification"
-	gameController "elie-api/modules/gamification/application/controllers"
-	gamificationModels "elie-api/modules/gamification/models"
+	"elie-api/modules/fixtures"
+	gamificationFixtures "elie-api/modules/fixtures/gamification"
+	gamificationController "elie-api/modules/gamification/application/controllers"
+	"elie-api/modules/gamification/models"
 	"encoding/json"
-	"fmt"
-	"github.com/go-playground/assert/v2"
-	"net/http"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/suite"
+	"net/url"
+	"strconv"
 	"testing"
 )
 
-func TestIShouldGetQuestsWithCorrectTag(t *testing.T) {
+type QuestTestSuite struct {
+	suite.Suite
+}
 
+func (t *QuestTestSuite) SetupTest() {
+	Init()
 	c, w = CreateGinTestContext()
-	tag := gameFixtures.CreateTag()
+}
 
-	c.Request, _ = http.NewRequest("GET", fmt.Sprintf("/api/v1/quests?tag=%s", tag.Name), nil)
-	gameController.GetQuests(c)
+func TestQuestTestSuite(t *testing.T) {
+	suite.Run(t, new(QuestTestSuite))
+}
 
-	assert.Equal(t, w.Code, http.StatusOK)
+func (t *QuestTestSuite) TestIShouldGetQuests() {
 
-	var retrievedQuests []gamificationModels.Quest
-	err := json.NewDecoder(w.Body).Decode(&retrievedQuests)
+	// Create 2 quests
+	gamificationFixtures.CreateQuest(map[string]interface{}{})
+	gamificationFixtures.CreateQuest(map[string]interface{}{})
+
+	// Mock API call
+	fixtures.MockJsonGet(c, nil, nil)
+	gamificationController.GetQuests(c)
+
+	// Assert we should get all the quests
+	var quests []models.Quest
+	err := json.NewDecoder(w.Body).Decode(&quests)
 	if err != nil {
-		t.Errorf("Error while decoding response : %v", err)
+		t.T().Errorf("Error while decoding response : %v", err)
 	}
 
-	for _, retrievedQuest := range retrievedQuests {
-		if retrievedQuest.TagId == tag.Id {
-			assert.Equal(t, retrievedQuest.TagId, tag.Id)
-			assert.Equal(t, retrievedQuest.Tag.Id, tag.Id)
-			assert.Equal(t, retrievedQuest.Tag.Name, tag.Name)
-			break
-		}
+	assert.Equal(t.T(), len(quests), 2, "I should get all the quests I just created")
+}
+
+func (t *QuestTestSuite) TestIShouldGetQuestsWithCorrectTagId() {
+	// Setup 1 tag that we give to 1 quest
+	tag := gamificationFixtures.CreateTag(map[string]interface{}{
+		"Name": models.WonQuizTag,
+	})
+	quest := gamificationFixtures.CreateQuest(map[string]interface{}{
+		"TagId": tag.Id,
+	})
+
+	// Mock API call
+	u := url.Values{}
+	u.Add("tag_id", strconv.Itoa(tag.Id))
+	fixtures.MockJsonGet(c, nil, u)
+	gamificationController.GetQuests(c)
+
+	// Assert we should only get the quest with the tag we asked for
+	var quests []models.Quest
+	err := json.NewDecoder(w.Body).Decode(&quests)
+	if err != nil {
+		t.T().Errorf("Error while decoding response : %v", err)
 	}
+
+	assert.Equal(t.T(), len(quests), 1, "I should get only the quest with the tag I asked for")
+	assert.Equal(t.T(), quests[0].TagId, quest.Id, "I should get the quest with the tag I asked for")
+	assert.Equal(t.T(), quests[0].Tag.Name, models.WonQuizTag, "I should get the quest with the tag I asked for")
+}
+
+func (t *QuestTestSuite) TestIShouldGetQuestsWithCorrectTagName() {
+	// Setup 2 tag that we give to 2 quest
+	tag := gamificationFixtures.CreateTag(map[string]interface{}{
+		"Name": models.WonQuizTag,
+	})
+	uselessTag := gamificationFixtures.CreateTag(map[string]interface{}{
+		"Name": models.PlayGameTag,
+	})
+	quest := gamificationFixtures.CreateQuest(map[string]interface{}{
+		"TagId": tag.Id,
+	})
+	gamificationFixtures.CreateQuest(map[string]interface{}{
+		"TagId": uselessTag.Id,
+	})
+
+	// Mock API call
+	u := url.Values{}
+	u.Add("tag_name", string(models.WonQuizTag))
+	fixtures.MockJsonGet(c, nil, u)
+	gamificationController.GetQuests(c)
+
+	// Assert we should only get the quest with the tag we asked for
+	var quests []models.Quest
+	err := json.NewDecoder(w.Body).Decode(&quests)
+	if err != nil {
+		t.T().Errorf("Error while decoding response : %v", err)
+	}
+	assert.Equal(t.T(), 1, len(quests), "I should get only one quest")
+	assert.Equal(t.T(), quests[0].TagId, quest.Id, "I should get the quest with the tag I asked for")
+	assert.Equal(t.T(), quests[0].Tag.Name, models.WonQuizTag, "I should get the quest with the tag I asked for")
 }
