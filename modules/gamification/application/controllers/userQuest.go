@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"strconv"
 )
 
 func GetUserQuests(c *gin.Context) {
@@ -72,7 +73,7 @@ func UpdateUserQuestProgress(c *gin.Context) {
 	}
 
 	var userSuccess models.UserSuccess
-	err = userSuccessRepo.FindByTagAndUser(userQuest.Quest.Tags, userQuest.UserId, &userSuccess)
+	err = userSuccessRepo.FindByTagAndUser(strconv.Itoa(userQuest.Quest.TagId), userQuest.UserId, &userSuccess)
 	if err != nil {
 		return
 	} else {
