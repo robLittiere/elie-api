@@ -191,3 +191,15 @@ func (r *UserRepo) IncreaseUserXpSuccess(userSuccess *models2.UserSuccess, user 
 	}
 	return nil
 }
+
+func (r *UserRepo) IncreaseProgressionRankAndDoneConditionSuccess(user *models.User, amount int) error {
+	user.CurrencyAmount += amount
+
+	result := r.DB.Model(user).Updates(map[string]interface{}{
+		"currency_amount": user.CurrencyAmount,
+	})
+	if result.Error != nil {
+		return result.Error
+	}
+	return nil
+}

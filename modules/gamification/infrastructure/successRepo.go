@@ -38,3 +38,23 @@ func (r *SuccessRepo) BuildQueryAndFind(queryParams map[string][]string) ([]mode
 
 	return successes, nil
 }
+
+func (r *SuccessRepo) FindSuccessIdByTag(tagId int) (int, error) {
+	var successID int
+	result := r.DB.Table("successes").Where("tag_id = ?", tagId).Pluck("id", &successID)
+	if result.Error != nil {
+		return 0, result.Error
+	}
+	return successID, nil
+}
+
+func (r *SuccessRepo) FindTheNextProgressionRankSuccessIdByTag(successId int, tagId int) (int, error) {
+	var successID int
+	result := r.DB.Table("successes").
+		Where("tag_id = ? AND progression_rank = (SELECT progression_rank + 1 FROM successes WHERE id = ?)", tagId, successId).
+		Pluck("id", &successID)
+	if result.Error != nil {
+		return 0, result.Error
+	}
+	return successID, nil
+}

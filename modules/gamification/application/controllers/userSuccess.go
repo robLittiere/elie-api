@@ -59,11 +59,6 @@ func UpdateUserSuccessProgress(c *gin.Context) {
 			c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 			return
 		}
-
-		if err := userSuccessRepo.AddNewUserSuccessByUser(&user, &userSuccess); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
-			return
-		}
 	}
 
 	c.JSON(200, &userSuccess)

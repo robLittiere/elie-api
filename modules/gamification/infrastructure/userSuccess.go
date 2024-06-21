@@ -5,7 +5,6 @@ import (
 	"elie-api/modules/gamification/application/filters"
 	"elie-api/modules/gamification/models"
 	modelsUser "elie-api/modules/user/models"
-	"errors"
 	"gorm.io/gorm"
 )
 
@@ -40,6 +39,22 @@ func (repo *UserSuccessRepo) BuildQueryAndFind(queryParams map[string][]string) 
 	return userSuccess, nil
 }
 
+func (r *UserSuccessRepo) CreateUserSuccessFromUserAndSuccess(userId int, successId int) error {
+
+	newUserSuccess := &models.UserSuccess{
+		UserId:  userId,
+		SuccessId: successId,
+	}
+
+	result := r.DB.Create(newUserSuccess)
+	if result.Error != nil {
+		return result.Error
+	}
+
+	return nil
+}
+
+
 func (r *UserSuccessRepo) FindByUuidAndUserSuccessId(uProgress *models.UserSuccessProgressRequest, u *models.UserSuccess) error {
 	// Get user_id
 	var uid int
@@ -55,12 +70,15 @@ func (r *UserSuccessRepo) FindByUuidAndUserSuccessId(uProgress *models.UserSucce
 	return nil
 }
 
-func (r *UserSuccessRepo) FindByTagAndUser(tag string, userId int, u *models.UserSuccess) error {
-	result := r.DB.Joins("JOIN successes ON user_successes.success_id = successes.id").Where("successes.tags = ? AND user_successes.user_id = ?", tag, userId).First(&u)
+func (r *UserSuccessRepo) FindUserSuccessByUserAndSuccess(successId int, userId int) (*models.UserSuccess, error) {
+
+	var userSuccess models.UserSuccess
+	result := r.DB.Where("user_id = ? AND success_id = ?", userId, successId).First(&userSuccess)
 	if result.Error != nil {
-		return result.Error
+		return nil, result.Error
 	}
-	return nil
+
+	return &userSuccess, nil
 }
 
 func (r *UserSuccessRepo) IncrementUserSuccessProgression(userSuccess *models.UserSuccess) error {
@@ -90,32 +108,5 @@ func (r *UserSuccessRepo) AddCurrencyAmountSuccessToUser(user *modelsUser.User, 
 	if result.Error != nil {
 		return result.Error
 	}
-	return nil
-}
-
-func (r *UserSuccessRepo) AddNewUserSuccessByUser(user *modelsUser.User, userSuccess *models.UserSuccess) error {
-	var successes []models.Success
-
-	var tag = userSuccess.Success.Tag
-	var progressionRank = userSuccess.Success.ProgressionRank
-	var nextProgressionRank = progressionRank + 1
-
-	if err := r.DB.Table("successes").Select("id").Where("tag = ? AND progression_rank = ?", tag, nextProgressionRank).Find(&successes).Error; err != nil {
-		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return nil
-		}
-		return err
-	}
-
-	for _, success := range successes {
-		userSuccess := models.UserSuccess{
-			UserId:    user.Id,
-			SuccessId: success.Id,
-		}
-		if err := r.DB.Create(&userSuccess).Error; err != nil {
-			return err
-		}
-	}
-
 	return nil
 }
