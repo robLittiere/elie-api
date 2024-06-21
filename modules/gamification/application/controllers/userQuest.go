@@ -70,7 +70,7 @@ func UpdateUserQuestProgress(c *gin.Context) {
 		return
 	}
 
-	if userQuest.IsCompleted == true && userQuest.Progression <= userQuest.Quest.DoneCondition {
+	if userQuest.IsCompleted == true {
 		if err := userRepo.IncreaseUserXpQuest(&userQuest, &user); err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
 			return
