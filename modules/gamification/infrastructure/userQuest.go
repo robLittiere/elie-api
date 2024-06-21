@@ -4,7 +4,6 @@ import (
 	"elie-api/modules/common/repository"
 	"elie-api/modules/gamification/application/filters"
 	"elie-api/modules/gamification/models"
-	modelsUser "elie-api/modules/user/models"
 	"gorm.io/gorm"
 )
 
@@ -39,7 +38,37 @@ func (repo *UserQuestRepo) BuildQueryAndFind(queryParams map[string][]string) ([
 	return userQuests, nil
 }
 
+func (r *UserQuestRepo) CreateUserQuestFromUser(uProgress *models.UserQuestProgressRequest) (*models.UserQuest, error) {
+	// Get user_id
+	var uid int
+	result := r.DB.Table("users").Select("id").Where("uuid = ?", uProgress.UserUuid).Scan(&uid)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+
+	var Quest models.Quest
+	result = r.DB.Preload("Tag").Where("id = ?", uProgress.QuestId).First(&Quest)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+
+	// Create a new UserQuest
+	newUserQuest := &models.UserQuest{
+		UserId:  uid,
+		QuestId: uProgress.QuestId,
+		Quest: Quest,
+	}
+
+	result = r.DB.Create(newUserQuest)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+
+	return newUserQuest, nil
+}
+
 func (r *UserQuestRepo) FindByUuidAndQid(uProgress *models.UserQuestProgressRequest, u *models.UserQuest) error {
+
 	// Get user_id
 	var uid int
 	result := r.DB.Table("users").Select("id").Where("uuid = ?", uProgress.UserUuid).Scan(&uid)
@@ -47,11 +76,12 @@ func (r *UserQuestRepo) FindByUuidAndQid(uProgress *models.UserQuestProgressRequ
 		return result.Error
 	}
 
-	result = r.DB.Preload("Quest").Where("user_id = ? AND quest_id = ?", uid, uProgress.UserQuestId).First(&u)
+	result = r.DB.Preload("Quest.Tag").Where("user_id = ? AND quest_id = ?", uid, uProgress.QuestId).First(&u)
 	if result.Error != nil {
 		return result.Error
 	}
 	return nil
+
 }
 
 func (r *UserQuestRepo) IncrementUserQuestProgression(userQuest *models.UserQuest) error {
@@ -65,18 +95,6 @@ func (r *UserQuestRepo) IncrementUserQuestProgression(userQuest *models.UserQues
 	result := r.DB.Model(userQuest).Updates(map[string]interface{}{
 		"progression":  userQuest.Progression,
 		"is_completed": userQuest.IsCompleted,
-	})
-	if result.Error != nil {
-		return result.Error
-	}
-	return nil
-}
-
-func (r *UserQuestRepo) AddCurrencyAmountQuestToUser(user *modelsUser.User, userQuest *models.UserQuest) error {
-	user.CurrencyAmount += userQuest.Quest.CurrencyReward
-
-	result := r.DB.Model(user).Updates(map[string]interface{}{
-		"currency_amount": user.CurrencyAmount,
 	})
 	if result.Error != nil {
 		return result.Error

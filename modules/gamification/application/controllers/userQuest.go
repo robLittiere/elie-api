@@ -5,7 +5,6 @@ import (
 	"elie-api/modules/gamification/infrastructure"
 	"elie-api/modules/gamification/models"
 	infraUser "elie-api/modules/user/infrastructure"
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
@@ -34,15 +33,13 @@ func CreateUserQuest(c *gin.Context) {
 		return
 	}
 
-	fmt.Println("userProgressReq", userProgressReq)
-
-	var userQuest models.UserQuest
-	if err := userQuestRepo.FindByUuidAndQid(&userProgressReq, &userQuest); err != nil {
+	newUserQuest, err := userQuestRepo.CreateUserQuestFromUser(&userProgressReq)
+	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
 
-	c.JSON(200, &userQuest)
+	c.JSON(200, &newUserQuest)
 }
 
 func UpdateUserQuestProgress(c *gin.Context) {
@@ -55,6 +52,7 @@ func UpdateUserQuestProgress(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
+
 	var userQuest models.UserQuest
 	if err := userQuestRepo.FindByUuidAndQid(&userProgressReq, &userQuest); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
@@ -70,6 +68,13 @@ func UpdateUserQuestProgress(c *gin.Context) {
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
+	}
+
+	if userQuest.IsCompleted == true && userQuest.Progression <= userQuest.Quest.DoneCondition {
+		if err := userRepo.IncreaseUserXpQuest(&userQuest, &user); err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+			return
+		}
 	}
 
 	var userSuccess models.UserSuccess
@@ -111,17 +116,5 @@ func UpdateUserQuestProgress(c *gin.Context) {
 		}
 	}
 
-	if userQuest.IsCompleted == true {
-		if err := userRepo.IncreaseUserXpQuest(&userQuest, &user); err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
-			return
-		}
-
-		if err := userQuestRepo.AddCurrencyAmountQuestToUser(&user, &userQuest); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
-			return
-		}
-	}
-
-	c.JSON(200, &userQuest)
+	c.JSON(200, userQuest)
 }
