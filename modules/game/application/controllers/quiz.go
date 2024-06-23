@@ -67,28 +67,24 @@ func GetUserQuizzes(c *gin.Context) {
 	userID := c.Param("id")
 
 	quizRepo := infrastructure.NewQuizRepo(config.DB)
-	quizId, err := quizRepo.FindQuizCompletedByUser(userID)
+	quizIds, err := quizRepo.FindQuizCompletedByUser(userID)
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	var nextQuiz []models.Quizzes
 
-	if len(quizId) > 0 {
-		// Find the last completed quiz ID
-		lastQuizID := quizId[len(quizId)-1]
-		fmt.Printf("####GetUser 4: %v", lastQuizID)
-
-		// Find the next question based on the last quiz ID
+	var nextQuiz *models.Quiz
+	// Si des quizzes sont déjà complétés, trouver le prochain quiz
+	if len(quizIds) > 0 {
+		lastQuizID := quizIds[len(quizIds)-1]
 		nextQuiz, err = quizRepo.FindNextQuiz(lastQuizID)
-
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
 	} else {
-		// If no quizzes completed, find the first question
+		// Si aucun quiz complété, trouver le premier quiz
 		nextQuiz, err = quizRepo.FindNextQuiz(0)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -97,7 +93,7 @@ func GetUserQuizzes(c *gin.Context) {
 	}
 
 	c.JSON(200, gin.H{
-		"quizId":       quizId,
-		"nextQuestion": nextQuiz,
+		"quizIds":  quizIds,
+		"nextQuiz": nextQuiz,
 	})
 }
