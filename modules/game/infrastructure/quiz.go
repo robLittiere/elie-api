@@ -74,6 +74,15 @@ func (r *QuizRepo) FindQuizCompletedByUser(userId string) ([]int, error) {
 	return quizIds, nil
 }
 
+func (r *QuizRepo) FindNextQuiz(lastQuizID int) ([]models.Quizzes, error) {
+	var nextQuestion []models.Quizzes
+	err := r.DB.Table("quiz_games").Where("quiz_id > ?", lastQuizID).Order("quiz_id ASC").Find(&nextQuestion).Error
+	if err != nil {
+		return nextQuestion, err
+	}
+	return nextQuestion, nil
+}
+
 func (r *QuizRepo) GetRandomQuiz() (models.Quiz, error) {
 	var quizData models.QuizGameJSONMap
 	var quiz models.Quiz

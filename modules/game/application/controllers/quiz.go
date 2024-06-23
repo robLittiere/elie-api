@@ -59,7 +59,7 @@ func CompleteUserQuiz(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	c.JSON(200, gin.H{})
+	c.JSON(200, gin.H{"New User Quiz created": userQuizService})
 	return
 }
 
@@ -73,5 +73,31 @@ func GetUserQuizzes(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	c.JSON(200, gin.H{"quizId": quizId})
+	var nextQuiz []models.Quizzes
+
+	if len(quizId) > 0 {
+		// Find the last completed quiz ID
+		lastQuizID := quizId[len(quizId)-1]
+		fmt.Printf("####GetUser 4: %v", lastQuizID)
+
+		// Find the next question based on the last quiz ID
+		nextQuiz, err = quizRepo.FindNextQuiz(lastQuizID)
+
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+	} else {
+		// If no quizzes completed, find the first question
+		nextQuiz, err = quizRepo.FindNextQuiz(0)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+	}
+
+	c.JSON(200, gin.H{
+		"quizId":       quizId,
+		"nextQuestion": nextQuiz,
+	})
 }
