@@ -215,7 +215,8 @@ func (dqh *DqHub) addClientToGameRoom(client *Client) {
 
 func (dqh *DqHub) LaunchGame(roomId int) {
 	quizFromRoom := dqh.gameHandler.GetQuizData(roomId)
-	dqh.gameHandler.SetRoomStatus(roomId, enum.GameStarting)
+	dqh.gameHandler.SetRoundTimer(roomId)
+	startTime, endTime := dqh.gameHandler.GetRoundTimer(roomId)
 
 	msg := DualQuizGameMessage{
 		Type:            enum.DualQuizType,
@@ -225,6 +226,8 @@ func (dqh *DqHub) LaunchGame(roomId int) {
 		RoomID:          roomId,
 		QuizData:        quizFromRoom.ToJSON(),
 		CurrentQuestion: dqh.gameHandler.GetCurrentQuestion(roomId),
+		StartRoundTime:  startTime,
+		EndRoundTime:    endTime,
 	}
 	dqh.sendMessageToRoom(roomId, msg)
 }
@@ -275,6 +278,8 @@ func (dqh *DqHub) OnNextRoundStart(roomId int) {
 	dqh.sendMessageToRoom(roomId, msg)
 
 	quizFromRoom := dqh.gameHandler.GetQuizData(roomId)
+	startTime, endTime := dqh.gameHandler.GetRoundTimer(roomId)
+
 	message := DualQuizGameMessage{
 		Type:            enum.DualQuizType,
 		TypeMessage:     enum.DualQuizType.String(),
@@ -283,6 +288,8 @@ func (dqh *DqHub) OnNextRoundStart(roomId int) {
 		RoomID:          roomId,
 		QuizData:        quizFromRoom.ToJSON(),
 		CurrentQuestion: dqh.gameHandler.GetCurrentQuestion(roomId),
+		StartRoundTime:  startTime,
+		EndRoundTime:    endTime,
 	}
 	dqh.sendMessageToRoom(roomId, message)
 }

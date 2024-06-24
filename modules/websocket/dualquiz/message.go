@@ -1,6 +1,9 @@
 package dualquiz
 
-import "elie-api/modules/websocket/dualquiz/enum"
+import (
+	"elie-api/modules/websocket/dualquiz/enum"
+	"time"
+)
 
 type DualQuizMessage struct {
 	Type          enum.MessageType `json:"type"`
@@ -19,6 +22,8 @@ type DualQuizGameMessage struct {
 	RoomID          int              `json:"room_id"`
 	QuizData        string           `json:"quiz_data"`
 	CurrentQuestion int              `json:"current_question"`
+	StartRoundTime  time.Time        `json:"start_round_time"`
+	EndRoundTime    time.Time        `json:"end_round_time"`
 }
 
 type DualQuizGameAnswerMessage struct {
@@ -41,6 +46,11 @@ type DualQuizGameEndMessage struct {
 }
 
 type ClientDualQuizMessage struct {
-	Type   string `json:"type"`
-	Choice int    `json:"choice"`
+	Type      string `json:"type"`
+	Choice    int    `json:"choice"`
+	Timestamp int64  `json:"timestamp"`
+}
+
+func (m *ClientDualQuizMessage) TimestampConverted() time.Time {
+	return time.Unix(0, m.Timestamp*int64(time.Millisecond))
 }

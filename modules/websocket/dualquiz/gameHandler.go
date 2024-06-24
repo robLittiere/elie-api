@@ -23,7 +23,8 @@ type Room struct {
 	Quiz                 *models.Quiz
 	CurrentQuestion      int
 	CurrentCorrectAnswer int
-	AnswerTimestamp      int
+	roundStartTime       time.Time
+	roundEndTime         time.Time
 	Status               enum.GameStatus
 }
 
@@ -201,7 +202,6 @@ func (gh *GameHandler) IsPlayerWaitingForOpponent(id int, uuid string) bool {
 
 // IsAnswerCorrect Determine if the answer given to the current question is correct
 func (gh *GameHandler) isAnswerCorrect(roomId int, answerIndex int) bool {
-
 	// Get the current question
 	return gh.GetCurrentCorrectAnswer(roomId) == answerIndex
 }
@@ -220,13 +220,16 @@ func (gh *GameHandler) addToPlayerScore(roomId int, clientUuid string) {
 
 func (gh *GameHandler) onPlayerAnswer(roomId int, clientUuid string, msg ClientDualQuizMessage) {
 	isClientCorrect := gh.isAnswerCorrect(roomId, msg.Choice)
+	isRoundDelayPassed := gh.isRoundDelayPassed(roomId, msg.TimestampConverted())
+	isValidAnswer := isClientCorrect && isRoundDelayPassed
+
 	gh.setHasAnsweredThisRound(roomId, clientUuid)
 
-	if isClientCorrect {
+	if isValidAnswer {
 		gh.addToPlayerScore(roomId, clientUuid)
 	}
 
-	gh.gEventListener.OnPlayerAnswer(clientUuid, roomId, isClientCorrect)
+	gh.gEventListener.OnPlayerAnswer(clientUuid, roomId, isValidAnswer)
 
 	// We can check if the round is over and end it
 	if gh.isRoundOver(roomId) {
@@ -268,6 +271,7 @@ func (gh *GameHandler) startNextRound(roomId int) {
 
 	go func() {
 		time.Sleep(3 * time.Second)
+		gh.SetRoundTimer(roomId)
 		gh.gEventListener.OnNextRoundStart(roomId)
 	}()
 }
@@ -329,4 +333,26 @@ func (gh *GameHandler) getFinalScoresMap(roomId int) MapPlayerData {
 		},
 		IsDraw: winner.Score == looser.Score,
 	}
+}
+
+func (gh *GameHandler) SetRoundTimer(roomId int) {
+	gh.roomsMux.Lock()
+	defer gh.roomsMux.Unlock()
+
+	gh.rooms[roomId].roundStartTime = time.Now()
+	gh.rooms[roomId].roundEndTime = gh.rooms[roomId].roundStartTime.Add(10 * time.Second)
+	fmt.Printf("Round %d started at %v and will end at %v\n", roomId, gh.rooms[roomId].roundStartTime, gh.rooms[roomId].roundEndTime)
+}
+
+// GetRoundTimer returns the start and end time of the current round
+func (gh *GameHandler) GetRoundTimer(roomId int) (time.Time, time.Time) {
+	gh.roomsMux.RLock()
+	defer gh.roomsMux.RUnlock()
+
+	return gh.rooms[roomId].roundStartTime, gh.rooms[roomId].roundEndTime
+}
+
+func (gh *GameHandler) isRoundDelayPassed(roomId int, answerTimestamp time.Time) bool {
+	_, endRoundTime := gh.GetRoundTimer(roomId)
+	return answerTimestamp.Before(endRoundTime)
 }

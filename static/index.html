@@ -73,6 +73,7 @@
                                             const message = {
                                                 type: "Answer",
                                                 choice: 0,
+                                                timestamp: new Date().getTime(),
                                             };
                                             newConn.send(JSON.stringify(message));
                                             var item = document.createElement("div");
@@ -156,13 +157,14 @@
                                                 const message = {
                                                     type: "Answer",
                                                     choice: 3,
+                                                    timestamp: new Date().getTime(),
                                                 };
                                                 newConn2.send(JSON.stringify(message));
                                                 var item = document.createElement("div");
                                                 item.innerHTML = "<b>Answer is sent for player 2...</b>";
                                                 appendLog(item);
 
-                                            }, 1000);
+                                            }, 2000);
                                         }
                                     };
                             }
