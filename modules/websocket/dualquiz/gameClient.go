@@ -20,4 +20,5 @@ type PlayerData struct {
 type MapPlayerData struct {
 	Winner PlayerData
 	Loser  PlayerData
+	IsDraw bool
 }

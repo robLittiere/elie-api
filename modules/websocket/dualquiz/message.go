@@ -39,6 +39,7 @@ type DualQuizGameEndMessage struct {
 	RoomId        int              `json:"room_id"`
 	Winner        PlayerData       `json:"winner"`
 	Loser         PlayerData       `json:"loser"`
+	IsDraw        bool             `json:"is_equal"`
 }
 
 type ClientDualQuizMessage struct {

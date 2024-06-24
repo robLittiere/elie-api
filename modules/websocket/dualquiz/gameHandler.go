@@ -220,7 +220,6 @@ func (gh *GameHandler) addToPlayerScore(roomId int, clientUuid string) {
 
 func (gh *GameHandler) onPlayerAnswer(roomId int, clientUuid string, msg ClientDualQuizMessage) {
 	isClientCorrect := gh.isAnswerCorrect(roomId, msg.Choice)
-	fmt.Printf("Client %s answered %v\n", clientUuid, isClientCorrect)
 	gh.setHasAnsweredThisRound(roomId, clientUuid)
 
 	if isClientCorrect {
@@ -287,7 +286,15 @@ func (gh *GameHandler) endGame(roomId int) {
 	go func() {
 		time.Sleep(3 * time.Second)
 		gh.gEventListener.OnGameEnd(roomId, mapPlayerData)
+
+		// Final room cleanup
+		gh.roomsMux.Lock()
+		defer gh.roomsMux.Unlock()
+
+		delete(gh.rooms, roomId)
+		gh.gEventListener.OnRoomCleanup(roomId)
 	}()
+
 }
 
 func (gh *GameHandler) getFinalScoresMap(roomId int) MapPlayerData {
@@ -322,5 +329,6 @@ func (gh *GameHandler) getFinalScoresMap(roomId int) MapPlayerData {
 			Score:    looser.Score,
 			IsWinner: false,
 		},
+		IsDraw: winner.Score == looser.Score,
 	}
 }

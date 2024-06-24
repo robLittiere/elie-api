@@ -67,12 +67,12 @@ func (qHandler *QueueHandler) CanMatchClientsForGame(gameId int) bool {
 	return len(qHandler.queue[gameId]) >= 2
 }
 
-func (qHandler *QueueHandler) GetFirstClientsInQueueForGame(gameId int) (*Client, *Client) {
+func (qHandler *QueueHandler) GetFirstClientInQueueForGame(gameId int) *Client {
 	qHandler.queueMux.RLock()
 	defer qHandler.queueMux.RUnlock()
-	client1 := qHandler.queue[gameId][0]
-	client2 := qHandler.queue[gameId][1]
-	return client1, client2
+
+	client := qHandler.queue[gameId][0]
+	return client
 }
 
 func NewQueueHandler() *QueueHandler {

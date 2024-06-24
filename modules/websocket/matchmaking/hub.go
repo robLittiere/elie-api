@@ -113,7 +113,7 @@ func ServeWsMatchmaking(hub *Hub, w http.ResponseWriter, r *http.Request, gameId
 	go client.readPump()
 
 	// Match new user to queued user if possible
-	if err := hub.tryMatchClient(gameId); err != nil {
+	if err := hub.tryMatchClient(gameId, client); err != nil {
 		log.Printf("Error trying to match client: %v", err)
 	}
 
@@ -139,11 +139,11 @@ func (h *Hub) RemoveClientFromUuidMap(client *Client) {
 	}
 }
 
-func (h *Hub) tryMatchClient(gameId int) error {
+func (h *Hub) tryMatchClient(gameId int, client *Client) error {
 	// If there are at least 2 clients in the queue, try to match
 	if h.queueHandler.CanMatchClientsForGame(gameId) {
-		client1, client2 := h.queueHandler.GetFirstClientsInQueueForGame(gameId)
-		err := h.queueHandler.HandleMatchClient(gameId, client1.UserUuid, client2.UserUuid)
+		firstClient := h.queueHandler.GetFirstClientInQueueForGame(gameId)
+		err := h.queueHandler.HandleMatchClient(gameId, firstClient.UserUuid, client.UserUuid)
 		if err != nil {
 			return err
 		}
@@ -153,7 +153,7 @@ func (h *Hub) tryMatchClient(gameId int) error {
 		if h.roomCreator == nil {
 			return fmt.Errorf("Room creator not set : Need to set a room creator to create a room")
 		}
-		roomId := h.roomCreator.CreateRoom(client1, client2)
+		roomId := h.roomCreator.CreateRoom(firstClient, client)
 
 		// Send a message to the clients containing the room id
 		msg := RoomMessage{
@@ -163,8 +163,12 @@ func (h *Hub) tryMatchClient(gameId int) error {
 			GameId:        gameId,
 			RoomId:        roomId,
 		}
-		SendMessage(client1, msg)
-		SendMessage(client2, msg)
+		SendMessage(firstClient, msg)
+		SendMessage(client, msg)
+
+		// Close clients connection to queue system
+		h.unregister <- firstClient
+		h.unregister <- client
 	}
 	return nil
 }

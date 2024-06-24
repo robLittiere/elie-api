@@ -314,7 +314,19 @@ func (dqh *DqHub) OnGameEnd(roomId int, scoreMap MapPlayerData) {
 		RoomId:        roomId,
 		Winner:        scoreMap.Winner,
 		Loser:         scoreMap.Loser,
+		IsDraw:        scoreMap.IsDraw,
 	}
 
 	dqh.sendMessageToRoom(roomId, msg)
+}
+
+func (dqh *DqHub) OnRoomCleanup(roomId int) {
+	dqh.gameRoomsMux.Lock()
+	defer dqh.gameRoomsMux.Unlock()
+
+	for _, client := range dqh.gameRooms[roomId] {
+		dqh.unregister <- client
+	}
+	delete(dqh.gameRooms, roomId)
+	delete(dqh.waitingRooms, roomId)
 }
