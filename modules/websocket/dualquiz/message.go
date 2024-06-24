@@ -35,14 +35,15 @@ type DualQuizGameAnswerMessage struct {
 }
 
 type DualQuizGameEndMessage struct {
-	Type          enum.MessageType `json:"type"`
-	TypeMessage   string           `json:"type_message"`
-	Status        enum.GameStatus  `json:"status"`
-	StatusMessage string           `json:"status_message"`
-	RoomId        int              `json:"room_id"`
-	Winner        PlayerData       `json:"winner"`
-	Loser         PlayerData       `json:"loser"`
-	IsDraw        bool             `json:"is_equal"`
+	Type               enum.MessageType `json:"type"`
+	TypeMessage        string           `json:"type_message"`
+	Status             enum.GameStatus  `json:"status"`
+	StatusMessage      string           `json:"status_message"`
+	RoomId             int              `json:"room_id"`
+	QuizTotalQuestions int              `json:"quiz_total_questions"`
+	Winner             PlayerData       `json:"winner"`
+	Loser              PlayerData       `json:"loser"`
+	IsDraw             bool             `json:"is_draw"`
 }
 
 type ClientDualQuizMessage struct {
