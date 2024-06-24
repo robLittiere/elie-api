@@ -5,16 +5,16 @@ import (
 	"elie-api/modules/game/infrastructure"
 	"elie-api/modules/game/models"
 	"elie-api/modules/websocket/dualquiz/enum"
-	"elie-api/modules/websocket/dualquiz/event"
 	"fmt"
 	"sync"
+	"time"
 )
 
 type GameHandler struct {
 	roomsMux       sync.RWMutex
 	rooms          map[int]*Room
 	quizRepo       *infrastructure.QuizRepo
-	gEventListener event.GameEventListener
+	gEventListener GameEventListener
 }
 
 type Room struct {
@@ -27,7 +27,7 @@ type Room struct {
 	Status               enum.GameStatus
 }
 
-func NewGameHandler(gEventListener event.GameEventListener) *GameHandler {
+func NewGameHandler(gEventListener GameEventListener) *GameHandler {
 	return &GameHandler{
 		rooms:          make(map[int]*Room),
 		quizRepo:       infrastructure.NewQuizRepo(config.DB),
@@ -234,7 +234,13 @@ func (gh *GameHandler) onPlayerAnswer(roomId int, clientUuid string, msg ClientD
 	// We can check if the round is over and end it
 	if gh.isRoundOver(roomId) {
 		gh.endRound(roomId)
-		gh.startNextRound(roomId)
+
+		// If the game is over, we can end it
+		if gh.isGameFinished(roomId) {
+			gh.endGame(roomId)
+		} else {
+			gh.startNextRound(roomId)
+		}
 	}
 
 }
@@ -263,5 +269,58 @@ func (gh *GameHandler) startNextRound(roomId int) {
 	gh.updateCurrentCorrectAnswer(roomId)
 	gh.resetHasAnsweredThisRound(roomId)
 
-	gh.gEventListener.OnNextRoundStart(roomId)
+	go func() {
+		time.Sleep(3 * time.Second)
+		gh.gEventListener.OnNextRoundStart(roomId)
+	}()
+}
+
+func (gh *GameHandler) isGameFinished(roomId int) bool {
+	gh.roomsMux.RLock()
+	defer gh.roomsMux.RUnlock()
+
+	return gh.rooms[roomId].CurrentQuestion == len(gh.rooms[roomId].Quiz.Questions)-1
+}
+
+func (gh *GameHandler) endGame(roomId int) {
+	mapPlayerData := gh.getFinalScoresMap(roomId)
+	go func() {
+		time.Sleep(3 * time.Second)
+		gh.gEventListener.OnGameEnd(roomId, mapPlayerData)
+	}()
+}
+
+func (gh *GameHandler) getFinalScoresMap(roomId int) MapPlayerData {
+	var winner *GameClient
+	var looser *GameClient
+
+	gh.roomsMux.RLock()
+	defer gh.roomsMux.RUnlock()
+
+	for _, player := range gh.rooms[roomId].Players {
+		if winner == nil || player.Score > winner.Score {
+			winner = player
+		}
+		if looser == nil || player.Score < looser.Score {
+			looser = player
+		}
+	}
+
+	if winner == nil || looser == nil {
+		// return an error or a default value
+		fmt.Printf("Error getting winner and looser\n")
+	}
+
+	return MapPlayerData{
+		Winner: PlayerData{
+			UserUuid: winner.UserUuid,
+			Score:    winner.Score,
+			IsWinner: true,
+		},
+		Loser: PlayerData{
+			UserUuid: looser.UserUuid,
+			Score:    looser.Score,
+			IsWinner: false,
+		},
+	}
 }

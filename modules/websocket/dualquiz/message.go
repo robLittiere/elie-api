@@ -31,6 +31,16 @@ type DualQuizGameAnswerMessage struct {
 	EndTimer       int              `json:"end_timer"`
 }
 
+type DualQuizGameEndMessage struct {
+	Type          enum.MessageType `json:"type"`
+	TypeMessage   string           `json:"type_message"`
+	Status        enum.GameStatus  `json:"status"`
+	StatusMessage string           `json:"status_message"`
+	RoomId        int              `json:"room_id"`
+	Winner        PlayerData       `json:"winner"`
+	Loser         PlayerData       `json:"loser"`
+}
+
 type ClientDualQuizMessage struct {
 	Type   string `json:"type"`
 	Choice int    `json:"choice"`

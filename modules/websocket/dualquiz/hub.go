@@ -302,5 +302,19 @@ func (dqh *DqHub) OnNextRoundStart(roomId int) {
 		Timer:           0,
 	}
 	dqh.sendMessageToRoom(roomId, message)
+}
 
+func (dqh *DqHub) OnGameEnd(roomId int, scoreMap MapPlayerData) {
+	// We need to send a message to the clients that the game has ended
+	msg := DualQuizGameEndMessage{
+		Type:          enum.DualQuizType,
+		TypeMessage:   enum.DualQuizType.String(),
+		Status:        enum.GameFinished,
+		StatusMessage: enum.GameFinished.String(),
+		RoomId:        roomId,
+		Winner:        scoreMap.Winner,
+		Loser:         scoreMap.Loser,
+	}
+
+	dqh.sendMessageToRoom(roomId, msg)
 }
