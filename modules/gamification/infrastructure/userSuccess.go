@@ -5,6 +5,7 @@ import (
 	"elie-api/modules/gamification/application/filters"
 	"elie-api/modules/gamification/models"
 	modelsUser "elie-api/modules/user/models"
+	"fmt"
 	"gorm.io/gorm"
 )
 
@@ -39,22 +40,6 @@ func (repo *UserSuccessRepo) BuildQueryAndFind(queryParams map[string][]string) 
 	return userSuccess, nil
 }
 
-func (r *UserSuccessRepo) CreateUserSuccessFromUserAndSuccess(userId int, successId int) error {
-
-	newUserSuccess := &models.UserSuccess{
-		UserId:  userId,
-		SuccessId: successId,
-	}
-
-	result := r.DB.Create(newUserSuccess)
-	if result.Error != nil {
-		return result.Error
-	}
-
-	return nil
-}
-
-
 func (r *UserSuccessRepo) FindByUuidAndUserSuccessId(uProgress *models.UserSuccessProgressRequest, u *models.UserSuccess) error {
 	// Get user_id
 	var uid int
@@ -70,20 +55,20 @@ func (r *UserSuccessRepo) FindByUuidAndUserSuccessId(uProgress *models.UserSucce
 	return nil
 }
 
-func (r *UserSuccessRepo) FindUserSuccessByUserAndSuccess(successId int, userId int) (*models.UserSuccess, error) {
+func (r *UserSuccessRepo) FindUserSuccessByUserAndTag(tagId int, userId int, us *models.UserSuccess) error {
 
-	var userSuccess models.UserSuccess
-	result := r.DB.Where("user_id = ? AND success_id = ?", userId, successId).First(&userSuccess)
+	result := r.DB.Preload("Success.Tag").Joins("JOIN successes ON user_successes.success_id = successes.id").
+		Where("user_successes.user_id = ? AND user_successes.is_completed = false AND successes.tag_id = ?", userId, tagId).
+		First(&us)
 	if result.Error != nil {
-		return nil, result.Error
+		return result.Error
 	}
-
-	return &userSuccess, nil
+	return nil
 }
 
 func (r *UserSuccessRepo) IncrementUserSuccessProgression(userSuccess *models.UserSuccess) error {
 
-	userSuccess.Progression += 1
+	userSuccess.Progression ++
 
 	if userSuccess.Progression >= userSuccess.Success.DoneCondition {
 		userSuccess.IsCompleted = true
@@ -109,4 +94,40 @@ func (r *UserSuccessRepo) AddCurrencyAmountSuccessToUser(user *modelsUser.User, 
 		return result.Error
 	}
 	return nil
+}
+
+func (r *UserSuccessRepo) FindTheNextProgressionRankSuccessIdByTag(us *models.UserSuccess, ns *models.Success) error {
+
+	var count int64
+	r.DB.Table("successes").
+		Where("tag_id = ? AND progression_rank = ?", us.Success.TagId, us.Success.ProgressionRank+1).
+		Count(&count)
+
+	if count == 0 {
+		return fmt.Errorf("no next progression rank found for tag_id: %d and progression_rank: %d", us.Success.TagId, us.Success.ProgressionRank+1)
+	}
+
+	result := r.DB.Table("successes").Preload("Tag").
+		Where("tag_id = ? AND progression_rank = (SELECT progression_rank + 1 FROM successes WHERE id = ?)", us.Success.TagId, us.SuccessId).
+		Pluck("id", &ns)
+	if result.Error != nil {
+		return result.Error
+	}
+	return nil
+}
+
+func (r *UserSuccessRepo) CreateUserSuccessFromUserAndSuccess(userId int, ns *models.Success, us *models.UserSuccess) error {
+
+	newUserSuccess := &models.UserSuccess{
+		UserId:  userId,
+		SuccessId: ns.Id,
+		Progression: us.Progression,
+	}
+
+	result := r.DB.Create(newUserSuccess)
+	if result.Error != nil {
+		return result.Error
+	}
+	return nil
+
 }

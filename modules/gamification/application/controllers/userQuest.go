@@ -5,7 +5,6 @@ import (
 	"elie-api/modules/gamification/infrastructure"
 	"elie-api/modules/gamification/models"
 	infraUser "elie-api/modules/user/infrastructure"
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -45,7 +44,6 @@ func CreateUserQuest(c *gin.Context) {
 func UpdateUserQuestProgress(c *gin.Context) {
 	userQuestRepo := infrastructure.NewUserQuestRepo(config.DB)
 	userRepo := infraUser.NewUserRepo(config.DB)
-	successRepo := infrastructure.NewSuccessRepo(config.DB)
 	userSuccessRepo := infrastructure.NewUserSuccessRepo(config.DB)
 	userProgressReq := models.UserQuestProgressRequest{}
 
@@ -78,43 +76,35 @@ func UpdateUserQuestProgress(c *gin.Context) {
 		}
 	}
 
-	successId, err := successRepo.FindSuccessIdByTag(userQuest.Quest.TagId)
-	if err != nil {
+	var userSuccess models.UserSuccess
+	if err := userSuccessRepo.FindUserSuccessByUserAndTag(userQuest.Quest.TagId, user.Id, &userSuccess); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
 
-	userSuccess, err := userSuccessRepo.FindUserSuccessByUserAndSuccess(successId, user.Id)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
-		return
-	}
-
-	if err := userSuccessRepo.IncrementUserSuccessProgression(userSuccess); err != nil {
+	if err := userSuccessRepo.IncrementUserSuccessProgression(&userSuccess); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
 
 	if userSuccess.IsCompleted == true {
-		if err := userRepo.IncreaseUserXpSuccess(userSuccess, &user); err != nil {
+		if err := userRepo.IncreaseUserXpSuccess(&userSuccess, &user); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 			return
 		}
 
-		if err := userSuccessRepo.AddCurrencyAmountSuccessToUser(&user, userSuccess); err != nil {
+		if err := userSuccessRepo.AddCurrencyAmountSuccessToUser(&user, &userSuccess); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 			return
 		}
 
-		nextSuccessId, err := successRepo.FindTheNextProgressionRankSuccessIdByTag(successId, userQuest.Quest.TagId)
-		if err != nil {
+		var nextSuccess models.Success
+		if err := userSuccessRepo.FindTheNextProgressionRankSuccessIdByTag(&userSuccess, &nextSuccess); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 			return
 		}
 
-		fmt.Printf("Next success id: %v\n", nextSuccessId)
-
-		if err := userSuccessRepo.CreateUserSuccessFromUserAndSuccess(user.Id, nextSuccessId); err != nil {
+		if err := userSuccessRepo.CreateUserSuccessFromUserAndSuccess(user.Id, &nextSuccess, &userSuccess); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 			return
 		}

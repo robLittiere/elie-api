@@ -24,7 +24,7 @@ func TestIShouldProgressQuestWithProgressHandler(t *testing.T) {
 	uid, _ := uuid.Parse(user.Uuid)
 	uq := gamificationModels.UserQuestProgressRequest{
 		UserUuid:    uid,
-		UserQuestId: quest.Id,
+		QuestId: quest.Id,
 	}
 
 	fixtures.MockJsonPost(c, uq)
@@ -63,7 +63,7 @@ func TestQuestShouldNotBeCompletedIfProgressionIsNotMet(t *testing.T) {
 	uid, _ := uuid.Parse(user.Uuid)
 	uq := gamificationModels.UserQuestProgressRequest{
 		UserUuid:    uid,
-		UserQuestId: quest.Id,
+		QuestId: quest.Id,
 	}
 
 	fixtures.MockJsonPost(c, uq)
@@ -107,7 +107,7 @@ func TestUserShouldGetExperienceFromCompletedQuest(t *testing.T) {
 	uid, _ := uuid.Parse(user.Uuid)
 	uq := gamificationModels.UserQuestProgressRequest{
 		UserUuid:    uid,
-		UserQuestId: quest.Id,
+		QuestId: quest.Id,
 	}
 
 	fixtures.MockJsonPost(c, uq)
