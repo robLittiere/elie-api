@@ -1,8 +1,7 @@
 package dualquiz
 
 type GameEventListener interface {
-	OnPlayerCorrectAnswer(clientUuid string, roomId int)
-	OnPlayerWrongAnswer(clientUuid string, roomId int)
+	OnPlayerAnswer(clientUuid string, roomId int, isCorrect bool)
 	OnRoundEnd(roomId int)
 	OnNextRoundStart(roomId int)
 	OnGameEnd(roomId int, scoreMap MapPlayerData)

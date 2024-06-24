@@ -23,7 +23,7 @@ type Room struct {
 	Quiz                 *models.Quiz
 	CurrentQuestion      int
 	CurrentCorrectAnswer int
-	Timer                int
+	AnswerTimestamp      int
 	Status               enum.GameStatus
 }
 
@@ -224,11 +224,9 @@ func (gh *GameHandler) onPlayerAnswer(roomId int, clientUuid string, msg ClientD
 
 	if isClientCorrect {
 		gh.addToPlayerScore(roomId, clientUuid)
-		gh.gEventListener.OnPlayerCorrectAnswer(clientUuid, roomId)
-	} else {
-		// Send a you were wrong message to the client with the correct answer in it
-		gh.gEventListener.OnPlayerWrongAnswer(clientUuid, roomId)
 	}
+
+	gh.gEventListener.OnPlayerAnswer(clientUuid, roomId, isClientCorrect)
 
 	// We can check if the round is over and end it
 	if gh.isRoundOver(roomId) {

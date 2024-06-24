@@ -19,7 +19,6 @@ type DualQuizGameMessage struct {
 	RoomID          int              `json:"room_id"`
 	QuizData        string           `json:"quiz_data"`
 	CurrentQuestion int              `json:"current_question"`
-	Timer           int              `json:"timer"`
 }
 
 type DualQuizGameAnswerMessage struct {
@@ -28,7 +27,6 @@ type DualQuizGameAnswerMessage struct {
 	FromClientUuid string           `json:"client_uuid"`
 	IsCorrect      bool             `json:"is_correct"`
 	CorrectAnswer  int              `json:"correct_answer"`
-	EndTimer       int              `json:"end_timer"`
 }
 
 type DualQuizGameEndMessage struct {

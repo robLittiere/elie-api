@@ -225,7 +225,6 @@ func (dqh *DqHub) LaunchGame(roomId int) {
 		RoomID:          roomId,
 		QuizData:        quizFromRoom.ToJSON(),
 		CurrentQuestion: dqh.gameHandler.GetCurrentQuestion(roomId),
-		Timer:           0,
 	}
 	dqh.sendMessageToRoom(roomId, msg)
 }
@@ -234,29 +233,14 @@ func (dqh *DqHub) HandleClientAnswer(c *Client, msgFromClient ClientDualQuizMess
 	dqh.gameHandler.onPlayerAnswer(c.RoomID, c.UserUuid, msgFromClient)
 }
 
-func (dqh *DqHub) OnPlayerCorrectAnswer(clientUuid string, roomId int) {
-	// We need to send a message to the client that he was correct
+func (dqh *DqHub) OnPlayerAnswer(clientUuid string, roomId int, isCorrect bool) {
+
 	msg := DualQuizGameAnswerMessage{
 		Type:           enum.DualQuizAnswerType,
 		TypeMessage:    enum.DualQuizAnswerType.String(),
 		FromClientUuid: clientUuid,
-		IsCorrect:      true,
+		IsCorrect:      isCorrect,
 		CorrectAnswer:  dqh.gameHandler.GetCurrentCorrectAnswer(roomId),
-		EndTimer:       0,
-	}
-
-	dqh.sendMessageToRoom(roomId, msg)
-}
-
-func (dqh *DqHub) OnPlayerWrongAnswer(clientUuid string, roomId int) {
-	// We need to send a message to the client that he was wrong
-	msg := DualQuizGameAnswerMessage{
-		Type:           enum.DualQuizAnswerType,
-		TypeMessage:    enum.DualQuizAnswerType.String(),
-		FromClientUuid: clientUuid,
-		IsCorrect:      false,
-		CorrectAnswer:  dqh.gameHandler.GetCurrentCorrectAnswer(roomId),
-		EndTimer:       0,
 	}
 
 	dqh.sendMessageToRoom(roomId, msg)
@@ -299,7 +283,6 @@ func (dqh *DqHub) OnNextRoundStart(roomId int) {
 		RoomID:          roomId,
 		QuizData:        quizFromRoom.ToJSON(),
 		CurrentQuestion: dqh.gameHandler.GetCurrentQuestion(roomId),
-		Timer:           0,
 	}
 	dqh.sendMessageToRoom(roomId, message)
 }
