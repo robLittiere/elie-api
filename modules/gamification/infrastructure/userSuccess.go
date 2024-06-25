@@ -32,7 +32,7 @@ func (repo *UserSuccessRepo) BuildQueryAndFind(queryParams map[string][]string) 
 	if err != nil {
 		return nil, err
 	}
-	result := repo.DB.Preload("Success").Find(&userSuccess)
+	result := repo.DB.Preload("Success.Tag").Find(&userSuccess)
 	if result.Error != nil {
 		return nil, result.Error
 	}
@@ -48,7 +48,7 @@ func (r *UserSuccessRepo) FindByUuidAndUserSuccessId(uProgress *models.UserSucce
 		return result.Error
 	}
 
-	result = r.DB.Preload("Success").Where("user_id = ? AND success_id = ?", uid, uProgress.UserSuccessId).First(&u)
+	result = r.DB.Preload("Success").Where("user_id = ? AND success_id = ?", uid, uProgress.SuccessId).First(&u)
 	if result.Error != nil {
 		return result.Error
 	}

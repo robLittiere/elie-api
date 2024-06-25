@@ -14,13 +14,13 @@ func GetUserSuccesses(c *gin.Context) {
 
 	queryParams := c.Request.URL.Query()
 
-	userSuccess, err := userSuccessRepo.BuildQueryAndFind(queryParams)
+	userSuccesses, err := userSuccessRepo.BuildQueryAndFind(queryParams)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
 
-	c.JSON(200, userSuccess)
+	c.JSON(200, userSuccesses)
 }
 
 func UpdateUserSuccessProgress(c *gin.Context) {
@@ -59,6 +59,18 @@ func UpdateUserSuccessProgress(c *gin.Context) {
 			c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 			return
 		}
+
+		var nextSuccess models.Success
+		if err := userSuccessRepo.FindTheNextProgressionRankSuccessIdByTag(&userSuccess, &nextSuccess); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+			return
+		}
+
+		if err := userSuccessRepo.CreateUserSuccessFromUserAndSuccess(user.Id, &nextSuccess, &userSuccess); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+			return
+		}
+
 	}
 
 	c.JSON(200, &userSuccess)
