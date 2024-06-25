@@ -9,7 +9,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
-	"strconv"
 )
 
 func GetQuizGameData(c *gin.Context) {
@@ -36,7 +35,7 @@ func CompleteUserQuiz(c *gin.Context) {
 	}
 	var userquiz = service.GetUserQuizFromRequest(config.DB, userquizRequest)
 
-	if userquiz.UserID == 0 {
+	if userquiz.UserUuid == "" {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "User not found"})
 		return
 	}
@@ -66,16 +65,10 @@ func CompleteUserQuiz(c *gin.Context) {
 }
 
 func GetUserQuizzes(c *gin.Context) {
-	userID := c.Param("id")
-
-	userIDInt, err := strconv.Atoi(userID)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid user ID"})
-		return
-	}
+	userUuid := c.Param("id")
 
 	quizRepo := infrastructure.NewQuizRepo(config.DB)
-	quizIds, err := quizRepo.FindQuizCompletedByUser(userIDInt)
+	quizIds, err := quizRepo.FindQuizCompletedByUser(userUuid)
 
 	nextQuiz := quizRepo.FindNextQuiz(quizIds)
 	log.Println("Next Quiz:", nextQuiz)

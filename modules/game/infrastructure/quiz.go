@@ -71,9 +71,9 @@ func (r *QuizRepo) CreateUserQuiz(quizGame *models.UserQuiz) error {
 	return nil
 }
 
-func (r *QuizRepo) FindQuizCompletedByUser(userId int) ([]string, error) {
+func (r *QuizRepo) FindQuizCompletedByUser(userUuid string) ([]string, error) {
 	var quizIds []string
-	_ = r.DB.Table("user_quizzes").Select("quiz_id").Where("user_id = ?", userId).Scan(&quizIds)
+	_ = r.DB.Table("user_quizzes").Select("quiz_id").Where("user_uuid = ?", userUuid).Scan(&quizIds)
 	return quizIds, nil
 }
 

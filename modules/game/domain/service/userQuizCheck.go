@@ -14,7 +14,7 @@ type UserQuizService struct {
 func (s *UserQuizService) UserQuizExists(userQuiz models.UserQuiz) (bool, error) {
 	var existQuiz int64
 	var quizGameId int
-	result := s.QuizRepo.DB.Table("user_quizzes").Where("user_id = ? AND quiz_id = ?", userQuiz.UserID, userQuiz.QuizId).Count(&existQuiz)
+	result := s.QuizRepo.DB.Table("user_quizzes").Where("user_uuid = ? AND quiz_id = ?", userQuiz.UserUuid, userQuiz.QuizId).Count(&existQuiz)
 	fmt.Printf("quizGameId: %v\n", quizGameId)
 
 	if result.Error != nil || existQuiz > 0 {

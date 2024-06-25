@@ -18,7 +18,7 @@ func GetUserQuizFromRequest(db *gorm.DB, userquizRequest modelUserQuizz.UserQuiz
 		return userquiz
 	}
 
-	userquiz.UserID = user.Id
+	userquiz.UserUuid = user.Uuid
 	userquiz.QuizId = userquizRequest.QuizId
 
 	return userquiz
