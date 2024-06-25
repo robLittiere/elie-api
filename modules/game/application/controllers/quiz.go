@@ -7,7 +7,9 @@ import (
 	"elie-api/modules/game/models"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"log"
 	"net/http"
+	"strconv"
 )
 
 func GetQuizGameData(c *gin.Context) {
@@ -66,30 +68,21 @@ func CompleteUserQuiz(c *gin.Context) {
 func GetUserQuizzes(c *gin.Context) {
 	userID := c.Param("id")
 
+	userIDInt, err := strconv.Atoi(userID)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid user ID"})
+		return
+	}
+
 	quizRepo := infrastructure.NewQuizRepo(config.DB)
-	quizIds, err := quizRepo.FindQuizCompletedByUser(userID)
+	quizIds, err := quizRepo.FindQuizCompletedByUser(userIDInt)
+
+	nextQuiz := quizRepo.FindNextQuiz(quizIds)
+	log.Println("Next Quiz:", nextQuiz)
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
-	}
-
-	var nextQuiz *models.Quiz
-	// Si des quizzes sont déjà complétés, trouver le prochain quiz
-	if len(quizIds) > 0 {
-		lastQuizID := quizIds[len(quizIds)-1]
-		nextQuiz, err = quizRepo.FindNextQuiz(lastQuizID)
-		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-			return
-		}
-	} else {
-		// Si aucun quiz complété, trouver le premier quiz
-		nextQuiz, err = quizRepo.FindNextQuiz(0)
-		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-			return
-		}
 	}
 
 	c.JSON(200, gin.H{

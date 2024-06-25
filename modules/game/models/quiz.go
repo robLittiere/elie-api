@@ -28,6 +28,12 @@ type Quiz struct {
 	Title     string     `json:"title"`
 }
 
+type NextQuiz struct {
+	Id    int    `json:"id"`
+	Topic string `json:"topic"`
+	Title string `json:"title"`
+}
+
 type Quizzes struct {
 	Id      int    `json:"id"`
 	Quizzes []Quiz `json:"quizzes"`

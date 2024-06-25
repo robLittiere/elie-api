@@ -4,8 +4,10 @@ import (
 	"elie-api/modules/common/repository"
 	"elie-api/modules/game/application/filters"
 	"elie-api/modules/game/models"
+	"fmt"
 	"gorm.io/gorm"
 	"sort"
+	"strconv"
 )
 
 type QuizRepo struct {
@@ -69,35 +71,39 @@ func (r *QuizRepo) CreateUserQuiz(quizGame *models.UserQuiz) error {
 	return nil
 }
 
-func (r *QuizRepo) FindQuizCompletedByUser(userId string) ([]int, error) {
-	var quizIds []int
-	_ = r.DB.Table("user_quizzes").Select("id").Where("user_id = ?", userId).Scan(&quizIds)
+func (r *QuizRepo) FindQuizCompletedByUser(userId int) ([]string, error) {
+	var quizIds []string
+	_ = r.DB.Table("user_quizzes").Select("quiz_id").Where("user_id = ?", userId).Scan(&quizIds)
 	return quizIds, nil
 }
 
-func (r *QuizRepo) FindNextQuiz(lastQuizID int) (*models.Quiz, error) {
-	var allQuizzes []models.Quiz
+func (r *QuizRepo) FindNextQuiz(quizIds []string) *models.NextQuiz {
+	var lastQuizID int
 
-	// Récupérer tous les quizzes
-	r.DB = r.DB.Table("quiz_games").
-		Select("quiz").
-		Joins("JOIN jsonb_array_elements(data->'topic') as topic ON TRUE").
-		Joins("JOIN jsonb_array_elements(topic->'quizzes') as quiz ON TRUE").
-		Where("quiz->>'id' > ?", lastQuizID)
-
-	// Exécuter la requête pour récupérer tous les quizzes
-	result := r.DB.Find(&allQuizzes)
-	if result.Error != nil {
-		return nil, result.Error
+	if len(quizIds) > 0 {
+		lastQuizID, _ = strconv.Atoi(quizIds[len(quizIds)-1])
 	}
 
-	// Trier les quizzes par ID
+	var allQuizzes []models.NextQuiz
+	fmt.Printf("Last Quiz ID: %d\n", lastQuizID)
+
+	query := r.DB.Table("quiz_games").
+		Select("quiz->>'id' as id, quiz->>'title' as title, quiz->>'topic' as topic, quiz->>'questions' as questions").
+		Joins("JOIN jsonb_array_elements(data->'topic') as topic ON TRUE").
+		Joins("JOIN jsonb_array_elements(topic->'quizzes') as quiz ON TRUE")
+
+	if len(quizIds) > 0 {
+		query = query.Where("quiz->>'id' NOT IN (?)", quizIds)
+	}
+
+	query.Scan(&allQuizzes)
+	fmt.Printf("All Quizzes: %v\n", allQuizzes)
+
 	sort.SliceStable(allQuizzes, func(i, j int) bool {
 		return allQuizzes[i].Id < allQuizzes[j].Id
 	})
 
-	// Trouver le prochain quiz après lastQuizID
-	var nextQuiz *models.Quiz
+	var nextQuiz *models.NextQuiz
 	for _, quiz := range allQuizzes {
 		if quiz.Id > lastQuizID {
 			nextQuiz = &quiz
@@ -105,12 +111,7 @@ func (r *QuizRepo) FindNextQuiz(lastQuizID int) (*models.Quiz, error) {
 		}
 	}
 
-	// Si aucun quiz trouvé, retourner le premier quiz
-	if nextQuiz == nil && len(allQuizzes) > 0 {
-		nextQuiz = &allQuizzes[0]
-	}
-
-	return nextQuiz, nil
+	return nextQuiz
 }
 
 func (r *QuizRepo) GetRandomQuiz() (models.Quiz, error) {
