@@ -12,6 +12,13 @@ func GetUserSuccessFilterRegitry() filter.Filters {
 			Criteria:      &query.UserSuccessUserIdCriteria{Field: "user_id"},
 			Documentation: "Filter by user id",
 		},
+		{
+			Name: "user_uuid",
+			Criteria: &query.UserSuccessWithUserUuidCriteria{
+				Field: "users.uuid",
+			},
+			Documentation: "Filter by user uuid",
+		},
 	}
 
 }

@@ -12,6 +12,11 @@ func GetUserQuestFilterRegitry() filter.Filters {
 			Criteria:      &query.UserQuestUserIdCriteria{Field: "user_id"},
 			Documentation: "Filter by user id",
 		},
+		{
+			Name:          "user_uuid",
+			Criteria:      &query.UserQuestWithUserUuid{Field: "user_uuid"},
+			Documentation: "Filter by user uuid",
+		},
 	}
 
 }

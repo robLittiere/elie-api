@@ -9,7 +9,7 @@ import (
 	"net/http"
 )
 
-func GetUserSuccess(c *gin.Context) {
+func GetUserSuccesses(c *gin.Context) {
 	userSuccessRepo := infrastructure.NewUserSuccessRepo(config.DB)
 
 	queryParams := c.Request.URL.Query()

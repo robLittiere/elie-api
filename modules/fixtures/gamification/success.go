@@ -3,6 +3,7 @@ package gamification
 import (
 	"elie-api/config"
 	"elie-api/modules/gamification/models"
+	userModels "elie-api/modules/user/models"
 	"reflect"
 )
 
@@ -32,4 +33,14 @@ func CreateSuccess(data map[string]interface{}) models.Success {
 	config.DB.Create(&success)
 	return success
 
+}
+
+func CreateUserSuccess(user userModels.User, success models.Success) models.UserSuccess {
+	var userSuccess = models.UserSuccess{
+		UserId:    user.Id,
+		SuccessId: success.Id,
+	}
+
+	config.DB.Create(&userSuccess)
+	return userSuccess
 }
