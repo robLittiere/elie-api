@@ -14,4 +14,5 @@ type RoomMessage struct {
 	StatusMessage string      `json:"status_message"`
 	GameId        int         `json:"game_id"`
 	RoomId        int         `json:"room_id"`
+	OpponentUuid  string      `json:"opponent_uuid"`
 }

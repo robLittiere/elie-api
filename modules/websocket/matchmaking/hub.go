@@ -155,15 +155,21 @@ func (h *Hub) tryMatchClient(gameId int, client *Client) error {
 		}
 		roomId := h.roomCreator.CreateRoom(firstClient, client)
 
-		// Send a message to the clients containing the room id
+		// Send a message to the clients containing the room id and the opponent's uuid
 		msg := RoomMessage{
 			Type:          "queue",
 			Status:        MatchedInQueue,
 			StatusMessage: MatchedInQueue.String(),
 			GameId:        gameId,
 			RoomId:        roomId,
+			OpponentUuid:  firstClient.UserUuid,
 		}
-		SendMessage(firstClient, msg)
+
+		// We need to do two different messages because we need to send the opponent's uuid to the client
+		opponentMessage := msg
+		opponentMessage.OpponentUuid = client.UserUuid
+
+		SendMessage(firstClient, opponentMessage)
 		SendMessage(client, msg)
 
 		// Close clients connection to queue system
