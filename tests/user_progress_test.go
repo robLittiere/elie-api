@@ -9,7 +9,6 @@ import (
 	gamificationModels "elie-api/modules/gamification/models"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
-	"log"
 	"testing"
 )
 
@@ -32,14 +31,9 @@ func (t *UserProgressTestSuite) TestIShouldProgressQuestWithProgressHandler() {
 		"DoneCondition": 3,
 	}
 	quest := gameFixtures.CreateQuest(data)
-	fakeQuest := gameFixtures.CreateQuest(map[string]interface{}{})
-
-	fakeUser := userFixtures.CreateUser(map[string]interface{}{})
 	user := userFixtures.CreateUser(map[string]interface{}{})
 	gameFixtures.CreateUserQuest(user, quest)
-	gameFixtures.CreateUserQuest(user, fakeQuest)
 
-	log.Printf("Fake User uuid: %v", fakeUser.Uuid)
 	uq := gamificationModels.UserQuestProgressRequest{
 		UserUuid: user.Uuid,
 		QuestId:  quest.Id,

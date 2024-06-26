@@ -157,6 +157,13 @@ func (r *UserRepo) IncreaseUserXpQuest(userQuest *models2.UserQuest, user *model
 		// He would have 'overlevelup' of 10 xp. This way we carry those 10 xp on the next level
 		user.Xp -= user.Level.NextLevelXpRequirement
 		user.Level = nextLevel
+
+		// Increase user currency
+		err := r.IncreaseUserCurrency(user, user.Level.CurrencyWon)
+		if err != nil {
+			return err
+		}
+
 	}
 
 	result := r.DB.Model(&user).Updates(map[string]interface{}{
@@ -200,6 +207,10 @@ func (r *UserRepo) IncreaseUserXpSuccess(userSuccess *models2.UserSuccess, user 
 		// He would have 'overlevelup' of 10 xp. This way we carry those 10 xp on the next level
 		user.Xp -= user.Level.NextLevelXpRequirement
 		user.Level = nextLevel
+		err := r.IncreaseUserCurrency(user, user.Level.CurrencyWon)
+		if err != nil {
+			return err
+		}
 	}
 
 	result := r.DB.Model(&user).Updates(map[string]interface{}{
@@ -212,7 +223,7 @@ func (r *UserRepo) IncreaseUserXpSuccess(userSuccess *models2.UserSuccess, user 
 	return nil
 }
 
-func (r *UserRepo) IncreaseProgressionRankAndDoneConditionSuccess(user *models.User, amount int) error {
+func (r *UserRepo) IncreaseUserCurrency(user *models.User, amount int) error {
 	user.CurrencyAmount += amount
 
 	result := r.DB.Model(user).Updates(map[string]interface{}{
