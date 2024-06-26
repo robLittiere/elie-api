@@ -89,6 +89,7 @@ func (r *UserQuestRepo) IncrementUserQuestProgression(userQuest *models.UserQues
 func (repo *UserQuestRepo) FindByUserIdAndQid(uid int, id int) (models.UserQuest, error) {
 	var userQuest models.UserQuest
 	result := repo.DB.
+		Preload("Quest").
 		Where("user_id = ? AND quest_id = ?", uid, id).
 		First(&userQuest)
 	if result.Error != nil {
