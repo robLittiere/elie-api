@@ -2,12 +2,10 @@ package service
 
 import (
 	"elie-api/modules/gamification/domain/event"
-	"elie-api/modules/gamification/domain/query"
 	infrastructure2 "elie-api/modules/gamification/infrastructure"
 	"elie-api/modules/gamification/models"
 	"elie-api/modules/user/infrastructure"
 	"gorm.io/gorm"
-	"strconv"
 )
 
 type UserQuestService struct {
@@ -36,9 +34,7 @@ func (s *UserQuestService) CreateUserQuest(userUuid string, qid int) error {
 		return err
 	}
 
-	c := query.QuestWithIdCriteria{"id"}
-	s.QuestRepo.ApplyCriteria(c, strconv.Itoa(qid))
-	quest, err := s.QuestRepo.FindOne()
+	quest, err := s.QuestRepo.FindById(qid)
 	if err != nil {
 		return err
 	}
