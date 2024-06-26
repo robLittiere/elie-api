@@ -14,12 +14,11 @@ func CreateQuest(data map[string]interface{}) models.Quest {
 	val := reflect.ValueOf(&quest).Elem()
 
 	defaults := map[string]interface{}{
-		"Name":           "Win a game",
-		"DoneCondition":  3,
-		"TagId":          tag.Id,
-		"Xp":             10,
-		"Difficulty":     "easy",
-		"CurrencyReward": 0,
+		"Name":          "Win a game",
+		"DoneCondition": 3,
+		"TagId":         tag.Id,
+		"Xp":            10,
+		"Difficulty":    "easy",
 	}
 
 	for key, _ := range defaults {

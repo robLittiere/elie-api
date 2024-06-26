@@ -23,8 +23,8 @@ ApplyCriteria will apply the criteria to the query
 
 This is very useful when you want to apply multiple filters to the query`
 */
-func (r *BaseRepo) ApplyCriteria(c criteria.Criteria, queryValue string) {
-	r.DB = c.ApplyQuery(r.DB, queryValue)
+func (r *BaseRepo) ApplyCriteria(c criteria.Criteria, queryValue string) *gorm.DB {
+	return c.ApplyQuery(r.DB, queryValue)
 }
 
 /*
@@ -48,7 +48,7 @@ func (r *BaseRepo) BuildQuery(queryParams map[string][]string) error {
 				if err != nil {
 					return err
 				}
-				r.ApplyCriteria(criteria, value)
+				r.DB = r.ApplyCriteria(criteria, value)
 			}
 		}
 	}

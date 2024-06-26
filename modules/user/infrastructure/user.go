@@ -2,6 +2,7 @@ package infrastructure
 
 import (
 	"elie-api/modules/common/repository"
+	error2 "elie-api/modules/gamification/domain/error"
 	models2 "elie-api/modules/gamification/models"
 	"elie-api/modules/user/application/filters"
 	"elie-api/modules/user/models"
@@ -57,7 +58,7 @@ func (r *UserRepo) CreateUser(user *models.User) error {
 	if result.Error != nil {
 		return result.Error
 	}
-	user.LevelId = level.ID
+	user.LevelId = level.Id
 
 	if err := user.HashPassword(user.Password, 2); err != nil {
 		return err
@@ -130,13 +131,15 @@ func (r *UserRepo) UpdateUser(user *models.User) error {
 	return nil
 }
 
+// TODO : WARNIIING !!!! Refactor this is really bad
+// TODO : There is business logic in the infrastructure layer
 func (r *UserRepo) IncreaseUserXpQuest(userQuest *models2.UserQuest, user *models.User) error {
 
 	user.Xp += userQuest.Quest.Xp
 	// Check if the user has enough xp to level up
 	if user.Xp >= user.Level.NextLevelXpRequirement {
 		var nextLevel models2.Level
-		result := r.DB.First(&nextLevel, user.LevelId+1)
+		result := r.DB.Where("level_number", user.Level.LevelNumber+1).First(&nextLevel)
 
 		// We need to get the next level in order to know if the user is already max level
 		if result.Error != nil {
@@ -147,11 +150,16 @@ func (r *UserRepo) IncreaseUserXpQuest(userQuest *models2.UserQuest, user *model
 			return result.Error
 		}
 
-		user.LevelId += 1
+		user.LevelId = nextLevel.Id
+		// Update user xp from previous level
+		// This way leftover xp is not lost
+		// For example, if the user has 20 xp but level required 10 xp to be passed
+		// He would have 'overlevelup' of 10 xp. This way we carry those 10 xp on the next level
 		user.Xp -= user.Level.NextLevelXpRequirement
+		user.Level = nextLevel
 	}
 
-	result := r.DB.Model(&user).Omit("Level").Updates(map[string]interface{}{
+	result := r.DB.Model(&user).Updates(map[string]interface{}{
 		"xp":       user.Xp,
 		"level_id": user.LevelId,
 	})
@@ -161,28 +169,40 @@ func (r *UserRepo) IncreaseUserXpQuest(userQuest *models2.UserQuest, user *model
 	return nil
 }
 
+// TODO : WARNIIING !!!! Refactor this is really bad
+// TODO : There is business logic in the infrastructure layer
 func (r *UserRepo) IncreaseUserXpSuccess(userSuccess *models2.UserSuccess, user *models.User) error {
 
 	user.Xp += userSuccess.Success.Xp
 	// Check if the user has enough xp to level up
 	if user.Xp >= user.Level.NextLevelXpRequirement {
+
 		var nextLevel models2.Level
-		result := r.DB.First(&nextLevel, user.LevelId+1)
+		result := r.DB.Where("level_number", user.Level.LevelNumber+1).First(&nextLevel)
 
 		// We need to get the next level in order to know if the user is already max level
 		if result.Error != nil {
 			// User is already max level as there is no next level
 			if errors.Is(result.Error, gorm.ErrRecordNotFound) {
-				return nil
+				return error2.NextLevelNotFoundError{
+					Args: map[string]interface{}{
+						"MaxLevelId": user.LevelId,
+					},
+				}
 			}
 			return result.Error
 		}
 
-		user.LevelId += 1
+		user.LevelId = nextLevel.Id
+		// Update user xp from previous level
+		// This way leftover xp is not lost
+		// For example, if the user has 20 xp but level required 10 xp to be passed
+		// He would have 'overlevelup' of 10 xp. This way we carry those 10 xp on the next level
 		user.Xp -= user.Level.NextLevelXpRequirement
+		user.Level = nextLevel
 	}
 
-	result := r.DB.Model(&user).Omit("Level").Updates(map[string]interface{}{
+	result := r.DB.Model(&user).Updates(map[string]interface{}{
 		"xp":       user.Xp,
 		"level_id": user.LevelId,
 	})

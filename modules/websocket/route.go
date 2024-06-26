@@ -32,7 +32,7 @@ func WebsocketRoutes(router *gin.Engine, hubs map[string]Hub) {
 			roomID, err := strconv.Atoi(c.Param("room_id"))
 			userUuid := c.Param("user_uuid")
 			if err != nil {
-				fmt.Println("Room ID: ", roomID)
+				fmt.Println("Room Id: ", roomID)
 				c.JSON(400, gin.H{"error": err.Error()})
 				return
 			}

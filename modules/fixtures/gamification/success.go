@@ -44,3 +44,15 @@ func CreateUserSuccess(user userModels.User, success models.Success) models.User
 	config.DB.Create(&userSuccess)
 	return userSuccess
 }
+
+func GetUserSuccess(sid int, uid int) models.UserSuccess {
+	var userSuccess models.UserSuccess
+	config.DB.Preload("Success").Where("success_id = ? AND user_id = ?", sid, uid).First(&userSuccess)
+	return userSuccess
+}
+
+func GetUserSuccesses(uid int) []models.UserSuccess {
+	var userSuccesses []models.UserSuccess
+	config.DB.Preload("Success").Where("user_id = ?", uid).Find(&userSuccesses)
+	return userSuccesses
+}

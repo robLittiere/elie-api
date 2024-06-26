@@ -5,7 +5,6 @@ import (
 	"elie-api/modules/gamification/application/filters"
 	"elie-api/modules/gamification/models"
 	modelsUser "elie-api/modules/user/models"
-	"fmt"
 	"gorm.io/gorm"
 )
 
@@ -57,7 +56,7 @@ func (r *UserSuccessRepo) FindByUuidAndUserSuccessId(uProgress *models.UserSucce
 
 func (r *UserSuccessRepo) FindUserSuccessByUserAndTag(tagId int, userId int, us *models.UserSuccess) error {
 
-	result := r.DB.Preload("Success.Tag").Joins("JOIN successes ON user_successes.success_id = successes.id").
+	result := r.DB.Preload("Success").Joins("left join successes ON user_successes.success_id = successes.id").
 		Where("user_successes.user_id = ? AND user_successes.is_completed = false AND successes.tag_id = ?", userId, tagId).
 		First(&us)
 	if result.Error != nil {
@@ -68,16 +67,14 @@ func (r *UserSuccessRepo) FindUserSuccessByUserAndTag(tagId int, userId int, us 
 
 func (r *UserSuccessRepo) IncrementUserSuccessProgression(userSuccess *models.UserSuccess) error {
 
-	userSuccess.Progression ++
+	userSuccess.Progression++
 
 	if userSuccess.Progression >= userSuccess.Success.DoneCondition {
 		userSuccess.IsCompleted = true
 	}
 
-	result := r.DB.Model(userSuccess).Updates(map[string]interface{}{
-		"progression":  userSuccess.Progression,
-		"is_completed": userSuccess.IsCompleted,
-	})
+	result := r.DB.Save(&userSuccess)
+
 	if result.Error != nil {
 		return result.Error
 	}
@@ -96,6 +93,7 @@ func (r *UserSuccessRepo) AddCurrencyAmountSuccessToUser(user *modelsUser.User, 
 	return nil
 }
 
+// TODO : Change this, this is really bad
 func (r *UserSuccessRepo) FindTheNextProgressionRankSuccessIdByTag(us *models.UserSuccess, ns *models.Success) error {
 
 	var count int64
@@ -104,7 +102,8 @@ func (r *UserSuccessRepo) FindTheNextProgressionRankSuccessIdByTag(us *models.Us
 		Count(&count)
 
 	if count == 0 {
-		return fmt.Errorf("no next progression rank found for tag_id: %d and progression_rank: %d", us.Success.TagId, us.Success.ProgressionRank+1)
+		// Success is already maxed
+		return gorm.ErrRecordNotFound
 	}
 
 	result := r.DB.Table("successes").Preload("Tag").
@@ -119,8 +118,8 @@ func (r *UserSuccessRepo) FindTheNextProgressionRankSuccessIdByTag(us *models.Us
 func (r *UserSuccessRepo) CreateUserSuccessFromUserAndSuccess(userId int, ns *models.Success, us *models.UserSuccess) error {
 
 	newUserSuccess := &models.UserSuccess{
-		UserId:  userId,
-		SuccessId: ns.Id,
+		UserId:      userId,
+		SuccessId:   ns.Id,
 		Progression: us.Progression,
 	}
 

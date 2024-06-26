@@ -24,6 +24,15 @@ func (repo *QuestRepo) Find() ([]models.Quest, error) {
 	return quests, nil
 }
 
+func (repo *QuestRepo) FindOne() (models.Quest, error) {
+	var quest models.Quest
+	result := repo.DB.Preload("Tag").First(&quest)
+	if result.Error != nil {
+		return quest, result.Error
+	}
+	return quest, nil
+}
+
 func (repo *QuestRepo) BuildQueryAndFind(queryParams map[string][]string) ([]models.Quest, error) {
 	var quests []models.Quest
 	err := repo.BuildQuery(queryParams)

@@ -2,6 +2,7 @@ package tests
 
 import (
 	"elie-api/modules/fixtures"
+	"elie-api/modules/fixtures/common"
 	gamificationFixtures "elie-api/modules/fixtures/gamification"
 	"elie-api/modules/fixtures/user"
 	gamificationController "elie-api/modules/gamification/application/controllers"
@@ -19,10 +20,33 @@ type UserQuestTestSuite struct {
 
 func (s *UserQuestTestSuite) SetupTest() {
 	Init()
+	common.CreateBatchLevels()
 }
 
 func TestUserQuestTestSuite(t *testing.T) {
 	suite.Run(t, new(UserQuestTestSuite))
+}
+
+func (t *UserQuestTestSuite) TestIShouldCreateUserQuest() {
+	c, w = CreateGinTestContext()
+	userCreated := user.CreateUser(map[string]interface{}{})
+	quest := gamificationFixtures.CreateQuest(map[string]interface{}{})
+
+	request := models.UserQuestProgressRequest{
+		UserUuid: userCreated.Uuid,
+		QuestId:  quest.Id,
+	}
+
+	fixtures.MockJsonPost(c, request)
+	gamificationController.CreateUserQuest(c)
+
+	assert.Equal(t.T(), 200, w.Code, "I should get a 200 code")
+
+	// Assert the user quest has been created
+	userQuest := gamificationFixtures.GetUserQuest(quest.Id, userCreated.Id)
+	assert.Equal(t.T(), userQuest.QuestId, quest.Id, "The user quest should have the right quest id")
+	assert.Equal(t.T(), userQuest.UserId, userCreated.Id, "The user quest should have the right user id")
+
 }
 
 func (t *UserQuestTestSuite) TestIShouldGetQuestsWithAUserUuid() {

@@ -24,6 +24,15 @@ func (repo *UserQuestRepo) Find() ([]models.UserQuest, error) {
 	return userQuests, nil
 }
 
+func (repo *UserQuestRepo) FindOne() (models.UserQuest, error) {
+	var userQuest models.UserQuest
+	result := repo.DB.Preload("Quest").First(&userQuest)
+	if result.Error != nil {
+		return userQuest, result.Error
+	}
+	return userQuest, nil
+}
+
 func (repo *UserQuestRepo) BuildQueryAndFind(queryParams map[string][]string) ([]models.UserQuest, error) {
 	var userQuests []models.UserQuest
 	err := repo.BuildQuery(queryParams)
@@ -38,50 +47,20 @@ func (repo *UserQuestRepo) BuildQueryAndFind(queryParams map[string][]string) ([
 	return userQuests, nil
 }
 
-func (r *UserQuestRepo) CreateUserQuestFromUser(uProgress *models.UserQuestProgressRequest) (*models.UserQuest, error) {
-	// Get user_id
-	var uid int
-	result := r.DB.Table("users").Select("id").Where("uuid = ?", uProgress.UserUuid).Scan(&uid)
-	if result.Error != nil {
-		return nil, result.Error
-	}
-
-	var Quest models.Quest
-	result = r.DB.Preload("Tag").Where("id = ?", uProgress.QuestId).First(&Quest)
-	if result.Error != nil {
-		return nil, result.Error
-	}
-
-	// Create a new UserQuest
-	newUserQuest := &models.UserQuest{
-		UserId:  uid,
-		QuestId: uProgress.QuestId,
-		Quest: Quest,
-	}
-
-	result = r.DB.Create(newUserQuest)
-	if result.Error != nil {
-		return nil, result.Error
-	}
-
-	return newUserQuest, nil
-}
-
-func (r *UserQuestRepo) FindByUuidAndQid(uProgress *models.UserQuestProgressRequest, u *models.UserQuest) error {
-
-	// Get user_id
-	var uid int
-	result := r.DB.Table("users").Select("id").Where("uuid = ?", uProgress.UserUuid).Scan(&uid)
-	if result.Error != nil {
-		return result.Error
-	}
-
-	result = r.DB.Preload("Quest.Tag").Where("user_id = ? AND quest_id = ?", uid, uProgress.QuestId).First(&u)
+func (r *UserQuestRepo) Create(u *models.UserQuest) error {
+	result := r.DB.Create(&u)
 	if result.Error != nil {
 		return result.Error
 	}
 	return nil
+}
 
+func (r *UserQuestRepo) Update(u *models.UserQuest) error {
+	result := r.DB.Save(&u)
+	if result.Error != nil {
+		return result.Error
+	}
+	return nil
 }
 
 func (r *UserQuestRepo) IncrementUserQuestProgression(userQuest *models.UserQuest) error {

@@ -23,15 +23,15 @@ type User struct {
 }
 
 type PublicUser struct {
-	Uuid           string `json:"uuid" `
-	Lid            int    `json:"lid"`
-	Level          models.Level
-	Email          string `json:"email"`
-	Username       string `json:"username"`
-	UserQuests     []models.UserQuest
-	UserSuccesses  []models.UserSuccess
-	Xp             int `json:"xp"`
-	CurrencyAmount int `json:"currency_amount"`
+	Uuid           string               `json:"uuid" `
+	Lid            int                  `json:"lid"`
+	Level          models.Level         `json:"level"`
+	Email          string               `json:"email"`
+	Username       string               `json:"username"`
+	UserQuests     []models.UserQuest   `json:"quests"`
+	UserSuccesses  []models.UserSuccess `json:"successes"`
+	Xp             int                  `json:"xp"`
+	CurrencyAmount int                  `json:"currency_amount"`
 }
 
 func (user *User) Serialize() PublicUser {

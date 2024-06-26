@@ -1,7 +1,6 @@
 package models
 
 import (
-	"github.com/google/uuid"
 	"time"
 )
 
@@ -17,6 +16,6 @@ type UserQuest struct {
 }
 
 type UserQuestProgressRequest struct {
-	UserUuid    uuid.UUID `json:"user_uuid"`
-	QuestId     int       `json:"quest_id"`
+	UserUuid string `json:"user_uuid"`
+	QuestId  int    `json:"quest_id"`
 }

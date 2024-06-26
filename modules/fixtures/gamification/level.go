@@ -6,7 +6,7 @@ import (
 	"reflect"
 )
 
-func CreateBasicLevel() {
+func CreateBasicLevel() models.Level {
 	level := models.Level{
 		Name:                   "Basic",
 		NextLevelXpRequirement: 10,
@@ -14,6 +14,7 @@ func CreateBasicLevel() {
 		CurrencyWon:            10,
 	}
 	config.DB.Create(&level)
+	return level
 }
 
 func CreateLevel(data map[string]interface{}) models.Level {
@@ -22,7 +23,7 @@ func CreateLevel(data map[string]interface{}) models.Level {
 	defaults := map[string]interface{}{
 		"Name":                   "Basic",
 		"NextLevelXpRequirement": 10,
-		"LevelNumber":            2,
+		"LevelNumber":            1,
 		"CurrencyWon":            20,
 	}
 	val := reflect.ValueOf(&level).Elem()
@@ -36,5 +37,11 @@ func CreateLevel(data map[string]interface{}) models.Level {
 	}
 
 	config.DB.Create(&level)
+	return level
+}
+
+func GetFirstLevel() models.Level {
+	var level models.Level
+	config.DB.First(&level)
 	return level
 }

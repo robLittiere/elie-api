@@ -2,6 +2,7 @@ package user
 
 import (
 	"elie-api/config"
+	gamificationFixtures "elie-api/modules/fixtures/gamification"
 	"elie-api/modules/user/models"
 	"github.com/google/uuid"
 	"github.com/jaswdr/faker/v2"
@@ -11,6 +12,11 @@ import (
 var f = faker.New()
 
 func CreateUser(data map[string]interface{}) models.User {
+	if data["LevelId"] == nil {
+		level := gamificationFixtures.GetFirstLevel()
+		data["LevelId"] = level.Id
+	}
+
 	defaults := map[string]interface{}{
 		"Email":          f.Internet().Email(),
 		"Password":       "rob",

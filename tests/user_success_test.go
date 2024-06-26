@@ -2,6 +2,7 @@ package tests
 
 import (
 	"elie-api/modules/fixtures"
+	"elie-api/modules/fixtures/common"
 	gamificationFixtures "elie-api/modules/fixtures/gamification"
 	"elie-api/modules/fixtures/user"
 	gamificationController "elie-api/modules/gamification/application/controllers"
@@ -19,6 +20,7 @@ type UserSuccessTestSuite struct {
 
 func (s *UserSuccessTestSuite) SetupTest() {
 	Init()
+	common.CreateBatchLevels()
 }
 
 func TestUserSuccessTestSuite(t *testing.T) {

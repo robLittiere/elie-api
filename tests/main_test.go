@@ -5,7 +5,6 @@ import (
 	"elie-api/modules/auth"
 	"elie-api/modules/game"
 	"elie-api/modules/gamification"
-	models2 "elie-api/modules/gamification/models"
 	"elie-api/modules/user"
 	"elie-api/modules/websocket"
 	"elie-api/modules/websocket/dualquiz"
@@ -27,16 +26,6 @@ var (
 func Init() {
 	f = faker.New()
 	config.SetUpTestDatabase()
-
-	// TODO this is shit, we should remove this please do it at some point <3
-	// Add default data to test users
-	level := models2.Level{
-		Name:                   "Basic",
-		NextLevelXpRequirement: 20,
-		LevelNumber:            1,
-		CurrencyWon:            1,
-	}
-	config.DB.Create(&level)
 }
 
 func InitRouter() *gin.Engine {
