@@ -25,6 +25,50 @@ func TestUserProgressTestSuite(t *testing.T) {
 	suite.Run(t, new(UserProgressTestSuite))
 }
 
+func (t *UserProgressTestSuite) TestUserShouldGetCurrencyWhenLevelUp() {
+	c, w = CreateGinTestContext()
+
+	tag := gameFixtures.CreateTag(map[string]interface{}{
+		"Name": gamificationModels.PlayQuizTag,
+	})
+	quest := gameFixtures.CreateQuest(map[string]interface{}{
+		"TagId":         tag.Id,
+		"Xp":            10,
+		"DoneCondition": 1,
+	})
+	userLevel := gameFixtures.CreateLevel(map[string]interface{}{
+		"NextLevelXpRequirement": 10,
+		"LevelNumber":            10000,
+		"CurrencyWon":            200,
+	})
+	nextLevel := gameFixtures.CreateLevel(map[string]interface{}{
+		"NextLevelXpRequirement": 100,
+		"LevelNumber":            10001,
+	})
+	user := userFixtures.CreateUser(map[string]interface{}{
+		"Xp":             0,
+		"LevelId":        userLevel.Id,
+		"CurrencyAmount": 20,
+	})
+
+	gameFixtures.CreateUserQuest(user, quest)
+
+	uq := gamificationModels.UserQuestProgressRequest{
+		UserUuid: user.Uuid,
+		QuestId:  quest.Id,
+	}
+
+	fixtures.MockJsonPost(c, uq)
+
+	gamificationController.UpdateUserQuestProgress(c)
+
+	// Assert that user has leveled up
+	newUser := userFixtures.GetUserByID(user.Id)
+	assert.Equal(t.T(), 200, w.Code)
+	assert.Equal(t.T(), nextLevel.Id, newUser.LevelId, "User should have leveled up")
+	assert.Equal(t.T(), userLevel.CurrencyWon+user.CurrencyAmount, newUser.CurrencyAmount, "User should get currency from level")
+}
+
 func (t *UserProgressTestSuite) TestIShouldProgressQuestWithProgressHandler() {
 	c, w = CreateGinTestContext()
 	data := map[string]interface{}{

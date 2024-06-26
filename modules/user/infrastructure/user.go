@@ -150,6 +150,12 @@ func (r *UserRepo) IncreaseUserXpQuest(userQuest *models2.UserQuest, user *model
 			return result.Error
 		}
 
+		// Increase user currency
+		err := r.IncreaseUserCurrency(user, user.Level.CurrencyWon)
+		if err != nil {
+			return err
+		}
+
 		user.LevelId = nextLevel.Id
 		// Update user xp from previous level
 		// This way leftover xp is not lost
@@ -157,12 +163,6 @@ func (r *UserRepo) IncreaseUserXpQuest(userQuest *models2.UserQuest, user *model
 		// He would have 'overlevelup' of 10 xp. This way we carry those 10 xp on the next level
 		user.Xp -= user.Level.NextLevelXpRequirement
 		user.Level = nextLevel
-
-		// Increase user currency
-		err := r.IncreaseUserCurrency(user, user.Level.CurrencyWon)
-		if err != nil {
-			return err
-		}
 
 	}
 
@@ -200,6 +200,12 @@ func (r *UserRepo) IncreaseUserXpSuccess(userSuccess *models2.UserSuccess, user 
 			return result.Error
 		}
 
+		// Increase user currency
+		err := r.IncreaseUserCurrency(user, user.Level.CurrencyWon)
+		if err != nil {
+			return err
+		}
+
 		user.LevelId = nextLevel.Id
 		// Update user xp from previous level
 		// This way leftover xp is not lost
@@ -207,10 +213,6 @@ func (r *UserRepo) IncreaseUserXpSuccess(userSuccess *models2.UserSuccess, user 
 		// He would have 'overlevelup' of 10 xp. This way we carry those 10 xp on the next level
 		user.Xp -= user.Level.NextLevelXpRequirement
 		user.Level = nextLevel
-		err := r.IncreaseUserCurrency(user, user.Level.CurrencyWon)
-		if err != nil {
-			return err
-		}
 	}
 
 	result := r.DB.Model(&user).Updates(map[string]interface{}{
