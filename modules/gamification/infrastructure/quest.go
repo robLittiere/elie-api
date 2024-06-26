@@ -46,3 +46,13 @@ func (repo *QuestRepo) BuildQueryAndFind(queryParams map[string][]string) ([]mod
 
 	return quests, nil
 }
+
+func (repo *QuestRepo) FindById(qid int) (models.Quest, error) {
+	var quest models.Quest
+	result := repo.DB.Preload("Tag").Where("id = ?", qid).First(&quest)
+	if result.Error != nil {
+		return quest, result.Error
+	}
+	return quest, nil
+
+}

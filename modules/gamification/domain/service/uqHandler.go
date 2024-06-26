@@ -58,28 +58,16 @@ func (s *UserQuestService) CreateUserQuest(userUuid string, qid int) error {
 }
 
 func (s *UserQuestService) HandleUserQuestProgress(userUuid string, qid int) error {
-	// Get user
+	// TODO Return specifics errors for user or quest not found
 	user, err := s.UserRepo.FindByUuid(userUuid)
 	if err != nil {
 		return err
 	}
-
-	// Get quest
-	c := query.QuestWithIdCriteria{"id"}
-	s.QuestRepo.ApplyCriteria(c, strconv.Itoa(qid))
-	quest, err := s.QuestRepo.FindOne()
+	quest, err := s.QuestRepo.FindById(qid)
 	if err != nil {
 		return err
 	}
-
-	// Get user quest
-	cUuid := query.UserQuestWithUserUuid{"user_uuid"}
-	cQid := query.UserQuestWithQuestIdCriteria{"quest_id"}
-	builder := s.UserQuestRepo.ApplyCriteria(cUuid, user.Uuid)
-	builder = s.UserQuestRepo.ApplyCriteria(cQid, strconv.Itoa(quest.Id))
-	s.UserQuestRepo.DB = builder
-
-	userQuest, err := s.UserQuestRepo.FindOne()
+	userQuest, err := s.UserQuestRepo.FindByUserIdAndQid(user.Id, quest.Id)
 	if err != nil {
 		return err
 	}

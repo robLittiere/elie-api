@@ -18,7 +18,7 @@ func NewUserSuccessRepo(db *gorm.DB) *UserSuccessRepo {
 
 func (repo *UserSuccessRepo) Find() ([]models.UserSuccess, error) {
 	userSuccess := make([]models.UserSuccess, 0)
-	result := repo.DB.Preload("Success").Find(&userSuccess)
+	result := repo.DB.Preload("Success.Tag").Find(&userSuccess)
 	if result.Error != nil {
 		return nil, result.Error
 	}

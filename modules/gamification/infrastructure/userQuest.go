@@ -4,6 +4,7 @@ import (
 	"elie-api/modules/common/repository"
 	"elie-api/modules/gamification/application/filters"
 	"elie-api/modules/gamification/models"
+	"fmt"
 	"gorm.io/gorm"
 )
 
@@ -26,7 +27,11 @@ func (repo *UserQuestRepo) Find() ([]models.UserQuest, error) {
 
 func (repo *UserQuestRepo) FindOne() (models.UserQuest, error) {
 	var userQuest models.UserQuest
-	result := repo.DB.Preload("Quest.Tag").First(&userQuest)
+	// Print statement
+	fmt.Printf("statement for db: %v", repo.DB.Statement.SQL.String())
+	db := repo.DB.Session(&gorm.Session{FullSaveAssociations: true})
+
+	result := db.Preload("Quest.Tag").First(&userQuest)
 	if result.Error != nil {
 		return userQuest, result.Error
 	}
@@ -79,4 +84,16 @@ func (r *UserQuestRepo) IncrementUserQuestProgression(userQuest *models.UserQues
 		return result.Error
 	}
 	return nil
+}
+
+func (repo *UserQuestRepo) FindByUserIdAndQid(uid int, id int) (models.UserQuest, error) {
+	var userQuest models.UserQuest
+	result := repo.DB.
+		Where("user_id = ? AND quest_id = ?", uid, id).
+		First(&userQuest)
+	if result.Error != nil {
+		return userQuest, result.Error
+	}
+	return userQuest, nil
+
 }

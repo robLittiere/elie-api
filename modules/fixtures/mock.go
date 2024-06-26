@@ -31,6 +31,18 @@ func MockJsonPost(c *gin.Context, content interface{}) {
 	c.Request.Body = io.NopCloser(bytes.NewBuffer(jsonbytes))
 }
 
+func MockJsonPatch(c *gin.Context, content interface{}) {
+	c.Request.Method = "PATCH"
+	c.Request.Header.Set("Content-Type", "application/json")
+
+	jsonbytes, err := json.Marshal(content)
+	if err != nil {
+		panic(err)
+	}
+
+	c.Request.Body = io.NopCloser(bytes.NewBuffer(jsonbytes))
+}
+
 func MockJsonDelete(c *gin.Context, params gin.Params) {
 	c.Request.Method = "DELETE"
 	c.Request.Header.Set("Content-Type", "application/json")
