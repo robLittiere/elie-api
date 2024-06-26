@@ -3,7 +3,7 @@
         {
             "id": 1,
             "name": "Energie solaire",
-            "description" : "L'énergie solaire produit de l'électricité propre et renouvelable en exploitant la puissance du soleil.",
+            "description" : "Produire de l'électricité renouvelable en exploitant la puissance du soleil.",
             "quizzes": [
                 {
                     "id": 1,
@@ -184,7 +184,7 @@
         {
             "id": 2,
             "name": "Biodiversite",
-            "description": "La biodiversité assure l'équilibre des écosystèmes et la survie de la planète.",
+            "description": "Assurer l'équilibre des écosystèmes et la survie de la planète.",
             "quizzes": [
                 {
                     "id": 3,
@@ -453,7 +453,7 @@
         {
             "id": 3,
             "name": "Changement climatique",
-            "description" : "Le changement climatique, causé par l'activité humaine, altère durablement les conditions météorologiques mondiales et impacte l'environnement.",
+            "description" : "Altérer les conditions météorologiques mondiales et impacte l'environnement.",
             "quizzes": [
                 {
                     "id": 6,
@@ -484,7 +484,7 @@
                             "question": "Quel accord international vise à lutter contre le changement climatique en réduisant les émissions de gaz à effet de serre ?",
                             "good_answer": "L'Accord de Paris",
                             "answers": [
-                                "L'accord de Paris",
+                                "L'Accord de Paris",
                                 "Le traité de Kyoto",
                                 "Le protocole de Montréal",
                                 "La déclaration de Copenhague"
@@ -599,7 +599,7 @@
                         },
                         {
                             "question": "Quel accord international vise à lutter contre le changement climatique?",
-                            "good_answer": "L'Accord de Paris",
+                            "good_answer": "L'accord de Paris",
                             "answers": [
                                 "L'accord de Rome",
                                 "L'accord de Paris",
@@ -613,7 +613,8 @@
                             "answers": [
                                 "Augmentation de la salinité des océans",
                                 "Diminution du niveau de la mer",
-                                "L'acidification des océans"
+                                "L'acidification des océans",
+                                "La fonte des glaces"
                             ]
                         },
                         {
@@ -720,7 +721,7 @@
         {
             "id": 4,
             "name": "Ecologie marine",
-            "description" : "L'écologie marine explore les liens entre organismes marins et environnement, essentiels pour la préservation des océans.",
+            "description" : "Explorer les liens entre organismes marins et environnement, pour préserver les océans.",
             "quizzes": [
                 {
                     "id": 9,
@@ -988,7 +989,7 @@
         {
             "id": 5,
             "name": "Protection des zones humides",
-            "description" : "Protéger les zones humides préserve des écosystèmes essentiels, assurant eau douce, régulation des inondations et biodiversité unique.",
+            "description" : "Préserver des écosystèmes, assurant eau douce, régulation des inondations et biodiversité.",
             "quizzes": [
                 {
                     "id": 12,
@@ -1109,7 +1110,7 @@
                                 "Une zone humide principalement composée d'herbes et de roseaux",
                                 "Un dessert sucré",
                                 "Un type de chapeau",
-                                "un quartier dans Paris"
+                                "Un quartier dans Paris"
                             ]
                         },
                         {
@@ -1226,7 +1227,7 @@
         {
             "id": 6,
             "name": "Conservation de l'eau",
-            "description" : "La conservation de l'eau vise à économiser et gérer judicieusement cette ressource pour répondre aux besoins présents et futurs.",
+            "description" : "Viser à économiser et gérer cette ressource pour répondre aux besoins présents et futurs.",
             "quizzes": [
                 {
                     "id": 15,
@@ -1265,12 +1266,12 @@
                             },
                             {
                                 "question": "Quelle est la proportion d'eau salée sur Terre ?",
-                                "good_answer": "97 %",
+                                "good_answer": "97%",
                                 "answers": [
-                                    "50 %",
-                                    "78 %",
-                                    "91 %",
-                                    "97 %"
+                                    "50%",
+                                    "78%",
+                                    "91%",
+                                    "97%"
                                 ]
                             },
                             {
@@ -1294,10 +1295,10 @@
                                 "question": "Quelle est la quantité d'eau douce disponible sur Terre ?",
                                 "good_answer": "2,5%",
                                 "answers": [
-                                    "2,5 %",
-                                    "3,4 %",
-                                    "5,3 %",
-                                    "5,7 %"
+                                    "2,5%",
+                                    "3,4%",
+                                    "5,3%",
+                                    "5,7%"
                                 ]
                             },
                             {
@@ -1334,10 +1335,10 @@
                                 "question": "Quel est le pourcentage d'eau froide dans un iceberg ?",
                                 "good_answer": "90%",
                                 "answers": [
-                                    "85 %",
-                                    "88 %",
-                                    "90 %",
-                                    "97 %"
+                                    "85%",
+                                    "88%",
+                                    "90%",
+                                    "97%"
                                 ]
                             },
                             {
