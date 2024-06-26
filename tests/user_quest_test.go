@@ -66,15 +66,15 @@ func (t *UserQuestTestSuite) TestIShouldGetQuestsWithAUserUuid() {
 	gamificationController.GetUserQuests(c)
 
 	// Assert we should only get the quest with the tag we asked for
-	var quests []models.Quest
-	err := json.NewDecoder(w.Body).Decode(&quests)
+	var userQuests []models.UserQuest
+	err := json.NewDecoder(w.Body).Decode(&userQuests)
 	if err != nil {
 		t.T().Errorf("Error while decoding response : %v", err)
 	}
 
 	assert.Equal(t.T(), 200, w.Code, "I should get a 200 code")
-	assert.Equal(t.T(), 1, len(quests), "I should get one quest")
-	assert.Equal(t.T(), quest.Id, quests[0].Id, "I should get the quests of the user")
+	assert.Equal(t.T(), 1, len(userQuests), "I should get one quest")
+	assert.Equal(t.T(), quest.Id, userQuests[0].Id, "I should get the userQuests of the user")
 }
 
 func (t *UserQuestTestSuite) TestIShouldGetEmptyArrayIfUserHasNoQuests() {
@@ -88,12 +88,12 @@ func (t *UserQuestTestSuite) TestIShouldGetEmptyArrayIfUserHasNoQuests() {
 	gamificationController.GetUserQuests(c)
 
 	// Assert we should only get the quest with the tag we asked for
-	var quests []models.Quest
-	err := json.NewDecoder(w.Body).Decode(&quests)
+	var userQuests []models.Quest
+	err := json.NewDecoder(w.Body).Decode(&userQuests)
 	if err != nil {
 		t.T().Errorf("Error while decoding response : %v", err)
 	}
 
 	assert.Equal(t.T(), 200, w.Code, "I should get a 200 code")
-	assert.Equal(t.T(), 0, len(quests), "I should get an empty array")
+	assert.Equal(t.T(), 0, len(userQuests), "I should get an empty array")
 }

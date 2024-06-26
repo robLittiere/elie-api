@@ -5,6 +5,7 @@ import (
 	"elie-api/modules/gamification/domain/service"
 	"elie-api/modules/gamification/infrastructure"
 	"elie-api/modules/gamification/models"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -15,6 +16,7 @@ func GetUserQuests(c *gin.Context) {
 	queryParams := c.Request.URL.Query()
 
 	userQuests, err := userQuestRepo.BuildQueryAndFind(queryParams)
+	fmt.Printf("UserQuests: %v", userQuests)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return

@@ -17,7 +17,7 @@ func NewUserQuestRepo(db *gorm.DB) *UserQuestRepo {
 
 func (repo *UserQuestRepo) Find() ([]models.UserQuest, error) {
 	userQuests := make([]models.UserQuest, 0)
-	result := repo.DB.Preload("Quest").Find(&userQuests)
+	result := repo.DB.Preload("Quest.Tag").Find(&userQuests)
 	if result.Error != nil {
 		return nil, result.Error
 	}
@@ -26,7 +26,7 @@ func (repo *UserQuestRepo) Find() ([]models.UserQuest, error) {
 
 func (repo *UserQuestRepo) FindOne() (models.UserQuest, error) {
 	var userQuest models.UserQuest
-	result := repo.DB.Preload("Quest").First(&userQuest)
+	result := repo.DB.Preload("Quest.Tag").First(&userQuest)
 	if result.Error != nil {
 		return userQuest, result.Error
 	}
@@ -39,7 +39,7 @@ func (repo *UserQuestRepo) BuildQueryAndFind(queryParams map[string][]string) ([
 	if err != nil {
 		return nil, err
 	}
-	result := repo.DB.Preload("Quest").Find(&userQuests)
+	result := repo.DB.Preload("Quest.Tag").Find(&userQuests)
 	if result.Error != nil {
 		return nil, result.Error
 	}
