@@ -12,16 +12,14 @@ type UserQuestService struct {
 	UserQuestRepo          *infrastructure2.UserQuestRepo
 	UserRepo               *infrastructure.UserRepo
 	QuestRepo              *infrastructure2.QuestRepo
-	UserSuccessRepo        *infrastructure2.UserSuccessRepo
 	QuestProgressListeners []event.QuestProgressListener
 }
 
 func NewUserQuestService(conn *gorm.DB) *UserQuestService {
 	return &UserQuestService{
-		UserQuestRepo:   infrastructure2.NewUserQuestRepo(conn),
-		UserRepo:        infrastructure.NewUserRepo(conn),
-		QuestRepo:       infrastructure2.NewQuestRepo(conn),
-		UserSuccessRepo: infrastructure2.NewUserSuccessRepo(conn),
+		UserQuestRepo: infrastructure2.NewUserQuestRepo(conn),
+		UserRepo:      infrastructure.NewUserRepo(conn),
+		QuestRepo:     infrastructure2.NewQuestRepo(conn),
 	}
 }
 

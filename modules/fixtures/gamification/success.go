@@ -2,13 +2,13 @@ package gamification
 
 import (
 	"elie-api/config"
-	"elie-api/modules/gamification/models"
+	models2 "elie-api/modules/gamification/successes/domain/models"
 	userModels "elie-api/modules/user/models"
 	"reflect"
 )
 
-func CreateSuccess(data map[string]interface{}) models.Success {
-	var success = models.Success{}
+func CreateSuccess(data map[string]interface{}) models2.Success {
+	var success = models2.Success{}
 
 	val := reflect.ValueOf(&success).Elem()
 
@@ -42,8 +42,8 @@ func CreateSuccess(data map[string]interface{}) models.Success {
 
 }
 
-func CreateUserSuccess(user userModels.User, success models.Success, data map[string]interface{}) models.UserSuccess {
-	var userSuccess = models.UserSuccess{}
+func CreateUserSuccess(user userModels.User, success models2.Success, data map[string]interface{}) models2.UserSuccess {
+	var userSuccess = models2.UserSuccess{}
 	val := reflect.ValueOf(&userSuccess).Elem()
 
 	defaults := map[string]interface{}{
@@ -64,14 +64,14 @@ func CreateUserSuccess(user userModels.User, success models.Success, data map[st
 	return userSuccess
 }
 
-func GetUserSuccess(sid int, uid int) models.UserSuccess {
-	var userSuccess models.UserSuccess
+func GetUserSuccess(sid int, uid int) models2.UserSuccess {
+	var userSuccess models2.UserSuccess
 	config.DB.Preload("Success").Where("success_id = ? AND user_id = ?", sid, uid).First(&userSuccess)
 	return userSuccess
 }
 
-func GetUserSuccesses(uid int) []models.UserSuccess {
-	var userSuccesses []models.UserSuccess
+func GetUserSuccesses(uid int) []models2.UserSuccess {
+	var userSuccesses []models2.UserSuccess
 	config.DB.Preload("Success").Where("user_id = ?", uid).Find(&userSuccesses)
 	return userSuccesses
 }

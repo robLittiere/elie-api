@@ -2,7 +2,7 @@ package filters
 
 import (
 	"elie-api/modules/common/filter"
-	"elie-api/modules/gamification/domain/query"
+	"elie-api/modules/gamification/successes/infra/query"
 )
 
 func GetSuccessFilterRegitry() filter.Filters {
