@@ -8,7 +8,6 @@ import (
 )
 
 func CreateSuccess(data map[string]interface{}) models.Success {
-	tag := CreateTag(map[string]interface{}{})
 	var success = models.Success{}
 
 	val := reflect.ValueOf(&success).Elem()
@@ -16,11 +15,19 @@ func CreateSuccess(data map[string]interface{}) models.Success {
 	defaults := map[string]interface{}{
 		"Name":            "Win a game",
 		"Xp":              10,
-		"TagId":           tag.Id,
 		"DoneCondition":   3,
 		"ProgressionRank": 0,
 		"CurrencyReward":  0,
 	}
+
+	// Add tagId or create default tag
+	tagId := 0
+	if data["TagId"] != nil {
+		tagId = data["TagId"].(int)
+	} else {
+		tagId = CreateTag(map[string]interface{}{}).Id
+	}
+	defaults["TagId"] = tagId
 
 	for key, _ := range defaults {
 		value := data[key]
@@ -35,11 +42,23 @@ func CreateSuccess(data map[string]interface{}) models.Success {
 
 }
 
-func CreateUserSuccess(user userModels.User, success models.Success) models.UserSuccess {
-	var userSuccess = models.UserSuccess{
-		UserId:    user.Id,
-		SuccessId: success.Id,
+func CreateUserSuccess(user userModels.User, success models.Success, data map[string]interface{}) models.UserSuccess {
+	var userSuccess = models.UserSuccess{}
+	val := reflect.ValueOf(&userSuccess).Elem()
+
+	defaults := map[string]interface{}{
+		"Progression": 0,
+		"IsCompleted": false,
 	}
+	for key, _ := range defaults {
+		value := data[key]
+		if value == nil {
+			value = defaults[key]
+		}
+		val.FieldByName(key).Set(reflect.ValueOf(value))
+	}
+	userSuccess.UserId = user.Id
+	userSuccess.SuccessId = success.Id
 
 	config.DB.Create(&userSuccess)
 	return userSuccess

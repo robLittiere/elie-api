@@ -43,7 +43,7 @@ func UpdateUserSuccessProgress(c *gin.Context) {
 		return
 	}
 
-	user, err := userRepo.FindByUuid(userProgressReq.UserUuid.String())
+	user, err := userRepo.FindByUuid(userProgressReq.UserUuid)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return

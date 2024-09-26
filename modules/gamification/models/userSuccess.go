@@ -1,7 +1,6 @@
 package models
 
 import (
-	"github.com/google/uuid"
 	"time"
 )
 
@@ -17,6 +16,6 @@ type UserSuccess struct {
 }
 
 type UserSuccessProgressRequest struct {
-	UserUuid      uuid.UUID `json:"user_uuid"`
-	SuccessId     int       `json:"success_id"`
+	UserUuid  string `json:"user_uuid"`
+	SuccessId int    `json:"success_id"`
 }

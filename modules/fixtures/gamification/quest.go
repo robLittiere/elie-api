@@ -8,7 +8,6 @@ import (
 )
 
 func CreateQuest(data map[string]interface{}) models.Quest {
-	tag := CreateTag(map[string]interface{}{})
 	var quest = models.Quest{}
 
 	val := reflect.ValueOf(&quest).Elem()
@@ -16,10 +15,17 @@ func CreateQuest(data map[string]interface{}) models.Quest {
 	defaults := map[string]interface{}{
 		"Name":          "Win a game",
 		"DoneCondition": 3,
-		"TagId":         tag.Id,
 		"Xp":            10,
 		"Difficulty":    "easy",
 	}
+	// Add tagId or create default tag
+	tagId := 0
+	if data["TagId"] != nil {
+		tagId = data["TagId"].(int)
+	} else {
+		tagId = CreateTag(map[string]interface{}{}).Id
+	}
+	defaults["TagId"] = tagId
 
 	for key, _ := range defaults {
 		value := data[key]

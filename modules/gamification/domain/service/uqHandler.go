@@ -22,9 +22,6 @@ func NewUserQuestService(conn *gorm.DB) *UserQuestService {
 		UserRepo:        infrastructure.NewUserRepo(conn),
 		QuestRepo:       infrastructure2.NewQuestRepo(conn),
 		UserSuccessRepo: infrastructure2.NewUserSuccessRepo(conn),
-		QuestProgressListeners: []event.QuestProgressListener{
-			NewUserSuccessProgressService(conn),
-		},
 	}
 }
 
@@ -78,13 +75,6 @@ func (s *UserQuestService) HandleUserQuestProgress(userUuid string, qid int) err
 	// Update user xp
 	if userQuest.IsCompleted {
 		err = s.UserRepo.IncreaseUserXpQuest(&userQuest, &user)
-		if err != nil {
-			return err
-		}
-	}
-
-	for _, listener := range s.QuestProgressListeners {
-		err = listener.OnQuestProgress(user, quest, userQuest)
 		if err != nil {
 			return err
 		}

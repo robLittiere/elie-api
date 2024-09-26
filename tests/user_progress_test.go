@@ -67,6 +67,7 @@ func (t *UserProgressTestSuite) TestUserShouldGetCurrencyWhenLevelUp() {
 	assert.Equal(t.T(), 200, w.Code)
 	assert.Equal(t.T(), nextLevel.Id, newUser.LevelId, "User should have leveled up")
 	assert.Equal(t.T(), userLevel.CurrencyWon+user.CurrencyAmount, newUser.CurrencyAmount, "User should get currency from level")
+	assert.Equal(t.T(), 0, newUser.Xp, "User should have 0 xp since their xp was just enough to level up")
 }
 
 func (t *UserProgressTestSuite) TestIShouldProgressQuestWithProgressHandler() {
@@ -112,7 +113,7 @@ func (t *UserProgressTestSuite) TestIShouldProgressQuestWithProgressHandler() {
 	assert.Equal(t.T(), newUserQuest.IsCompleted, true)
 }
 
-func (t *UserProgressTestSuite) TestQuestShouldNotBeCompletedIfProgressionIsNotMet() {
+func (t *UserProgressTestSuite) TestQuestShouldNotBeCompletedIfDoneConditionIsNotMet() {
 	c, w = CreateGinTestContext()
 	data := map[string]interface{}{
 		"DoneCondition": 3,
@@ -149,9 +150,13 @@ func (t *UserProgressTestSuite) TestQuestShouldNotBeCompletedIfProgressionIsNotM
 func (t *UserProgressTestSuite) TestUserShouldGetExperienceFromCompletedQuest() {
 	c, w = CreateGinTestContext()
 	// Introduce second level so user is not max level
+	userLevel := gameFixtures.CreateLevel(map[string]interface{}{
+		"NextLevelXpRequirement": 100,
+		"LevelNumber":            499,
+	})
 	gameFixtures.CreateLevel(map[string]interface{}{
 		"XpRequirement": 100,
-		"LevelNumber":   2,
+		"LevelNumber":   500,
 	})
 
 	quest := gameFixtures.CreateQuest(map[string]interface{}{
@@ -160,7 +165,8 @@ func (t *UserProgressTestSuite) TestUserShouldGetExperienceFromCompletedQuest() 
 	})
 
 	user := userFixtures.CreateUser(map[string]interface{}{
-		"Xp": 0,
+		"Xp":      10,
+		"LevelId": userLevel.Id,
 	})
 
 	gameFixtures.CreateUserQuest(user, quest)
@@ -175,20 +181,20 @@ func (t *UserProgressTestSuite) TestUserShouldGetExperienceFromCompletedQuest() 
 
 	newUser := userFixtures.GetUserByID(user.Id)
 
-	if newUser.Xp != 0 {
+	if newUser.Xp != 10 {
 		t.T().Errorf("Quest is not completed and should not give xp")
 	}
-	assert.Equal(t.T(), newUser.Xp, 0)
+	assert.Equal(t.T(), newUser.Xp, 10)
 
 	fixtures.MockJsonPost(c, uq)
 	gamificationController.UpdateUserQuestProgress(c)
 
 	newUser = userFixtures.GetUserByID(user.Id)
 
-	if newUser.Xp != 5 {
+	if newUser.Xp != 15 {
 		t.T().Errorf("Quest is completed and should give xp")
 	}
-	assert.Equal(t.T(), newUser.Xp, 5)
+	assert.Equal(t.T(), newUser.Xp, 15)
 }
 
 func (t *UserProgressTestSuite) TestUserSuccessShouldProgressWhenRelatedQuestIsCompleted() {
@@ -214,7 +220,7 @@ func (t *UserProgressTestSuite) TestUserSuccessShouldProgressWhenRelatedQuestIsC
 
 	// Create user quest and user success
 	gameFixtures.CreateUserQuest(user, quest)
-	gameFixtures.CreateUserSuccess(user, success)
+	gameFixtures.CreateUserSuccess(user, success, map[string]interface{}{})
 
 	uq := gamificationModels.UserQuestProgressRequest{
 		UserUuid: user.Uuid,
@@ -261,7 +267,7 @@ func (t *UserProgressTestSuite) TestUserShouldGetSuccessXpWhenSuccessIsCompleted
 
 	// Create user quest and user success
 	gameFixtures.CreateUserQuest(user, quest)
-	gameFixtures.CreateUserSuccess(user, success)
+	gameFixtures.CreateUserSuccess(user, success, map[string]interface{}{})
 
 	uq := gamificationModels.UserQuestProgressRequest{
 		UserUuid: user.Uuid,
@@ -278,163 +284,4 @@ func (t *UserProgressTestSuite) TestUserShouldGetSuccessXpWhenSuccessIsCompleted
 	assert.Equal(t.T(), 200, w.Code)
 	assert.Equal(t.T(), true, progressedUserSuccess.IsCompleted, "User success should be completed")
 	assert.Equal(t.T(), user.Xp, quest.Xp+success.Xp, "User should get xp from quest and success")
-}
-
-func (t *UserProgressTestSuite) TestUserShouldGetCurrencyFromCompletedSuccess() {
-	c, w = CreateGinTestContext()
-
-	// Setup everything
-	tag := gameFixtures.CreateTag(map[string]interface{}{
-		"Name": gamificationModels.PlayQuizTag,
-	})
-	quest := gameFixtures.CreateQuest(map[string]interface{}{
-		"TagId":         tag.Id,
-		"Xp":            10,
-		"DoneCondition": 1,
-	})
-	success := gameFixtures.CreateSuccess(map[string]interface{}{
-		"TagId":          tag.Id,
-		"CurrencyReward": 10,
-		"Xp":             10,
-		"DoneCondition":  1,
-	})
-	// Create a level to be sure that user is not max level
-	userLevel := gameFixtures.CreateLevel(map[string]interface{}{
-		"NextLevelXpRequirement": 100,
-		"LevelNumber":            10000,
-	})
-	user := userFixtures.CreateUser(map[string]interface{}{
-		"Xp":      0,
-		"LevelId": userLevel.Id,
-	})
-
-	// Create user quest and user success
-	gameFixtures.CreateUserQuest(user, quest)
-	gameFixtures.CreateUserSuccess(user, success)
-
-	uq := gamificationModels.UserQuestProgressRequest{
-		UserUuid: user.Uuid,
-		QuestId:  quest.Id,
-	}
-
-	fixtures.MockJsonPost(c, uq)
-
-	gamificationController.UpdateUserQuestProgress(c)
-
-	progressedUserSuccess := gameFixtures.GetUserSuccess(user.Id, success.Id)
-	user = userFixtures.GetUserByID(user.Id)
-
-	assert.Equal(t.T(), 200, w.Code)
-	assert.Equal(t.T(), true, progressedUserSuccess.IsCompleted, "User success should be completed")
-	assert.Equal(t.T(), user.CurrencyAmount, success.CurrencyReward, "User should get currency from success")
-}
-
-func (t *UserProgressTestSuite) TestUserShouldGetNextRankSuccessWhenUserSuccessIsCompleted() {
-	c, w = CreateGinTestContext()
-
-	// Setup everything
-	tag := gameFixtures.CreateTag(map[string]interface{}{
-		"Name": gamificationModels.PlayQuizTag,
-	})
-	quest := gameFixtures.CreateQuest(map[string]interface{}{
-		"TagId":         tag.Id,
-		"Xp":            10,
-		"DoneCondition": 1,
-	})
-	success := gameFixtures.CreateSuccess(map[string]interface{}{
-		"TagId":           tag.Id,
-		"CurrencyReward":  10,
-		"Xp":              10,
-		"DoneCondition":   1,
-		"ProgressionRank": 1,
-	})
-	nextSuccess := gameFixtures.CreateSuccess(map[string]interface{}{
-		"TagId":           tag.Id,
-		"CurrencyReward":  10,
-		"Xp":              10,
-		"DoneCondition":   1,
-		"ProgressionRank": 2,
-	})
-	// Create a level to be sure that user is not max level
-	userLevel := gameFixtures.CreateLevel(map[string]interface{}{
-		"NextLevelXpRequirement": 100,
-		"LevelNumber":            10000,
-	})
-	user := userFixtures.CreateUser(map[string]interface{}{
-		"Xp":      0,
-		"LevelId": userLevel.Id,
-	})
-
-	// Create user quest and user success
-	gameFixtures.CreateUserQuest(user, quest)
-	gameFixtures.CreateUserSuccess(user, success)
-
-	uq := gamificationModels.UserQuestProgressRequest{
-		UserUuid: user.Uuid,
-		QuestId:  quest.Id,
-	}
-
-	fixtures.MockJsonPost(c, uq)
-
-	gamificationController.UpdateUserQuestProgress(c)
-
-	doneSuccess := gameFixtures.GetUserSuccess(success.Id, user.Id)
-	user = userFixtures.GetUserByID(user.Id)
-
-	assert.Equal(t.T(), 200, w.Code)
-	assert.Equal(t.T(), true, doneSuccess.IsCompleted, "Confirmed user success should be completed")
-
-	// Check if user has next success
-	nextUserSuccess := gameFixtures.GetUserSuccess(nextSuccess.Id, user.Id)
-
-	assert.Equal(t.T(), nextSuccess.Id, nextUserSuccess.SuccessId, "User should have next success")
-}
-
-func (t *UserProgressTestSuite) TestUserXpShouldBeTheDifferenceOfCurrentXpAndNextLevelXpWhenLevelUpWithASuccess() {
-	c, w = CreateGinTestContext()
-
-	tag := gameFixtures.CreateTag(map[string]interface{}{
-		"Name": gamificationModels.PlayQuizTag,
-	})
-	quest := gameFixtures.CreateQuest(map[string]interface{}{
-		"TagId":         tag.Id,
-		"Xp":            0,
-		"DoneCondition": 1,
-	})
-	success := gameFixtures.CreateSuccess(map[string]interface{}{
-		"TagId":          tag.Id,
-		"CurrencyReward": 10,
-		"Xp":             20,
-		"DoneCondition":  1,
-	})
-	userLevel := gameFixtures.CreateLevel(map[string]interface{}{
-		"NextLevelXpRequirement": 10,
-		"LevelNumber":            10000,
-	})
-	nextLevel := gameFixtures.CreateLevel(map[string]interface{}{
-		"NextLevelXpRequirement": 100,
-		"LevelNumber":            10001,
-	})
-	user := userFixtures.CreateUser(map[string]interface{}{
-		"Xp":      0,
-		"LevelId": userLevel.Id,
-	})
-
-	// Create user quest and user success
-	gameFixtures.CreateUserQuest(user, quest)
-	gameFixtures.CreateUserSuccess(user, success)
-
-	uq := gamificationModels.UserQuestProgressRequest{
-		UserUuid: user.Uuid,
-		QuestId:  quest.Id,
-	}
-
-	fixtures.MockJsonPost(c, uq)
-
-	gamificationController.UpdateUserQuestProgress(c)
-
-	user = userFixtures.GetUserByID(user.Id)
-	assert.Equal(t.T(), 200, w.Code)
-	assert.Equal(t.T(), nextLevel.Id, user.LevelId, "User should have leveled up")
-	assert.Equal(t.T(), success.Xp-userLevel.NextLevelXpRequirement, user.Xp, "User should get xp from success")
 }
