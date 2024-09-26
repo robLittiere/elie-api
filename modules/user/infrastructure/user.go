@@ -54,7 +54,7 @@ func (r *UserRepo) CreateUser(user *models.User) error {
 	// Get basic level and add it to the user
 	// TODO improve this by adding a user builder or something as we will need to add more default stuff to the user
 	var level models2.Level
-	result := r.DB.Table("levels").Select("id").Where("name = ?", "beginner").Scan(&level)
+	result := r.DB.Table("levels").Where("name = ?", "beginner").Scan(&level)
 	if result.Error != nil {
 		return result.Error
 	}

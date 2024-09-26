@@ -7,6 +7,7 @@ import (
 	"elie-api/modules/common/criteria"
 	"elie-api/modules/common/repository"
 	"elie-api/modules/fixtures"
+	gamificationFixtures "elie-api/modules/fixtures/gamification"
 	userFixtures "elie-api/modules/fixtures/user"
 	userController "elie-api/modules/user/application/controllers"
 	"elie-api/modules/user/application/filters"
@@ -15,13 +16,27 @@ import (
 	"elie-api/modules/user/models"
 	"encoding/json"
 	"github.com/go-playground/assert/v2"
+	"github.com/stretchr/testify/suite"
 	"net/http"
 	"net/url"
 	"reflect"
 	"testing"
 )
 
-func TestIShouldCreateWithSignupUserHandler(t *testing.T) {
+type UserTestSuite struct {
+	suite.Suite
+}
+
+func (t *UserTestSuite) SetupTest() {
+	Init()
+	gamificationFixtures.CreateBeginnerLevel()
+}
+
+func TestUserTestSuite(t *testing.T) {
+	suite.Run(t, new(UserTestSuite))
+}
+
+func (t *UserTestSuite) TestIShouldCreateWithSignupUserHandler() {
 	c, w = CreateGinTestContext()
 	uq := models.UserRequest{
 		Email:    "anothermailnottakenforsure@mail.com",
@@ -31,17 +46,17 @@ func TestIShouldCreateWithSignupUserHandler(t *testing.T) {
 	fixtures.MockJsonPost(c, uq)
 	controllers.SignupHandler(c)
 
-	assert.Equal(t, w.Code, http.StatusCreated)
+	assert.Equal(t.T(), w.Code, http.StatusCreated)
 
 	var user models.User
 	userRepo := infrastructure.NewUserRepo(config.DB)
 	record := userRepo.DB.Where("email = ?", uq.Email).First(&user)
 	if record.Error != nil {
-		t.Errorf("Exepected user to be created but found none : %v", record.Error)
+		t.T().Errorf("Exepected user to be created but found none : %v", record.Error)
 	}
 }
 
-func TestIShouldCreateUserE2E(t *testing.T) {
+func (t *UserTestSuite) TestIShouldCreateUserE2E() {
 	c, w = CreateGinTestContext()
 	router = InitRouter()
 	uq := models.UserRequest{
@@ -57,23 +72,23 @@ func TestIShouldCreateUserE2E(t *testing.T) {
 
 	router.ServeHTTP(w, req)
 
-	assert.Equal(t, w.Code, http.StatusCreated)
+	assert.Equal(t.T(), w.Code, http.StatusCreated)
 	if w.Code != http.StatusCreated {
-		t.Errorf("Expected status code : %d, but got : %d \n", http.StatusCreated, w.Code)
+		t.T().Errorf("Expected status code : %d, but got : %d \n", http.StatusCreated, w.Code)
 	}
 
 	var user models.User
 	userRepo := infrastructure.NewUserRepo(config.DB)
 	record := userRepo.DB.Where("email = ?", uq.Email).First(&user)
 	if record.Error != nil {
-		t.Errorf("Exepected user to be created but found none : %v", record.Error)
+		t.T().Errorf("Exepected user to be created but found none : %v", record.Error)
 	}
 
-	assert.Equal(t, user.Email, uq.Email)
+	assert.Equal(t.T(), user.Email, uq.Email)
 
 }
 
-func TestIShouldGetUserWithLoginHandler(t *testing.T) {
+func (t *UserTestSuite) TestIShouldGetUserWithLoginHandler() {
 	// Create a user using signup handler
 	uq := models.UserRequest{
 		Email:    "rob@mail.com",
@@ -94,17 +109,17 @@ func TestIShouldGetUserWithLoginHandler(t *testing.T) {
 	fixtures.MockJsonPost(c, uq)
 	controllers.LoginHandler(c)
 
-	assert.Equal(t, w.Code, http.StatusOK)
+	assert.Equal(t.T(), w.Code, http.StatusOK)
 
 	var user models.User
 	err := json.NewDecoder(w.Body).Decode(&user)
 	if err != nil {
-		t.Errorf("Error while decoding response : %v", err)
+		t.T().Errorf("Error while decoding response : %v", err)
 	}
-	assert.Equal(t, user.Email, uq.Email)
+	assert.Equal(t.T(), user.Email, uq.Email)
 }
 
-func TestIShouldGetUserCriterias(t *testing.T) {
+func (t *UserTestSuite) TestIShouldGetUserCriterias() {
 
 	// Declare some fake query parameters
 	queryParams := map[string]string{
@@ -129,12 +144,12 @@ func TestIShouldGetUserCriterias(t *testing.T) {
 
 	// Assert that the criteria list is the same as the expected one
 	if !reflect.DeepEqual(criteriaList, expectedCriterias) {
-		t.Errorf("Expected criteria %v but got %v", expectedCriterias, criteriaList)
+		t.T().Errorf("Expected criteria %v but got %v", expectedCriterias, criteriaList)
 	}
 
 }
 
-func TestIShouldGetAnErrorForANonValidFilter(t *testing.T) {
+func (t *UserTestSuite) TestIShouldGetAnErrorForANonValidFilter() {
 	userFilterRegistry := filters.GetUserFilters()
 	queryParams := map[string]string{
 		"NonExistantFitler": "NonExistantValue",
@@ -143,13 +158,12 @@ func TestIShouldGetAnErrorForANonValidFilter(t *testing.T) {
 	for k, _ := range queryParams {
 		_, err := repository.GetCriteria(k, userFilterRegistry)
 		if err == nil {
-			t.Errorf("Expected an error but got nil")
+			t.T().Errorf("Expected an error but got nil")
 		}
 	}
 }
 
-func TestIShouldGetUserByUsername(t *testing.T) {
-	Init()
+func (t *UserTestSuite) TestIShouldGetUserByUsername() {
 	c, w = CreateGinTestContext()
 
 	user := userFixtures.CreateUser(map[string]interface{}{"Username": "elrobinator"})
@@ -160,12 +174,12 @@ func TestIShouldGetUserByUsername(t *testing.T) {
 
 	userController.GetUsers(c)
 
-	assert.Equal(t, w.Code, http.StatusOK)
+	assert.Equal(t.T(), w.Code, http.StatusOK)
 
 	var users []models.User
 	err := json.NewDecoder(w.Body).Decode(&users)
 	if err != nil {
-		t.Errorf("Error while decoding response : %v", err)
+		t.T().Errorf("Error while decoding response : %v", err)
 	}
-	assert.Equal(t, users[0].Username, user.Username)
+	assert.Equal(t.T(), users[0].Username, user.Username)
 }

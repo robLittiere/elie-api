@@ -8,27 +8,27 @@ import (
 func CreateBatchLevels() {
 	var levels []models.Level
 
-	basicLevel := models.Level{
-		Name:                   "Basic",
+	beginnerLevel := models.Level{
+		Name:                   "beginner",
 		NextLevelXpRequirement: 10,
 		LevelNumber:            1,
 		CurrencyWon:            10,
 	}
 
-	mediumLevel := models.Level{
-		Name:                   "Medium",
+	intermediateLevel := models.Level{
+		Name:                   "intermediate",
 		NextLevelXpRequirement: 20,
 		LevelNumber:            2,
 		CurrencyWon:            20,
 	}
 
 	advancedLevel := models.Level{
-		Name:                   "Advanced",
+		Name:                   "advanced",
 		NextLevelXpRequirement: 30,
 		LevelNumber:            3,
 		CurrencyWon:            30,
 	}
 
-	levels = append(levels, basicLevel, mediumLevel, advancedLevel)
+	levels = append(levels, beginnerLevel, intermediateLevel, advancedLevel)
 	config.DB.Create(&levels)
 }

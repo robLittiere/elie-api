@@ -6,9 +6,9 @@ import (
 	"reflect"
 )
 
-func CreateBasicLevel() models.Level {
+func CreateBeginnerLevel() models.Level {
 	level := models.Level{
-		Name:                   "Basic",
+		Name:                   "beginner",
 		NextLevelXpRequirement: 10,
 		LevelNumber:            1,
 		CurrencyWon:            10,
@@ -21,7 +21,7 @@ func CreateLevel(data map[string]interface{}) models.Level {
 	var level = models.Level{}
 
 	defaults := map[string]interface{}{
-		"Name":                   "Basic",
+		"Name":                   "beginner",
 		"NextLevelXpRequirement": 10,
 		"LevelNumber":            1,
 		"CurrencyWon":            20,
