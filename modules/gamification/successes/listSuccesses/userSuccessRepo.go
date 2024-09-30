@@ -1,10 +1,10 @@
-package infrastructure
+package listSuccesses
 
 import (
 	"elie-api/modules/common/repository"
-	"elie-api/modules/gamification/application/filters"
-	"elie-api/modules/gamification/models"
-	modelsUser "elie-api/modules/user/models"
+	models2 "elie-api/modules/gamification/successes/domain/models"
+	"elie-api/modules/gamification/successes/infra/filters"
+	userModels "elie-api/modules/user/models"
 	"gorm.io/gorm"
 )
 
@@ -16,22 +16,22 @@ func NewUserSuccessRepo(db *gorm.DB) *UserSuccessRepo {
 	return &UserSuccessRepo{BaseRepo: repository.BaseRepo{DB: db, FilterRegistry: filters.GetUserSuccessFilterRegitry()}}
 }
 
-func (repo *UserSuccessRepo) Find() ([]models.UserSuccess, error) {
-	userSuccess := make([]models.UserSuccess, 0)
-	result := repo.DB.Preload("Success.Tag").Find(&userSuccess)
+func (repo *UserSuccessRepo) Find() ([]models2.UserSuccess, error) {
+	userSuccess := make([]models2.UserSuccess, 0)
+	result := repo.DB.Preload("Success.Tag").Preload("Success.ParentSuccess").Find(&userSuccess)
 	if result.Error != nil {
 		return nil, result.Error
 	}
 	return userSuccess, nil
 }
 
-func (repo *UserSuccessRepo) BuildQueryAndFind(queryParams map[string][]string) ([]models.UserSuccess, error) {
-	var userSuccess []models.UserSuccess
+func (repo *UserSuccessRepo) BuildQueryAndFind(queryParams map[string][]string) ([]models2.UserSuccess, error) {
+	var userSuccess []models2.UserSuccess
 	err := repo.BuildQuery(queryParams)
 	if err != nil {
 		return nil, err
 	}
-	result := repo.DB.Preload("Success.Tag").Find(&userSuccess)
+	result := repo.DB.Preload("Success.Tag").Preload("Success.ParentSuccess").Find(&userSuccess)
 	if result.Error != nil {
 		return nil, result.Error
 	}
@@ -39,7 +39,7 @@ func (repo *UserSuccessRepo) BuildQueryAndFind(queryParams map[string][]string) 
 	return userSuccess, nil
 }
 
-func (r *UserSuccessRepo) FindByUuidAndUserSuccessId(uProgress *models.UserSuccessProgressRequest, u *models.UserSuccess) error {
+func (r *UserSuccessRepo) FindByUuidAndUserSuccessId(uProgress *models2.UserSuccessProgressRequest, u *models2.UserSuccess) error {
 	// Get user_id
 	var uid int
 	result := r.DB.Table("users").Select("id").Where("uuid = ?", uProgress.UserUuid).Scan(&uid)
@@ -54,7 +54,7 @@ func (r *UserSuccessRepo) FindByUuidAndUserSuccessId(uProgress *models.UserSucce
 	return nil
 }
 
-func (r *UserSuccessRepo) FindUserSuccessByUserAndTag(tagId int, userId int, us *models.UserSuccess) error {
+func (r *UserSuccessRepo) FindUserSuccessByUserAndTag(tagId int, userId int, us *models2.UserSuccess) error {
 
 	result := r.DB.Preload("Success").Joins("left join successes ON user_successes.success_id = successes.id").
 		Where("user_successes.user_id = ? AND user_successes.is_completed = false AND successes.tag_id = ?", userId, tagId).
@@ -65,7 +65,7 @@ func (r *UserSuccessRepo) FindUserSuccessByUserAndTag(tagId int, userId int, us 
 	return nil
 }
 
-func (r *UserSuccessRepo) IncrementUserSuccessProgression(userSuccess *models.UserSuccess) error {
+func (r *UserSuccessRepo) IncrementUserSuccessProgression(userSuccess *models2.UserSuccess) error {
 
 	userSuccess.Progression++
 
@@ -81,7 +81,7 @@ func (r *UserSuccessRepo) IncrementUserSuccessProgression(userSuccess *models.Us
 	return nil
 }
 
-func (r *UserSuccessRepo) AddCurrencyAmountSuccessToUser(user *modelsUser.User, userSuccess *models.UserSuccess) error {
+func (r *UserSuccessRepo) AddCurrencyAmountSuccessToUser(user *userModels.User, userSuccess *models2.UserSuccess) error {
 	user.CurrencyAmount += userSuccess.Success.CurrencyReward
 
 	result := r.DB.Model(user).Updates(map[string]interface{}{
@@ -94,7 +94,7 @@ func (r *UserSuccessRepo) AddCurrencyAmountSuccessToUser(user *modelsUser.User, 
 }
 
 // TODO : Change this, this is really bad
-func (r *UserSuccessRepo) FindTheNextProgressionRankSuccessIdByTag(us *models.UserSuccess, ns *models.Success) error {
+func (r *UserSuccessRepo) FindTheNextProgressionRankSuccessIdByTag(us *models2.UserSuccess, ns *models2.Success) error {
 
 	var count int64
 	r.DB.Table("successes").
@@ -115,9 +115,9 @@ func (r *UserSuccessRepo) FindTheNextProgressionRankSuccessIdByTag(us *models.Us
 	return nil
 }
 
-func (r *UserSuccessRepo) CreateUserSuccessFromUserAndSuccess(userId int, ns *models.Success, us *models.UserSuccess) error {
+func (r *UserSuccessRepo) CreateUserSuccessFromUserAndSuccess(userId int, ns *models2.Success, us *models2.UserSuccess) error {
 
-	newUserSuccess := &models.UserSuccess{
+	newUserSuccess := &models2.UserSuccess{
 		UserId:      userId,
 		SuccessId:   ns.Id,
 		Progression: us.Progression,

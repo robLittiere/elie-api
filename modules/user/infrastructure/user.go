@@ -4,6 +4,7 @@ import (
 	"elie-api/modules/common/repository"
 	error2 "elie-api/modules/gamification/domain/error"
 	models2 "elie-api/modules/gamification/models"
+	models4 "elie-api/modules/gamification/successes/domain/models"
 	"elie-api/modules/user/application/filters"
 	"elie-api/modules/user/models"
 	"errors"
@@ -70,13 +71,13 @@ func (r *UserRepo) CreateUser(user *models.User) error {
 	}
 
 	// Assign all level 1 successes to the user
-	var successes []models2.Success
-	if err := r.DB.Table("successes").Select("id").Where("progression_rank = ?", 1).Find(&successes).Error; err != nil {
+	var succs []models4.Success
+	if err := r.DB.Table("successes").Select("id").Where("progression_rank = ?", 1).Find(&succs).Error; err != nil {
 		return err
 	}
 
-	for _, success := range successes {
-		userSuccess := models2.UserSuccess{
+	for _, success := range succs {
+		userSuccess := models4.UserSuccess{
 			UserId:    user.Id,
 			SuccessId: success.Id,
 		}
@@ -178,7 +179,7 @@ func (r *UserRepo) IncreaseUserXpQuest(userQuest *models2.UserQuest, user *model
 
 // TODO : WARNIIING !!!! Refactor this is really bad
 // TODO : There is business logic in the infrastructure layer
-func (r *UserRepo) IncreaseUserXpSuccess(userSuccess *models2.UserSuccess, user *models.User) error {
+func (r *UserRepo) IncreaseUserXpSuccess(userSuccess *models4.UserSuccess, user *models.User) error {
 
 	user.Xp += userSuccess.Success.Xp
 	// Check if the user has enough xp to level up

@@ -3,6 +3,7 @@ package config
 import (
 	gameModels "elie-api/modules/game/models"
 	gamificationModels "elie-api/modules/gamification/models"
+	models2 "elie-api/modules/gamification/successes/domain/models"
 	userModels "elie-api/modules/user/models"
 )
 
@@ -15,8 +16,8 @@ func Migrate() {
 		&gamificationModels.Level{},
 		&gamificationModels.Quest{},
 		&gamificationModels.UserQuest{},
-		&gamificationModels.UserSuccess{},
-		&gamificationModels.Success{},
+		&models2.UserSuccess{},
+		&models2.Success{},
 		&gamificationModels.Tag{},
 	)
 	if err != nil {
@@ -29,7 +30,7 @@ func Migrate() {
 		return
 	}
 
-	err = DB.SetupJoinTable(&userModels.User{}, "Success", &gamificationModels.UserSuccess{})
+	err = DB.SetupJoinTable(&userModels.User{}, "Success", &models2.UserSuccess{})
 	if err != nil {
 		return
 	}
@@ -65,10 +66,10 @@ func DropTables() {
 	if (DB.Migrator().HasTable(gamificationModels.Tag{})) {
 		DB.Migrator().DropTable(gamificationModels.Tag{})
 	}
-	if (DB.Migrator().HasTable(gamificationModels.UserSuccess{})) {
-		DB.Migrator().DropTable(gamificationModels.UserSuccess{})
+	if (DB.Migrator().HasTable(models2.UserSuccess{})) {
+		DB.Migrator().DropTable(models2.UserSuccess{})
 	}
-	if (DB.Migrator().HasTable(gamificationModels.Success{})) {
-		DB.Migrator().DropTable(gamificationModels.Success{})
+	if (DB.Migrator().HasTable(models2.Success{})) {
+		DB.Migrator().DropTable(models2.Success{})
 	}
 }

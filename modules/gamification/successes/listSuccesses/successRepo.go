@@ -1,9 +1,9 @@
-package infrastructure
+package listSuccesses
 
 import (
 	"elie-api/modules/common/repository"
-	"elie-api/modules/gamification/application/filters"
-	"elie-api/modules/gamification/models"
+	"elie-api/modules/gamification/successes/domain/models"
+	"elie-api/modules/gamification/successes/infra/filters"
 	"gorm.io/gorm"
 )
 
@@ -18,7 +18,7 @@ func NewSuccessRepo(db *gorm.DB) *SuccessRepo {
 // Find Get all successes from db
 func (r *SuccessRepo) Find() ([]models.Success, error) {
 	success := make([]models.Success, 0)
-	result := r.DB.Preload("Tag").Find(&success)
+	result := r.DB.Preload("Tag").Preload("ParentSuccess").Find(&success)
 	if result.Error != nil {
 		return nil, result.Error
 	}

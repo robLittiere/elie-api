@@ -2,36 +2,37 @@ package models
 
 import (
 	"elie-api/modules/gamification/models"
+	models2 "elie-api/modules/gamification/successes/domain/models"
 	"golang.org/x/crypto/bcrypt"
 	"time"
 )
 
 type User struct {
-	Id             int                  `json:"id" gorm:"primary_key"`
-	Uuid           string               `json:"uuid" faker:"uuid_hyphenated"`
-	LevelId        int                  `json:"level_id"`
-	Level          models.Level         `json:"level" gorm:"foreignKey:LevelId"`
-	Email          string               `json:"email" gorm:"unique;not_null"`
-	Password       string               `json:"password"`
-	Username       string               `json:"username"`
-	Xp             int                  `json:"xp" gore:"default:0"`
-	CurrencyAmount int                  `json:"currency_amount" gorm:"default:0"`
-	UserQuests     []models.UserQuest   `json:"quests" gorm:"foreignKey:UserId"`
-	UserSuccess    []models.UserSuccess `json:"success" gorm:"foreignKey:UserId"`
-	CreatedAt      time.Time            `json:"createdAt"`
-	UpdatedAt      time.Time            `json:"updatedAt"`
+	Id             int                   `json:"id" gorm:"primary_key"`
+	Uuid           string                `json:"uuid" faker:"uuid_hyphenated"`
+	LevelId        int                   `json:"level_id"`
+	Level          models.Level          `json:"level" gorm:"foreignKey:LevelId"`
+	Email          string                `json:"email" gorm:"unique;not_null"`
+	Password       string                `json:"password"`
+	Username       string                `json:"username"`
+	Xp             int                   `json:"xp" gore:"default:0"`
+	CurrencyAmount int                   `json:"currency_amount" gorm:"default:0"`
+	UserQuests     []models.UserQuest    `json:"quests" gorm:"foreignKey:UserId"`
+	UserSuccess    []models2.UserSuccess `json:"success" gorm:"foreignKey:UserId"`
+	CreatedAt      time.Time             `json:"createdAt"`
+	UpdatedAt      time.Time             `json:"updatedAt"`
 }
 
 type PublicUser struct {
-	Uuid           string               `json:"uuid" `
-	Lid            int                  `json:"lid"`
-	Level          models.Level         `json:"level"`
-	Email          string               `json:"email"`
-	Username       string               `json:"username"`
-	UserQuests     []models.UserQuest   `json:"quests"`
-	UserSuccesses  []models.UserSuccess `json:"successes"`
-	Xp             int                  `json:"xp"`
-	CurrencyAmount int                  `json:"currency_amount"`
+	Uuid           string                `json:"uuid" `
+	Lid            int                   `json:"lid"`
+	Level          models.Level          `json:"level"`
+	Email          string                `json:"email"`
+	Username       string                `json:"username"`
+	UserQuests     []models.UserQuest    `json:"quests"`
+	UserSuccesses  []models2.UserSuccess `json:"successes"`
+	Xp             int                   `json:"xp"`
+	CurrencyAmount int                   `json:"currency_amount"`
 }
 
 func (user *User) Serialize() PublicUser {

@@ -1,7 +1,10 @@
-package gamification
+package successes
 
 import (
 	"elie-api/modules/gamification/application/controllers"
+	updateUserSuccess "elie-api/modules/gamification/successes/UpdateUserSuccess"
+	"elie-api/modules/gamification/successes/listSuccesses"
+	"elie-api/modules/gamification/successes/listUserSuccesses"
 	"github.com/gin-gonic/gin"
 )
 
@@ -22,8 +25,8 @@ func GamificationRoutes(router *gin.RouterGroup) {
 
 	success := router.Group("/successes")
 	{
-		success.GET("/", controllers.GetSuccesses)
-		success.GET("/user", controllers.GetUserSuccesses)
-		success.PATCH("/user/progress", controllers.UpdateUserSuccessProgress)
+		success.GET("/", listSuccesses.GetSuccesses)
+		success.GET("/user", listUserSuccesses.GetUserSuccesses)
+		success.PATCH("/user/progress", updateUserSuccess.UpdateUserSuccessProgress)
 	}
 }

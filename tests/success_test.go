@@ -3,8 +3,9 @@ package tests
 import (
 	"elie-api/modules/fixtures"
 	gamificationFixtures "elie-api/modules/fixtures/gamification"
-	gamificationController "elie-api/modules/gamification/application/controllers"
 	"elie-api/modules/gamification/models"
+	models2 "elie-api/modules/gamification/successes/domain/models"
+	"elie-api/modules/gamification/successes/listSuccesses"
 	"encoding/json"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
@@ -48,10 +49,10 @@ func (s *SuccessTestSuite) TestIShouldGetSuccessWithCorrectTag() {
 
 	// Mock API call
 	fixtures.MockJsonGet(c, nil, u)
-	gamificationController.GetSuccesses(c)
+	listSuccesses.GetSuccesses(c)
 
 	// Assert we should only get the success with the tag we asked for
-	var successes []models.Success
+	var successes []models2.Success
 	err := json.NewDecoder(w.Body).Decode(&successes)
 	if err != nil {
 		s.T().Errorf("Error while decoding response : %v", err)
@@ -87,10 +88,10 @@ func (s *SuccessTestSuite) TestIShouldGetSuccessWithCorrectTagName() {
 
 	// Mock API call
 	fixtures.MockJsonGet(c, nil, u)
-	gamificationController.GetSuccesses(c)
+	listSuccesses.GetSuccesses(c)
 
 	// Assert we should only get the success with the tag we asked for
-	var successes []models.Success
+	var successes []models2.Success
 	err := json.NewDecoder(w.Body).Decode(&successes)
 	if err != nil {
 		s.T().Errorf("Error while decoding response : %v", err)
@@ -118,13 +119,13 @@ func (s *SuccessTestSuite) TestIShouldGetNoSuccessIfSuccessDoesntHaveTag() {
 
 	// Mock API call
 	fixtures.MockJsonGet(c, nil, u)
-	gamificationController.GetSuccesses(c)
+	listSuccesses.GetSuccesses(c)
 
 	// Assert we should only get the success with the tag we asked for
-	var successes []models.Success
-	err := json.NewDecoder(w.Body).Decode(&successes)
+	var suc []models2.Success
+	err := json.NewDecoder(w.Body).Decode(&suc)
 	if err != nil {
 		s.T().Errorf("Error while decoding response : %v", err)
 	}
-	assert.Equal(s.T(), 0, len(successes), "I should get no success")
+	assert.Equal(s.T(), 0, len(suc), "I should get no success")
 }

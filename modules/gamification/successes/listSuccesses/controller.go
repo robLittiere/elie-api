@@ -1,13 +1,12 @@
-package controllers
+package listSuccesses
 
 import (
 	"elie-api/config"
-	"elie-api/modules/gamification/infrastructure"
 	"github.com/gin-gonic/gin"
 )
 
 func GetSuccesses(c *gin.Context) {
-	successRepo := infrastructure.NewSuccessRepo(config.DB)
+	successRepo := NewSuccessRepo(config.DB)
 	queryParams := c.Request.URL.Query()
 
 	successes, err := successRepo.BuildQueryAndFind(queryParams)

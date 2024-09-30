@@ -4,7 +4,7 @@ import (
 	"elie-api/config"
 	"elie-api/modules/auth"
 	"elie-api/modules/game"
-	"elie-api/modules/gamification"
+	"elie-api/modules/gamification/successes"
 	"elie-api/modules/user"
 	"elie-api/modules/websocket"
 	"elie-api/modules/websocket/dualquiz"
@@ -51,7 +51,7 @@ func InitRouter() *gin.Engine {
 	// Group routes etc..
 	auth.AuthRoutes(version)
 	user.UserRoutes(version)
-	gamification.GamificationRoutes(version)
+	successes.GamificationRoutes(version)
 	game.GameRoutes(version)
 	websocket.WebsocketRoutes(router, hubs)
 
